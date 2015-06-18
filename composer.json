@@ -1,0 +1,17 @@
+{
+  "name": "wearerequired/wp-digest",
+  "description": "Receive a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
+  "version": "0.1.0",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
+  "authors": [
+	{
+	  "name": "required+",
+	  "email": "support@required.ch",
+	  "homepage": "http://required.ch",
+	  "role": "Developer"
+	}
+  ],
+  "require": {
+  }
+}
