@@ -1,5 +1,5 @@
 {
-  "name": "wp-digest",
+  "name": "digest",
   "title": "Digest Notifications",
   "description": "Receive a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
   "version": "0.1.0",

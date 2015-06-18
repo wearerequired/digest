@@ -8,7 +8,7 @@ Stable tag:        0.1.0
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
 
-Receive a daily/weekly digest of what's happening on your site instead of receiving a single email each time.
+Get a daily or weekly digest of what's happening on your site instead of receiving a single email each time.
 
 ## Description ##
 

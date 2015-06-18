@@ -1,7 +1,7 @@
 module.exports = {
 	dist: {
 		files: {
-			'css/wp-digest.css': 'css/src/digest.scss'
+			'css/digest.css': 'css/src/digest.scss'
 		}
 	}
 }

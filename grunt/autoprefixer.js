@@ -9,7 +9,7 @@ module.exports = {
 		},
 		expand : true,
 		flatten: true,
-		src    : 'css/wp-digest.css',
+		src    : 'css/digest.css',
 		dest   : 'css/'
 	}
 }
