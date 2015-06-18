@@ -38,15 +38,22 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	}
 
 	/**
-	 * Plugin activation handler.
+	 * Schedule our cronjob on plugin activation.
 	 */
 	public function activate_plugin() {
+		// Get timestamp of the next full hour
+		$current_time = current_time( 'timestamp' );
+		$timestamp    = $current_time + ( 3600 - ( ( date( 'i', $current_time ) * 60 ) + date( 's', $current_time ) ) );
+
+		wp_clear_scheduled_hook( 'digest_event' );
+		wp_schedule_event( $timestamp, 'hourly', 'digest_event' );
 	}
 
 	/**
-	 * Plugin deactivation handler
+	 * Unschedule our cronjob on plugin deactivation.
 	 */
 	public function deactivate_plugin() {
+		wp_unschedule_event( wp_next_scheduled( 'digest_event' ), 'digest_event' );
 	}
 
 	public function admin_enqueue_scripts( $hook ) {
