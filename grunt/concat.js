@@ -10,8 +10,8 @@ module.exports = {
 	},
 	dist   : {
 		src : [
-			'js/src/wp-digest.js'
+			'js/src/digest.js'
 		],
-		dest: 'js/wp-digest.js'
+		dest: 'js/digest.js'
 	}
 }
