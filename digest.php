@@ -38,13 +38,16 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 	'php'   => '5.3',
 	'wp'    => '4.0',
 	'file'  => __FILE__,
-));
+) );
 
 if ( $wp_digest_requirements_check->passes() ) {
 	// Pull in the plugin classes and initialize
 	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
 	include( dirname( __FILE__ ) . '/classes/plugin.php' );
 	WP_Digest_Plugin::start( __FILE__ );
+
+	register_activation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'activate_plugin' ) );
+	register_deactivation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'deactivate_plugin' ) );
 }
 
 unset( $wp_digest_requirements_check );

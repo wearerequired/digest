@@ -34,4 +34,16 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	public function init() {
 		$this->load_textdomain( 'wp-digest', '/languages' );
 	}
+
+	/**
+	 * Plugin activation handler.
+	 */
+	public function activate_plugin() {
+	}
+
+	/**
+	 * Plugin deactivation handler
+	 */
+	public function deactivate_plugin() {
+	}
 }
