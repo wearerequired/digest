@@ -56,8 +56,13 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		wp_unschedule_event( wp_next_scheduled( 'digest_event' ), 'digest_event' );
 	}
 
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'options-general.php' === $hook ) {
+	/**
+	 * Enqueue scripts and styles.
+	 *
+	 * @param string $hook_suffix The current admin page.
+	 */
+	public function admin_enqueue_scripts( $hook_suffix ) {
+		if ( 'options-general.php' === $hook_suffix ) {
 			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 			wp_enqueue_script( 'digest', $this->get_url() . 'js/digest' . $suffix . '.js', array(), self::VERSION, true );
@@ -66,7 +71,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	}
 
 	/**
-	 * Create settings sections and fields
+	 * Create settings sections and fields.
 	 */
 	public function add_settings() {
 		add_settings_section(
@@ -89,6 +94,9 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		register_setting( 'general', 'digest_frequency', array( $this, 'sanitize_frequency_option' ) );
 	}
 
+	/**
+	 * Settings field callback that prints the actual input fields.
+	 */
 	public function settings_field_frequency() {
 		$options = get_option( 'digest_frequency', array(
 			'period' => 'weekly',
@@ -99,7 +107,6 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		<p>
 			<?php _e( 'Send me a digest of new site activity', 'digest' ); ?>
 			<select name="digest_frequency[period]" id="digest_frequency_period">
-				<option value="never" <?php selected( 'never', $options['period'] ); ?>><?php _ex( 'never', 'frequency', 'digest' ); ?></option>
 				<option value="daily" <?php selected( 'daily', $options['period'] ); ?>><?php _ex( 'every day', 'frequency', 'digest' ); ?></option>
 				<option value="weekly" <?php selected( 'weekly', $options['period'] ); ?>><?php _ex( 'every week', 'frequency', 'digest' ); ?></option>
 			</select>
@@ -130,8 +137,15 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		<?php
 	}
 
+	/**
+	 * Sanitize the digest frequency option.
+	 *
+	 * @param array $value The POST da.
+	 *
+	 * @return array The sanitized frequency option.
+	 */
 	public function sanitize_frequency_option( $value ) {
-		if ( ! in_array( $value['period'], array( 'never', 'daily', 'weekly' ) ) ) {
+		if ( 'daily' !== $value['period'] ) {
 			$value['period'] = 'weekly';
 		}
 
