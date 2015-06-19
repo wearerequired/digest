@@ -24,38 +24,156 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/plugin.php:67
+#: classes/cron.php:73
+msgid "Today on %s"
+msgstr ""
+
+#: classes/cron.php:73
+msgid "Past Week on %s"
+msgstr ""
+
+#: classes/cron.php:99
+msgid "New Comments"
+msgstr ""
+
+#: classes/cron.php:103
+msgid "Pending Comments"
+msgstr ""
+
+#: classes/cron.php:105
+msgid "Currently %s comment is waiting for approval."
+msgid_plural "Currently %s comments are waiting for approval."
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/cron.php:116
+msgid "Please visit the <a href=\"%s\">moderation panel</a>."
+msgstr ""
+
+#: classes/cron.php:119
+msgid "New User Signups"
+msgstr ""
+
+#: classes/cron.php:120
+msgid "The following user signed up on your site:"
+msgid_plural "The following users signed up on your site:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/cron.php:124
+msgid "Password Changes"
+msgstr ""
+
+#: classes/cron.php:125
+msgid "The following user lost and changed his password:"
+msgid_plural "The following users lost and changed their passwords:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/cron.php:138
+msgid "Hi %s"
+msgstr ""
+
+#: classes/cron.php:140
+msgid "Hi there"
+msgstr ""
+
+#: classes/cron.php:143
+msgid "See what's happening on your site:"
+msgstr ""
+
+#: classes/cron.php:177 classes/cron.php:214
+msgid "Delete"
+msgstr ""
+
+#: classes/cron.php:205
+msgid "Permalink"
+msgstr ""
+
+#: classes/cron.php:210
+msgid "Approve"
+msgstr ""
+
+#: classes/cron.php:236 classes/cron.php:254
+msgid "<li>%s (ID: %s) %s ago</li>"
+msgstr ""
+
+#: classes/cron.php:273
+msgid "Trackback on %1$s %2$s ago:"
+msgstr ""
+
+#: classes/cron.php:274 classes/cron.php:279
+msgid "Website: %s"
+msgstr ""
+
+#: classes/cron.php:275 classes/cron.php:280
+msgid "Excerpt: %s"
+msgstr ""
+
+#: classes/cron.php:278
+msgid "Pingback on %1$s %2$s ago:"
+msgstr ""
+
+#: classes/cron.php:284 classes/cron.php:286
+msgid "Author: %s"
+msgstr ""
+
+#: classes/cron.php:288
+msgid "Comment on %1$s %2$s ago:"
+msgstr ""
+
+#: classes/cron.php:290
+msgid "Email: %s"
+msgstr ""
+
+#: classes/cron.php:291
+msgid "Comment: %s"
+msgstr ""
+
+#: classes/plugin.php:84
 msgid "Email Notifcations"
 msgstr ""
 
-#. Description of the plugin/theme
+#: classes/plugin.php:86
 msgid ""
-"Get a daily/weekly digest of what's happening on your site instead of "
+"Get a daily or weekly digest of what's happening on your site instead of "
 "receiving a single email each time."
 msgstr ""
 
-#: classes/plugin.php:76
+#: classes/plugin.php:93
 msgid "Frequency"
 msgstr ""
 
-#: classes/plugin.php:95
-msgid "Send me a digest of site activity"
+#: classes/plugin.php:113
+msgid "Send me a digest of new site activity"
 msgstr ""
 
-#: classes/plugin.php:102
+#: classes/plugin.php:119
 msgid "at"
 msgstr ""
 
-#: classes/plugin.php:105
+#: classes/plugin.php:122
 msgid "%02d:00"
 msgstr ""
 
-#: classes/plugin.php:108
+#: classes/plugin.php:125
 msgid "o'clock"
 msgstr ""
 
-#: classes/plugin.php:112
+#: classes/plugin.php:129
 msgid "on"
+msgstr ""
+
+#: includes/pluggable.php:37
+msgid "Username: %s"
+msgstr ""
+
+#: includes/pluggable.php:38
+msgid "Password: %s"
+msgstr ""
+
+#: includes/pluggable.php:41
+msgid "[%s] Your username and password"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -66,6 +184,12 @@ msgstr ""
 msgid "https://github.com/wearerequired/digest/"
 msgstr ""
 
+#. Description of the plugin/theme
+msgid ""
+"Get a daily/weekly digest of what's happening on your site instead of "
+"receiving a single email each time."
+msgstr ""
+
 #. Author of the plugin/theme
 msgid "required+"
 msgstr ""
@@ -74,17 +198,22 @@ msgstr ""
 msgid "http://required.ch"
 msgstr ""
 
-#: classes/plugin.php:97
-msgctxt "frequency"
-msgid "never"
+#: classes/cron.php:175 classes/cron.php:212
+msgctxt "verb"
+msgid "Trash"
 msgstr ""
 
-#: classes/plugin.php:98
+#: classes/cron.php:179 classes/cron.php:216
+msgctxt "verb"
+msgid "Spam"
+msgstr ""
+
+#: classes/plugin.php:115
 msgctxt "frequency"
 msgid "every day"
 msgstr ""
 
-#: classes/plugin.php:99
+#: classes/plugin.php:116
 msgctxt "frequency"
 msgid "every week"
 msgstr ""
