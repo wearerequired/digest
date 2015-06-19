@@ -43,6 +43,9 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 if ( $wp_digest_requirements_check->passes() ) {
 	// Pull in the plugin classes and initialize
 	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
+	include( dirname( __FILE__ ) . '/includes/pluggable.php' );
+	include( dirname( __FILE__ ) . '/classes/queue.php' );
+	include( dirname( __FILE__ ) . '/classes/cron.php' );
 	include( dirname( __FILE__ ) . '/classes/plugin.php' );
 	WP_Digest_Plugin::start( __FILE__ );
 
