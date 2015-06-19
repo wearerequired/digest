@@ -26,8 +26,13 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	public function add_hooks() {
 		$this->hook( 'init' );
 
+		// Settings screen
 		$this->hook( 'admin_enqueue_scripts' );
 		$this->hook( 'admin_init', 'add_settings' );
+
+		// Hook into WordPress functions for the notifications
+		$this->hook( 'comment_notification_recipients', 10, 2 );
+		$this->hook( 'comment_moderation_recipients', 10, 2 );
 	}
 
 	/**
@@ -174,5 +179,68 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		);
 
 		return $value;
+	}
+
+	/**
+	 * Hook into the new comment notification to add the comment to the queue.
+	 *
+	 * @param string[] $emails     An array of email addresses to receive a comment notification.
+	 * @param int      $comment_id The comment ID.
+	 *
+	 * @return array An empty array to prevent sending an email directly.
+	 */
+	public function comment_notification_recipients( $emails, $comment_id ) {
+		$comment = get_comment( $comment_id );
+		$post    = get_post( $comment->comment_post_ID );
+		$author  = get_userdata( $post->post_author );
+
+		/**
+		 * Filter whether to notify comment authors of their comments on their own posts.
+		 *
+		 * By default, comment authors aren't notified of their comments on their own
+		 * posts. This filter allows you to override that.
+		 *
+		 * @param bool $notify     Whether to notify the post author of their own comment.
+		 *                         Default false.
+		 * @param int  $comment_id The comment ID.
+		 */
+		$notify_author = apply_filters( 'comment_notification_notify_author', false, $comment_id );
+
+		// The comment was left by the author
+		if ( $author && ! $notify_author && $comment->user_id == $post->post_author ) {
+			unset( $emails[ $author->user_email ] );
+		}
+
+		// The author moderated a comment on their own post
+		if ( $author && ! $notify_author && $post->post_author == get_current_user_id() ) {
+			unset( $emails[ $author->user_email ] );
+		}
+
+		// The post author is no longer a member of the blog
+		if ( $author && ! $notify_author && ! user_can( $post->post_author, 'read_post', $post->ID ) ) {
+			unset( $emails[ $author->user_email ] );
+		}
+
+		foreach ( $emails as $recipient ) {
+			WP_Digest_Queue::add( $recipient, 'comment_notification', $comment_id );
+		}
+
+		return array();
+	}
+
+	/**
+	 * Hook into the comment moderation notification to add the comment to the queue.
+	 *
+	 * @param string[] $emails     An array of email addresses to receive a comment notification.
+	 * @param int      $comment_id The comment ID.
+	 *
+	 * @return array An empty array to prevent sending an email directly.
+	 */
+	public function comment_moderation_recipients( $emails, $comment_id ) {
+		foreach ( $emails as $recipient ) {
+			WP_Digest_Queue::add( $recipient, 'comment_moderation', $comment_id );
+		}
+
+		return array();
 	}
 }
