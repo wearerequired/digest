@@ -119,12 +119,3 @@ class WP_Digest_Cron {
 }
 
 add_action( 'digest_event', array( 'WP_Digest_Cron', 'init' ) );
-
-/*
-WP_Digest_Queue::add( 'pascal@required.ch', 'comment_notification', 1 );
-WP_Digest_Queue::add( 'pascal@required.ch', 'comment_moderation', 2 );
-WP_Digest_Queue::add( 'pascal@required.ch', 'new_user_notification', 2 );
-WP_Digest_Queue::add( 'pascal@required.ch', 'password_change_notification', 1 );
-WP_Digest_Queue::add( 'pascal@required.ch', 'core_update_success', '4.2.2' );
-WP_Digest_Cron::init();
-*/
