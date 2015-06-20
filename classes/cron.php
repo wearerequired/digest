@@ -87,6 +87,11 @@ class WP_Digest_Cron {
 
 		// Loop through the queue
 		foreach ( $queue as $recipient => $items ) {
+			// Load the user with this email address if it exists
+			self::$user = get_user_by( 'email', $recipient );
+
+			$events = self::process_event_items( $items );
+
 			/**
 			 * Filter the digest message.
 			 *
@@ -95,7 +100,7 @@ class WP_Digest_Cron {
 			 *
 			 * @return string The filtered message.
 			 */
-			$message = apply_filters( 'digest_cron_message', self::get_message_for_recipient( $recipient, $items ), $recipient );
+			$message = apply_filters( 'digest_cron_message', self::get_message_for_recipient( $events ), $recipient );
 
 			// Send digest
 			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
@@ -106,52 +111,57 @@ class WP_Digest_Cron {
 	}
 
 	/**
-	 * Process the queue for a single recipient.
+	 * Process all queue items and generate the according messages.
 	 *
-	 * @param string $recipient The recipient's email address.
-	 * @param array  $items     The queued items for this recipient.
+	 * @param array $items The queue items.
 	 *
-	 * @return string The generated message.
+	 * @return array The processed event messages.
 	 */
-	protected static function get_message_for_recipient( $recipient, $items ) {
-		// Load the user with this email address if it exists
-		self::$user = get_user_by( 'email', $recipient );
-
+	protected static function process_event_items( $items ) {
 		$events = array();
 
 		foreach ( $items as $item ) {
 			$method = array( 'WP_Digest_Cron', 'get_' . $item[1] . '_message' );
+
+			if ( in_array( $item[1], array( 'core_update_success', 'core_update_fail', 'core_update_manual' ) ) ) {
+				$item[1] = 'core_update';
+			}
+
 			if ( is_callable( $method ) ) {
-				$events[ $item[1] ][] = call_user_func( $method, $item[2], $item[0] );
+				$message = call_user_func( $method, $item[2], $item[0] );
+				if ( '' !== $message ) {
+					$events[ $item[1] ][] = $message;
+				}
 			}
 		}
 
+		return $events;
+	}
+
+	/**
+	 * Process the queue for a single recipient.
+	 *
+	 * @param $events $items The processed event items.
+	 *
+	 * @return string The generated message.
+	 */
+	protected static function get_message_for_recipient( $events ) {
 		$message = '';
 
 		// Loop through the processed events in manual order
 		foreach (
 			array(
-				'core_update_success',
-				'core_update_fail',
-				'core_update_manual',
+				'core_update',
 				'comment_notification',
 				'comment_moderation',
 				'new_user_notification',
 				'password_change_notification',
 			) as $event
 		) {
-			if ( empty( $events[ $event ] ) ) {
-				continue;
+			if ( ! empty( $events[ $event ] ) ) {
+				// Add some text before and after the entries.
+				$message .= self::get_event_section( $event, $events[ $event ] );
 			}
-
-			$section = $event;
-
-			if ( in_array( $event, array( 'core_update_success', 'core_update_fail', 'core_update_manual' ) ) ) {
-				$section = 'core_update';
-			}
-
-			// Add some text before and after the entries.
-			$message .= self::get_event_section( $section, $events[ $event ] );
 		}
 
 		if ( '' === $message ) {
