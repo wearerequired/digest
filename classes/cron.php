@@ -162,6 +162,8 @@ class WP_Digest_Cron {
 
 		$message = '<p>' . $salutation . '</p><p>' . __( "See what's happening on your site:", 'digest' ) . '</p>' . $message;
 
+		$message .= '<p>' . __( "That's it, have a nice day!", 'digest' ) . '</p>';
+
 		return $message;
 	}
 
@@ -179,6 +181,16 @@ class WP_Digest_Cron {
 		switch ( $section ) {
 			case 'comment_notification':
 				$message .= '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
+				$message .= '<p>' . sprintf(
+						_n(
+							'There was %s new comment.',
+							'There were %s new comments.',
+							count( $entries ),
+							'digest'
+						),
+						number_format_i18n( count( $entries ) )
+					) . '</p>';
+
 				$message .= implode( '', $entries );
 				break;
 			case 'comment_moderation':
