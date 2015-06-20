@@ -9,6 +9,8 @@
  * License:     GPLv2+
  * Text Domain: digest
  * Domain Path: /languages
+ *
+ * @package WP_Digest
  */
 
 /**
@@ -41,7 +43,7 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 ) );
 
 if ( $wp_digest_requirements_check->passes() ) {
-	// Pull in the plugin classes and initialize
+	// Pull in the plugin classes and initialize.
 	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
 	include( dirname( __FILE__ ) . '/includes/pluggable.php' );
 	include( dirname( __FILE__ ) . '/classes/queue.php' );

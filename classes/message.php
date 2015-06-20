@@ -1,23 +1,41 @@
 <?php
+/**
+ * This file holds the WP_Digest_Message class.
+ *
+ * @package WP_Digest
+ */
+
 defined( 'WPINC' ) or die;
 
+/**
+ * WP_Digest_Message class.
+ *
+ * Responsible for creating a new digest message
+ * to be sent per email.
+ */
 class WP_Digest_Message {
 	/**
-	 * @var array The queue items.
+	 * The queue items.
+	 *
+	 * @var array
 	 */
 	protected $items;
 
 	/**
-	 * @var false|WP_User User object or false.
+	 * The current user object.
+	 *
+	 * @var WP_User|false User object if user exists, false otherwise.
 	 */
 	protected $user;
 
 	/**
+	 * Constructor.
+	 *
 	 * @param string $recipient The recipient's email address.
 	 * @param array  $items     The queue items for this recipient.
 	 */
 	public function __construct( $recipient, $items ) {
-		// Load the user with this email address if it exists
+		// Load the user with this email address if it exists.
 		$this->user   = get_user_by( 'email', $recipient );
 		$this->events = $this->process_event_items( $items );
 	}
@@ -59,7 +77,7 @@ class WP_Digest_Message {
 	public function get_message() {
 		$message = '';
 
-		// Loop through the processed events in manual order
+		// Loop through the processed events in manual order.
 		foreach (
 			array(
 				'core_update',
@@ -117,12 +135,7 @@ class WP_Digest_Message {
 	protected function get_comment_notification_section_message( $entries ) {
 		$message = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>' . sprintf(
-				_n(
-					'There was %s new comment.',
-					'There were %s new comments.',
-					count( $entries ),
-					'digest'
-				),
+				_n( 'There was %s new comment.', 'There were %s new comments.', count( $entries ), 'digest' ),
 				number_format_i18n( count( $entries ) )
 			) . '</p>';
 		$message .= implode( '', $entries );
@@ -149,7 +162,10 @@ class WP_Digest_Message {
 				number_format_i18n( count( $entries ) )
 			) . '</p>';
 		$message .= implode( '', $entries );
-		$message .= sprintf( __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ), admin_url( 'edit-comments.php?comment_status=moderated' ) ) . '<br />';
+		$message .= sprintf(
+			            __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ),
+			            admin_url( 'edit-comments.php?comment_status=moderated' )
+		            ) . '<br />';
 
 		return $message;
 	}
@@ -207,7 +223,11 @@ class WP_Digest_Message {
 	 * @return string The comment moderation message.
 	 */
 	protected function get_comment_notification_message( $comment_id, $time ) {
-		/** @var object $comment */
+		/**
+		 * Current comment object.
+		 *
+		 * @var object $comment
+		 */
 		$comment = get_comment( $comment_id );
 
 		if ( null === $comment ) {
@@ -245,7 +265,11 @@ class WP_Digest_Message {
 	 * @return string The comment moderation message.
 	 */
 	protected function get_comment_moderation_message( $comment_id, $time ) {
-		/** @var object $comment */
+		/**
+		 * Current comment object.
+		 *
+		 * @var object $comment
+		 */
 		$comment = get_comment( $comment_id );
 
 		if ( null === $comment ) {

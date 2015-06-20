@@ -1,20 +1,28 @@
 <?php
+/**
+ * WP Digest Cron implementation.
+ *
+ * @package WP_Digest
+ */
+
 defined( 'WPINC' ) or die;
 
 if ( ! defined( 'EMPTY_TRASH_DAYS' ) ) {
 	define( 'EMPTY_TRASH_DAYS', 30 );
 }
 
+/**
+ * WP_Digest_Cron class.
+ *
+ * It's run every hour.
+ */
 class WP_Digest_Cron {
 	/**
+	 * The plugin options.
+	 *
 	 * @var array The plugin options.
 	 */
 	protected static $options;
-
-	/**
-	 * @var false|WP_User User object or false.
-	 */
-	protected static $user;
 
 	/**
 	 * This method hooks to the cron action to process the queue.
@@ -38,12 +46,12 @@ class WP_Digest_Cron {
 	 * @return bool True if the queue can be processed, false otherwise.
 	 */
 	protected static function ready() {
-		// Return early if the hour is wrong
+		// Return early if the hour is wrong.
 		if ( absint( self::$options['hour'] ) !== absint( date_i18n( 'G' ) ) ) {
 			return false;
 		}
 
-		// Return early if the day is wrong
+		// Return early if the day is wrong.
 		if ( 'weekly' === self::$options['period'] && absint( self::$options['day'] ) !== absint( date_i18n( 'w' ) ) ) {
 			return false;
 		}
@@ -55,7 +63,7 @@ class WP_Digest_Cron {
 	 * Load required files and set up needed globals.
 	 */
 	protected static function load_globals() {
-		// Load WP_Locale and other needed functions
+		// Load WP_Locale and other needed functions.
 		require_once( ABSPATH . WPINC . '/pluggable.php' );
 		require_once( ABSPATH . WPINC . '/locale.php' );
 		require_once( ABSPATH . WPINC . '/rewrite.php' );
@@ -75,7 +83,7 @@ class WP_Digest_Cron {
 
 		require_once( dirname( __FILE__ ) . '/message.php' );
 
-		// Set up the correct subject
+		// Set up the correct subject.
 		$subject = ( 'daily' === self::$options['period'] ) ? __( 'Today on %s', 'digest' ) : __( 'Past Week on %s', 'digest' );
 
 		/**
@@ -87,7 +95,7 @@ class WP_Digest_Cron {
 		 */
 		$subject = apply_filters( 'digest_cron_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
-		// Loop through the queue
+		// Loop through the queue.
 		foreach ( $queue as $recipient => $items ) {
 			$message = new WP_Digest_Message( $recipient, $items );
 
@@ -101,13 +109,22 @@ class WP_Digest_Cron {
 			 */
 			$message = apply_filters( 'digest_cron_message', $message->get_message(), $recipient );
 
-			// Send digest
+			// Send digest.
 			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
 		}
 
-		// Clear queue
+		// Clear queue.
 		WP_Digest_Queue::clear();
 	}
 }
 
 add_action( 'digest_event', array( 'WP_Digest_Cron', 'init' ) );
+
+/*
+WP_Digest_Queue::add( 'pascal@required.ch', 'comment_notification', 1 );
+WP_Digest_Queue::add( 'pascal@required.ch', 'comment_moderation', 2 );
+WP_Digest_Queue::add( 'pascal@required.ch', 'new_user_notification', 2 );
+WP_Digest_Queue::add( 'pascal@required.ch', 'password_change_notification', 1 );
+WP_Digest_Queue::add( 'pascal@required.ch', 'core_update_success', '4.2.2' );
+WP_Digest_Cron::init();
+*/

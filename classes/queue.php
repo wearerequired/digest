@@ -1,9 +1,23 @@
 <?php
+/**
+ * WP Digest Queue implementation.
+ *
+ * @package WP_Digest
+ */
+
 defined( 'WPINC' ) or die;
 
+/**
+ * WP_Digest_Queue class.
+ *
+ * Responsible for adding message to the queue and
+ * clearing it after it has been processed.
+ */
 class WP_Digest_Queue {
 	/**
-	 * @var string The digest queue option name.
+	 * Digest queue option name.
+	 *
+	 * @var string
 	 */
 	protected static $option = 'digest_queue';
 

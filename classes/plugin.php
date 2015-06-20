@@ -1,8 +1,22 @@
 <?php
+/**
+ * Main plugin file.
+ *
+ * @package WP_Digest
+ */
+
 defined( 'WPINC' ) or die;
 
+/**
+ * WP_Digest_Plugin class.
+ *
+ * Responsible for adding the settings screen and
+ * hooking into some WordPress functions for the notifications.
+ */
 class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	/**
+	 * Instance of this class.
+	 *
 	 * @var self
 	 */
 	protected static $instance;
@@ -25,11 +39,11 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	public function add_hooks() {
 		$this->hook( 'init' );
 
-		// Settings screen
+		// Settings screen.
 		$this->hook( 'admin_enqueue_scripts' );
 		$this->hook( 'admin_init', 'add_settings' );
 
-		// Hook into WordPress functions for the notifications
+		// Hook into WordPress functions for the notifications.
 		$this->hook( 'comment_notification_recipients', 10, 2 );
 		$this->hook( 'comment_moderation_recipients', 10, 2 );
 		$this->hook( 'auto_core_update_email', 10, 3 );
@@ -46,7 +60,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	 * Schedule our cronjob on plugin activation.
 	 */
 	public function activate_plugin() {
-		// Get timestamp of the next full hour
+		// Get timestamp of the next full hour.
 		$current_time = current_time( 'timestamp' );
 		$timestamp    = $current_time + ( 3600 - ( ( date( 'i', $current_time ) * 60 ) + date( 's', $current_time ) ) );
 
@@ -83,7 +97,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 			'digest_notifications',
 			__( 'Email Notifcations', 'digest' ),
 			function () {
-				_e( "You get a daily or weekly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
+				esc_html_e( "You get a daily or weekly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
 			},
 			'general'
 		);
@@ -111,17 +125,17 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		$time_format = get_option( 'time_format' );
 		?>
 		<p>
-			<?php _e( 'Send me a digest of new site activity', 'digest' ); ?>
+			<?php esc_html_e( 'Send me a digest of new site activity', 'digest' ); ?>
 			<select name="digest_frequency[period]" id="digest_frequency_period">
 				<option value="daily" <?php selected( 'daily', $options['period'] ); ?>>
-					<?php _ex( 'every day', 'frequency', 'digest' ); ?>
+					<?php echo esc_attr_x( 'every day', 'frequency', 'digest' ); ?>
 				</option>
 				<option value="weekly" <?php selected( 'weekly', $options['period'] ); ?>>
-					<?php _ex( 'every week', 'frequency', 'digest' ); ?>
+					<?php echo esc_attr_x( 'every week', 'frequency', 'digest' ); ?>
 				</option>
 			</select>
 			<span id="digest_frequency_hour_wrapper">
-				<?php _e( 'at', 'digest' ); ?>
+				<?php esc_html_e( 'at', 'digest' ); ?>
 				<select name="digest_frequency[hour]" id="digest_frequency_hour">
 					<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
 						<option value="<?php echo esc_attr( $hour ); ?>" <?php selected( $hour, $options['hour'] ); ?>>
@@ -129,11 +143,11 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 						</option>
 					<?php endfor; ?>
 				</select>
-				<?php _e( "o'clock", 'digest' ); ?>
+				<?php esc_html_e( "o'clock", 'digest' ); ?>
 			</span>
 			<span id="digest_frequency_day_wrapper" <?php echo 'weekly' !== $options['period'] ? 'class="digest-hidden"' : ''; ?>>
 				<?php
-				_e( 'on', 'digest' );
+				esc_html_e( 'on', 'digest' );
 
 				global $wp_locale;
 				?>
@@ -169,7 +183,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 					'default'   => 18,
 					'min_range' => 0,
 					'max_range' => 23,
-				)
+				),
 			)
 		);
 
@@ -181,7 +195,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 					'default'   => get_option( 'start_of_week' ),
 					'min_range' => 0,
 					'max_range' => 6,
-				)
+				),
 			)
 		);
 
@@ -190,6 +204,8 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 
 	/**
 	 * Hook into the new comment notification to add the comment to the queue.
+	 *
+	 * @SuppressWarnings(PHPMD)
 	 *
 	 * @param string[] $emails     An array of email addresses to receive a comment notification.
 	 * @param int      $comment_id The comment ID.
@@ -213,17 +229,17 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		 */
 		$notify_author = apply_filters( 'comment_notification_notify_author', false, $comment_id );
 
-		// The comment was left by the author
-		if ( $author && ! $notify_author && $comment->user_id == $post->post_author ) {
+		// The comment was left by the author.
+		if ( $author && ! $notify_author && $comment->user_id === $post->post_author ) {
 			unset( $emails[ $author->user_email ] );
 		}
 
-		// The author moderated a comment on their own post
-		if ( $author && ! $notify_author && $post->post_author == get_current_user_id() ) {
+		// The author moderated a comment on their own post.
+		if ( $author && ! $notify_author && $post->post_author === get_current_user_id() ) {
 			unset( $emails[ $author->user_email ] );
 		}
 
-		// The post author is no longer a member of the blog
+		// The post author is no longer a member of the blog.
 		if ( $author && ! $notify_author && ! user_can( $post->post_author, 'read_post', $post->ID ) ) {
 			unset( $emails[ $author->user_email ] );
 		}
@@ -279,7 +295,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	public function auto_core_update_email( $email, $type, $core_update ) {
 		$next_user_core_update = get_preferred_from_update_core();
 
-		// If the update transient is empty, use the update we just performed
+		// If the update transient is empty, use the update we just performed.
 		if ( ! $next_user_core_update ) {
 			$next_user_core_update = $core_update;
 		}
