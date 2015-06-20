@@ -12,6 +12,10 @@ class WP_Digest_Message {
 	 */
 	protected $user;
 
+	/**
+	 * @param string $recipient The recipient's email address.
+	 * @param array  $items     The queue items for this recipient.
+	 */
 	public function __construct( $recipient, $items ) {
 		// Load the user with this email address if it exists
 		$this->user   = get_user_by( 'email', $recipient );
@@ -103,6 +107,13 @@ class WP_Digest_Message {
 		return $message;
 	}
 
+	/**
+	 * Get comment notification section message.
+	 *
+	 * @param array $entries The comment notification entries.
+	 *
+	 * @return string The section message.
+	 */
 	protected function get_comment_notification_section_message( $entries ) {
 		$message = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>' . sprintf(
@@ -119,6 +130,13 @@ class WP_Digest_Message {
 		return $message;
 	}
 
+	/**
+	 * Get comment moderation section message.
+	 *
+	 * @param array $entries The comment moderation entries.
+	 *
+	 * @return string The section message.
+	 */
 	protected function get_comment_moderation_section_message( $entries ) {
 		$message = '<p><b>' . __( 'Pending Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>' . sprintf(
@@ -136,6 +154,13 @@ class WP_Digest_Message {
 		return $message;
 	}
 
+	/**
+	 * Get new user notification section message.
+	 *
+	 * @param array $entries The new user notification entries.
+	 *
+	 * @return string The section message.
+	 */
 	protected function get_new_user_notification_section_message( $entries ) {
 		$message = '<p><b>' . __( 'New User Signups', 'digest' ) . '</b></p>';
 		$message .= '<p>' . _n( 'The following user signed up on your site:', 'The following users signed up on your site:', count( $entries ), 'digest' ) . '</p>';
@@ -144,6 +169,13 @@ class WP_Digest_Message {
 		return $message;
 	}
 
+	/**
+	 * Get password change notification section message.
+	 *
+	 * @param array $entries The password change notification entries.
+	 *
+	 * @return string The section message.
+	 */
 	protected function get_password_change_notification_section_message( $entries ) {
 		$message = '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
 		$message .= '<p>' . _n( 'The following user lost and changed his password:', 'The following users lost and changed their passwords:', count( $entries ), 'digest' ) . '</p>';
@@ -152,6 +184,13 @@ class WP_Digest_Message {
 		return $message;
 	}
 
+	/**
+	 * Get core update section message.
+	 *
+	 * @param array $entries The core update notification entries.
+	 *
+	 * @return string The section message.
+	 */
 	protected function get_core_update_section_message( $entries ) {
 		$message = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
 		$message .= implode( '', $entries );

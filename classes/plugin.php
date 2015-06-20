@@ -2,7 +2,6 @@
 defined( 'WPINC' ) or die;
 
 class WP_Digest_Plugin extends WP_Stack_Plugin2 {
-
 	/**
 	 * @var self
 	 */

@@ -2,6 +2,9 @@
 defined( 'WPINC' ) or die;
 
 class WP_Digest_Queue {
+	/**
+	 * @var string The digest queue option name.
+	 */
 	protected static $option = 'digest_queue';
 
 	/**
