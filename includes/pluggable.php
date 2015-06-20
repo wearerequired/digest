@@ -48,11 +48,12 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) {
 	/**
 	 * Notify the blog admin of a user changing password, normally via email.
 	 *
-	 * @param WP_User $user User Object
+	 * @param WP_User $user User object.
 	 */
 	function wp_password_change_notification( &$user ) {
 		WP_Digest_Queue::add( get_option( 'admin_email' ), 'password_change_notification', $user->ID );
 	}
 }
 
+// todo: Use this somewhere.
 update_option( 'digest_hooks', $enabled, false );

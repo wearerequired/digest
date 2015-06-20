@@ -7,10 +7,12 @@ class WP_Digest_Queue {
 	/**
 	 * Retrieve the digest queue option.
 	 *
+	 * It can be modified using the `digest_queue` filter.
+	 *
 	 * @return array The digest queue.
 	 */
 	public static function get() {
-		return get_site_option( self::$option, array() );
+		return apply_filters( 'digest_queue', get_site_option( self::$option, array() ) );
 	}
 
 	/**
