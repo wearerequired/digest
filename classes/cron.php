@@ -73,7 +73,7 @@ class WP_Digest_Cron {
 			return;
 		}
 
-		require_once( 'message.php' );
+		require_once( dirname( __FILE__ ) . '/message.php' );
 
 		// Set up the correct subject
 		$subject = ( 'daily' === self::$options['period'] ) ? __( 'Today on %s', 'digest' ) : __( 'Past Week on %s', 'digest' );
