@@ -368,10 +368,9 @@ class WP_Digest_Message {
 				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . $this->comment_text( $comment->comment_ID ) );
 				break;
 			default: // Comments
+				$author = sprintf( __( 'Author: %s', 'digest' ), esc_html( $comment->comment_author ) );
 				if ( ! empty( $comment->comment_author_url ) ) {
 					$author = sprintf( __( 'Author: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' );
-				} else {
-					$author = sprintf( __( 'Author: %s', 'digest' ), esc_html( $comment->comment_author ) );
 				}
 				$message = sprintf( __( 'Comment on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
 				$message .= $author . '<br />';
