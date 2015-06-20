@@ -33,6 +33,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		// Hook into WordPress functions for the notifications
 		$this->hook( 'comment_notification_recipients', 10, 2 );
 		$this->hook( 'comment_moderation_recipients', 10, 2 );
+		$this->hook( 'auto_core_update_email', 10, 3 );
 	}
 
 	/**
@@ -249,5 +250,49 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		}
 
 		return array();
+	}
+
+
+	/**
+	 * Add core update notifications to our queue.
+	 *
+	 * This is only done when the update failed or was successful.
+	 * If there was a critical error, WordPress should still send the email immediately.
+	 *
+	 * @see WP_Upgrader::send_email()
+	 *
+	 * @param array  $email       {
+	 *                            Array of email arguments that will be passed to wp_mail().
+	 *
+	 * @type string  $to          The email recipient. An array of emails
+	 *                            can be returned, as handled by wp_mail().
+	 * @type string  $subject     The email's subject.
+	 * @type string  $body        The email message body.
+	 * @type string  $headers     Any email headers, defaults to no headers.
+	 * }
+	 *
+	 * @param string $type        The type of email being sent. Can be one of
+	 *                            'success', 'fail', 'manual', 'critical'.
+	 * @param object $core_update The update offer that was attempted.
+	 *
+	 * @return bool The modified $email array without a recipient.
+	 */
+	public function auto_core_update_email( $email, $type, $core_update ) {
+		$next_user_core_update = get_preferred_from_update_core();
+
+		// If the update transient is empty, use the update we just performed
+		if ( ! $next_user_core_update ) {
+			$next_user_core_update = $core_update;
+		}
+
+		// If the auto update is not to the latest version, say that the current version of WP is available instead.
+		$version = 'success' === $type ? $core_update->current : $next_user_core_update->current;
+
+		if ( in_array( $type, array( 'success', 'fail', 'manual' ) ) ) {
+			WP_Digest_Queue::add( get_site_option( 'admin_email' ), 'core_update_' . $type, $version );
+			$email['to'] = array();
+		}
+
+		return $email;
 	}
 }

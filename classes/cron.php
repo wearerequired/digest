@@ -66,7 +66,7 @@ class WP_Digest_Cron {
 	/**
 	 * Run Boy Run
 	 */
-	public static function run() {
+	protected static function run() {
 		$queue = WP_Digest_Queue::get();
 
 		if ( empty( $queue ) ) {
@@ -126,19 +126,32 @@ class WP_Digest_Cron {
 			}
 		}
 
-		// Sort the events array alphabetically
-		ksort( $events );
-
 		$message = '';
 
-		// Loop through the processed events
-		foreach ( $events as $event => $entries ) {
-			if ( empty( $entries ) ) {
+		// Loop through the processed events in manual order
+		foreach (
+			array(
+				'core_update_success',
+				'core_update_fail',
+				'core_update_manual',
+				'comment_notification',
+				'comment_moderation',
+				'new_user_notification',
+				'password_change_notification',
+			) as $event
+		) {
+			if ( empty( $events[ $event ] ) ) {
 				continue;
 			}
 
+			$section = $event;
+
+			if ( in_array( $event, array( 'core_update_success', 'core_update_fail', 'core_update_manual' ) ) ) {
+				$section = 'core_update';
+			}
+
 			// Add some text before and after the entries.
-			$message .= self::get_section( $event, $entries );
+			$message .= self::get_event_section( $section, $events[ $event ] );
 		}
 
 		if ( '' === $message ) {
@@ -152,10 +165,18 @@ class WP_Digest_Cron {
 		return $message;
 	}
 
-	protected static function get_section( $event, $entries ) {
+	/**
+	 * Get the content for a specific event by adding some text before and after the entries.
+	 *
+	 * @param string $section The type of event, e.g. comment notification or core update.
+	 * @param array  $entries The entries for this event.
+	 *
+	 * @return string The section's content.
+	 */
+	protected static function get_event_section( $section, $entries ) {
 		$message = '';
 
-		switch ( $event ) {
+		switch ( $section ) {
 			case 'comment_notification':
 				$message .= '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
 				$message .= implode( '', $entries );
@@ -186,7 +207,13 @@ class WP_Digest_Cron {
 				$message .= '<p>' . _n( 'The following user lost and changed his password:', 'The following users lost and changed their passwords:', count( $entries ), 'digest' ) . '</p>';
 				$message .= '<ul>' . implode( '', $entries ) . '</ul>';
 				break;
+			case 'core_update':
+				$message .= '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+				$message .= implode( '', $entries );
+				break;
 			default:
+				$message .= '<p><b>' . __( 'Others', 'digest' ) . '</b></p>';
+				$message .= implode( '', $entries );
 				break;
 		}
 
@@ -201,7 +228,7 @@ class WP_Digest_Cron {
 	 *
 	 * @return string The comment moderation message.
 	 */
-	public static function get_comment_notification_message( $comment_id, $time ) {
+	protected static function get_comment_notification_message( $comment_id, $time ) {
 		/** @var object $comment */
 		$comment = get_comment( $comment_id );
 
@@ -237,7 +264,7 @@ class WP_Digest_Cron {
 	 *
 	 * @return string The comment moderation message.
 	 */
-	public static function get_comment_moderation_message( $comment_id, $time ) {
+	protected static function get_comment_moderation_message( $comment_id, $time ) {
 		/** @var object $comment */
 		$comment = get_comment( $comment_id );
 
@@ -278,7 +305,7 @@ class WP_Digest_Cron {
 	 *
 	 * @return string The new user notification message.
 	 */
-	public static function get_new_user_notification_message( $user_id, $time ) {
+	protected static function get_new_user_notification_message( $user_id, $time ) {
 		$user = new WP_User( $user_id );
 
 		return sprintf(
@@ -296,7 +323,7 @@ class WP_Digest_Cron {
 	 *
 	 * @return string The password change notification message.
 	 */
-	public static function get_password_change_notification_message( $user_id, $time ) {
+	protected static function get_password_change_notification_message( $user_id, $time ) {
 		$user = new WP_User( $user_id );
 
 		return sprintf(
@@ -304,6 +331,68 @@ class WP_Digest_Cron {
 			$user->display_name, $user->ID,
 			human_time_diff( $time, current_time( 'timestamp' ) )
 		);
+	}
+
+	/**
+	 * Get the message for a successful core update.
+	 *
+	 * @param string $version The version WordPress was updated to.
+	 * @param int    $time    The timestamp when the update happened.
+	 *
+	 * @return string The core update message.
+	 */
+	protected static function get_core_update_success_message( $version, $time ) {
+		$message = '<p>' . sprintf(
+				__( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.' ),
+				home_url(),
+				trailingslashit( parse_url( home_url(), PHP_URL_HOST ) . home_url( '', 'relative' ) ),
+				$version,
+				human_time_diff( $time, current_time( 'timestamp' ) )
+			) . '</p>';
+
+		// Can only reference the About screen if their update was successful.
+		list( $about_version ) = explode( '-', $version, 2 );
+		$message .= '<p>' . sprintf(
+				__( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.' ),
+				$about_version,
+				admin_url( 'about.php' )
+			) . '</p>';
+
+		return $message;
+	}
+
+	/**
+	 * Get the message for a failed core update.
+	 *
+	 * @param string $version The version WordPress was updated to.
+	 * @param int    $time    The timestamp when the update attempt happened.
+	 *
+	 * @return string The core update message.
+	 */
+	protected static function get_core_update_fail_message( $version, $time ) {
+		$message = '<p>' . sprintf(
+				__( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.' ),
+				home_url(),
+				parse_url( home_url(), PHP_URL_HOST ),
+				$version,
+				human_time_diff( $time, current_time( 'timestamp' ) )
+			) . '</p>';
+
+		$message .= '<p>' . sprintf( '<a href="%s">%s</a>', network_admin_url( 'update-core.php' ), __( 'Update now' ) ) . '</p>';
+
+		return $message;
+	}
+
+	/**
+	 * Get the message for an available core update that can't be installed automatically.
+	 *
+	 * @param string $version The version WordPress was updated to.
+	 * @param int    $time    The timestamp when the update notification got in.
+	 *
+	 * @return string The core update message.
+	 */
+	protected static function get_core_update_manual_message( $version, $time ) {
+		return self::get_core_update_fail_message( $version, $time );
 	}
 
 	/**
