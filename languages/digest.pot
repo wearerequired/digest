@@ -24,143 +24,183 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/cron.php:73
+#: classes/cron.php:87
 msgid "Today on %s"
 msgstr ""
 
-#: classes/cron.php:73
+#: classes/cron.php:87
 msgid "Past Week on %s"
 msgstr ""
 
-#: classes/cron.php:99
+#: classes/message.php:100
+msgid "Hi %s"
+msgstr ""
+
+#: classes/message.php:100
+msgid "Hi there"
+msgstr ""
+
+#: classes/message.php:101
+msgid "That's it, have a nice day!"
+msgstr ""
+
+#: classes/message.php:102
+msgid "See what's happening on your site:"
+msgstr ""
+
+#: classes/message.php:122
+msgid "Others"
+msgstr ""
+
+#: classes/message.php:136
 msgid "New Comments"
 msgstr ""
 
-#: classes/cron.php:103
-msgid "Pending Comments"
-msgstr ""
-
-#: classes/cron.php:105
-msgid "Currently %s comment is waiting for approval."
-msgid_plural "Currently %s comments are waiting for approval."
+#: classes/message.php:138
+msgid "There was %s new comment."
+msgid_plural "There were %s new comments."
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/cron.php:116
+#: classes/message.php:154
+msgid "Pending Comments"
+msgstr ""
+
+#: classes/message.php:156
+msgid "There is %s new comment waiting for approval."
+msgid_plural "There are %s new comments waiting for approval."
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/message.php:166
 msgid "Please visit the <a href=\"%s\">moderation panel</a>."
 msgstr ""
 
-#: classes/cron.php:119
+#: classes/message.php:181
 msgid "New User Signups"
 msgstr ""
 
-#: classes/cron.php:120
+#: classes/message.php:182
 msgid "The following user signed up on your site:"
 msgid_plural "The following users signed up on your site:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/cron.php:124
+#: classes/message.php:196
 msgid "Password Changes"
 msgstr ""
 
-#: classes/cron.php:125
+#: classes/message.php:197
 msgid "The following user lost and changed his password:"
 msgid_plural "The following users lost and changed their passwords:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/cron.php:138
-msgid "Hi %s"
+#: classes/message.php:211
+msgid "Core Updates"
 msgstr ""
 
-#: classes/cron.php:140
-msgid "Hi there"
-msgstr ""
-
-#: classes/cron.php:143
-msgid "See what's happening on your site:"
-msgstr ""
-
-#: classes/cron.php:177 classes/cron.php:214
-msgid "Delete"
-msgstr ""
-
-#: classes/cron.php:205
+#: classes/message.php:240 classes/message.php:282
 msgid "Permalink"
 msgstr ""
 
-#: classes/cron.php:210
+#: classes/message.php:247 classes/message.php:291
+msgid "Delete"
+msgstr ""
+
+#: classes/message.php:286
 msgid "Approve"
 msgstr ""
 
-#: classes/cron.php:236 classes/cron.php:254
+#: classes/message.php:319
 msgid "<li>%s (ID: %s) %s ago</li>"
 msgstr ""
 
-#: classes/cron.php:273
+#: classes/message.php:341
+msgid "<li>%s (ID: %d) %s ago</li>"
+msgstr ""
+
+#: classes/message.php:358
+msgid ""
+"Your site at <a href=\"%1$s\">%2$s</a> has been updated automatically to "
+"WordPress %3$s %4$s ago."
+msgstr ""
+
+#: classes/message.php:369
+msgid ""
+"For more on version %1$s, see the <a href=\"%2$s\">About WordPress</a> "
+"screen."
+msgstr ""
+
+#: classes/message.php:387
+msgid ""
+"Please update your site at <a href=\"%1$s\">%2$s</a> to WordPress %3$s. "
+"Updating is easy and only takes a few moments."
+msgstr ""
+
+#: classes/message.php:394
+msgid "Update now"
+msgstr ""
+
+#: classes/message.php:424
 msgid "Trackback on %1$s %2$s ago:"
 msgstr ""
 
-#: classes/cron.php:274 classes/cron.php:279
+#: classes/message.php:425 classes/message.php:430
 msgid "Website: %s"
 msgstr ""
 
-#: classes/cron.php:275 classes/cron.php:280
+#: classes/message.php:426 classes/message.php:431
 msgid "Excerpt: %s"
 msgstr ""
 
-#: classes/cron.php:278
+#: classes/message.php:429
 msgid "Pingback on %1$s %2$s ago:"
 msgstr ""
 
-#: classes/cron.php:284 classes/cron.php:286
+#: classes/message.php:434 classes/message.php:436
 msgid "Author: %s"
 msgstr ""
 
-#: classes/cron.php:288
+#: classes/message.php:438
 msgid "Comment on %1$s %2$s ago:"
 msgstr ""
 
-#: classes/cron.php:290
+#: classes/message.php:440
 msgid "Email: %s"
 msgstr ""
 
-#: classes/cron.php:291
+#: classes/message.php:441
 msgid "Comment: %s"
 msgstr ""
 
-#: classes/plugin.php:84
+#: classes/plugin.php:98
 msgid "Email Notifcations"
 msgstr ""
 
-#: classes/plugin.php:86
+#: classes/plugin.php:100
 msgid ""
-"Get a daily or weekly digest of what's happening on your site instead of "
-"receiving a single email each time."
+"You get a daily or weekly digest of what's happening on your site. Here you "
+"can configure its frequency."
 msgstr ""
 
-#: classes/plugin.php:93
+#: classes/plugin.php:107
 msgid "Frequency"
 msgstr ""
 
-#: classes/plugin.php:113
+#: classes/plugin.php:128
 msgid "Send me a digest of new site activity"
 msgstr ""
 
-#: classes/plugin.php:119
+#: classes/plugin.php:138
 msgid "at"
 msgstr ""
 
-#: classes/plugin.php:122
-msgid "%02d:00"
-msgstr ""
-
-#: classes/plugin.php:125
+#: classes/plugin.php:146
 msgid "o'clock"
 msgstr ""
 
-#: classes/plugin.php:129
+#: classes/plugin.php:150
 msgid "on"
 msgstr ""
 
@@ -198,22 +238,22 @@ msgstr ""
 msgid "http://required.ch"
 msgstr ""
 
-#: classes/cron.php:175 classes/cron.php:212
+#: classes/message.php:245 classes/message.php:289
 msgctxt "verb"
 msgid "Trash"
 msgstr ""
 
-#: classes/cron.php:179 classes/cron.php:216
+#: classes/message.php:249 classes/message.php:293
 msgctxt "verb"
 msgid "Spam"
 msgstr ""
 
-#: classes/plugin.php:115
+#: classes/plugin.php:131
 msgctxt "frequency"
 msgid "every day"
 msgstr ""
 
-#: classes/plugin.php:116
+#: classes/plugin.php:134
 msgctxt "frequency"
 msgid "every week"
 msgstr ""

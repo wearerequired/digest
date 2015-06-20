@@ -355,7 +355,7 @@ class WP_Digest_Message {
 	 */
 	protected function get_core_update_success_message( $version, $time ) {
 		$message = '<p>' . sprintf(
-				__( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.' ),
+				__( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.', 'digest' ),
 				esc_url( home_url() ),
 				esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
 				esc_html( $version ),
@@ -366,7 +366,7 @@ class WP_Digest_Message {
 		list( $about_version ) = explode( '-', $version, 2 );
 
 		$message .= '<p>' . sprintf(
-				__( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.' ),
+				__( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.', 'digest' ),
 				esc_html( $about_version ),
 				esc_url( admin_url( 'about.php' ) )
 			) . '</p>';
@@ -384,14 +384,14 @@ class WP_Digest_Message {
 	 */
 	protected function get_core_update_fail_message( $version, $time ) {
 		$message = '<p>' . sprintf(
-				__( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.' ),
+				__( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ),
 				esc_url( home_url() ),
 				esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
 				esc_html( $version ),
 				human_time_diff( $time, current_time( 'timestamp' ) )
 			) . '</p>';
 
-		$message .= '<p>' . sprintf( '<a href="%s">%s</a>', network_admin_url( 'update-core.php' ), __( 'Update now' ) ) . '</p>';
+		$message .= '<p>' . sprintf( '<a href="%s">%s</a>', network_admin_url( 'update-core.php' ), __( 'Update now', 'digest' ) ) . '</p>';
 
 		return $message;
 	}
