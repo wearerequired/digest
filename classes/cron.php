@@ -73,42 +73,29 @@ class WP_Digest_Cron {
 			return;
 		}
 
-		do_action( 'digest_cron_before', $queue, self::$options );
-
+		// Set up the correct subject
 		$subject = ( 'daily' === self::$options['period'] ) ? __( 'Today on %s', 'digest' ) : __( 'Past Week on %s', 'digest' );
-		$subject = sprintf( $subject, get_bloginfo( 'name' ) );
 
+		/**
+		 * Filter the digest subject.
+		 *
+		 * @param string $subject The digest's subject line.
+		 *
+		 * @return string The filtered subject.
+		 */
+		$subject = apply_filters( 'digest_cron_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
+
+		// Loop through the queue
 		foreach ( $queue as $recipient => $items ) {
-			$events = array();
-
-			self::$user = get_user_by( 'email', $recipient );
-
-			foreach ( $items as $item ) {
-				$method = array( 'WP_Digest_Cron', 'get_' . $item[1] . '_message' );
-				if ( is_callable( $method ) ) {
-					$events[ $item[1] ][] = call_user_func( $method, $item[2], $item[0] );
-				}
-			}
-
-			ksort( $events );
-
-			$message = '';
-
-			foreach ( $events as $event => $entries ) {
-				if ( empty( $entries ) ) {
-					continue;
-				}
-
-				$message .= self::get_section( $event, $entries );
-			}
-
-			if ( '' === $message ) {
-				return;
-			}
-
-			$salutation = self::$user ? sprintf( __( 'Hi %s', 'digest' ), self::$user->display_name ) : __( 'Hi there', 'digest' );
-
-			$message = '<p>' . $salutation . '</p><p>' . __( "See what's happening on your site:", 'digest' ) . '</p>' . $message;
+			/**
+			 * Filter the digest message.
+			 *
+			 * @param string $message   The message to be sent.
+			 * @param string $recipient The recipient's email address.
+			 *
+			 * @return string The filtered message.
+			 */
+			$message = apply_filters( 'digest_cron_message', self::get_message_for_recipient( $recipient, $items ), $recipient );
 
 			// Send digest
 			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
@@ -116,6 +103,53 @@ class WP_Digest_Cron {
 
 		// Clear queue
 		WP_Digest_Queue::clear();
+	}
+
+	/**
+	 * Process the queue for a single recipient.
+	 *
+	 * @param string $recipient The recipient's email address.
+	 * @param array  $items     The queued items for this recipient.
+	 *
+	 * @return string The generated message.
+	 */
+	protected static function get_message_for_recipient( $recipient, $items ) {
+		// Load the user with this email address if it exists
+		self::$user = get_user_by( 'email', $recipient );
+
+		$events = array();
+
+		foreach ( $items as $item ) {
+			$method = array( 'WP_Digest_Cron', 'get_' . $item[1] . '_message' );
+			if ( is_callable( $method ) ) {
+				$events[ $item[1] ][] = call_user_func( $method, $item[2], $item[0] );
+			}
+		}
+
+		// Sort the events array alphabetically
+		ksort( $events );
+
+		$message = '';
+
+		// Loop through the processed events
+		foreach ( $events as $event => $entries ) {
+			if ( empty( $entries ) ) {
+				continue;
+			}
+
+			// Add some text before and after the entries.
+			$message .= self::get_section( $event, $entries );
+		}
+
+		if ( '' === $message ) {
+			return '';
+		}
+
+		$salutation = self::$user ? sprintf( __( 'Hi %s', 'digest' ), self::$user->display_name ) : __( 'Hi there', 'digest' );
+
+		$message = '<p>' . $salutation . '</p><p>' . __( "See what's happening on your site:", 'digest' ) . '</p>' . $message;
+
+		return $message;
 	}
 
 	protected static function get_section( $event, $entries ) {
