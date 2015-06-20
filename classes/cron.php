@@ -73,6 +73,8 @@ class WP_Digest_Cron {
 			return;
 		}
 
+		require_once( 'message.php' );
+
 		// Set up the correct subject
 		$subject = ( 'daily' === self::$options['period'] ) ? __( 'Today on %s', 'digest' ) : __( 'Past Week on %s', 'digest' );
 
@@ -87,10 +89,7 @@ class WP_Digest_Cron {
 
 		// Loop through the queue
 		foreach ( $queue as $recipient => $items ) {
-			// Load the user with this email address if it exists
-			self::$user = get_user_by( 'email', $recipient );
-
-			$events = self::process_event_items( $items );
+			$message = new WP_Digest_Message( $recipient, $items );
 
 			/**
 			 * Filter the digest message.
@@ -100,7 +99,7 @@ class WP_Digest_Cron {
 			 *
 			 * @return string The filtered message.
 			 */
-			$message = apply_filters( 'digest_cron_message', self::get_message_for_recipient( $events ), $recipient );
+			$message = apply_filters( 'digest_cron_message', $message->get_message(), $recipient );
 
 			// Send digest
 			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
