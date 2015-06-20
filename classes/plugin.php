@@ -83,7 +83,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 			'digest_notifications',
 			__( 'Email Notifcations', 'digest' ),
 			function () {
-				_e( "Get a daily or weekly digest of what's happening on your site instead of receiving a single email each time.", 'digest' );
+				_e( "You get a daily or weekly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
 			},
 			'general'
 		);
@@ -113,8 +113,12 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		<p>
 			<?php _e( 'Send me a digest of new site activity', 'digest' ); ?>
 			<select name="digest_frequency[period]" id="digest_frequency_period">
-				<option value="daily" <?php selected( 'daily', $options['period'] ); ?>><?php _ex( 'every day', 'frequency', 'digest' ); ?></option>
-				<option value="weekly" <?php selected( 'weekly', $options['period'] ); ?>><?php _ex( 'every week', 'frequency', 'digest' ); ?></option>
+				<option value="daily" <?php selected( 'daily', $options['period'] ); ?>>
+					<?php _ex( 'every day', 'frequency', 'digest' ); ?>
+				</option>
+				<option value="weekly" <?php selected( 'weekly', $options['period'] ); ?>>
+					<?php _ex( 'every week', 'frequency', 'digest' ); ?>
+				</option>
 			</select>
 			<span id="digest_frequency_hour_wrapper">
 				<?php _e( 'at', 'digest' ); ?>

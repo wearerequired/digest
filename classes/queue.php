@@ -17,7 +17,7 @@ class WP_Digest_Queue {
 	 * Clear the digest queue.
 	 */
 	public static function clear() {
-		delete_site_option( self::$option, array() );
+		delete_site_option( self::$option );
 	}
 
 	/**

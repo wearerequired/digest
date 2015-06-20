@@ -26,9 +26,9 @@ class WP_Digest_Cron {
 			'day'    => absint( get_option( 'start_of_week' ) ),
 		) );
 
-		self::run();
 		if ( self::ready() ) {
-			//self::run();
+			self::load_globals();
+			self::run();
 		}
 	}
 
@@ -37,7 +37,7 @@ class WP_Digest_Cron {
 	 *
 	 * @return bool True if the queue can be processed, false otherwise.
 	 */
-	public static function ready() {
+	protected static function ready() {
 		// Return early if the hour is wrong
 		if ( absint( self::$options['hour'] ) !== absint( date_i18n( 'G' ) ) ) {
 			return false;
@@ -52,6 +52,18 @@ class WP_Digest_Cron {
 	}
 
 	/**
+	 * Load required files and set up needed globals.
+	 */
+	protected static function load_globals() {
+		// Load WP_Locale and other needed functions
+		require_once( ABSPATH . WPINC . '/pluggable.php' );
+		require_once( ABSPATH . WPINC . '/locale.php' );
+		require_once( ABSPATH . WPINC . '/rewrite.php' );
+		$GLOBALS['wp_locale']  = new WP_Locale();
+		$GLOBALS['wp_rewrite'] = new WP_Rewrite();
+	}
+
+	/**
 	 * Run Boy Run
 	 */
 	public static function run() {
@@ -60,13 +72,6 @@ class WP_Digest_Cron {
 		if ( empty( $queue ) ) {
 			return;
 		}
-
-		// Load WP_Locale and other needed functions
-		require_once( ABSPATH . WPINC . '/pluggable.php' );
-		require_once( ABSPATH . WPINC . '/locale.php' );
-		require_once( ABSPATH . WPINC . '/rewrite.php' );
-		$GLOBALS['wp_locale']  = new WP_Locale();
-		$GLOBALS['wp_rewrite'] = new WP_Rewrite();
 
 		do_action( 'digest_cron_before', $queue, self::$options );
 
@@ -94,51 +99,14 @@ class WP_Digest_Cron {
 					continue;
 				}
 
-				switch ( $event ) {
-					case 'comment_notification':
-						$message .= '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
-						$message .= implode( '', $entries );
-						break;
-					case 'comment_moderation':
-						$message .= '<p><b>' . __( 'Pending Comments', 'digest' ) . '</b></p>';
-						$message .= '<p>' . sprintf(
-								_n(
-									'Currently %s comment is waiting for approval.',
-									'Currently %s comments are waiting for approval.',
-									count( $entries ),
-									'digest'
-								),
-								number_format_i18n( count( $entries ) )
-							) . '</p>';
-
-						$message .= implode( '', $entries );
-
-						$message .= sprintf( __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ), admin_url( 'edit-comments.php?comment_status=moderated' ) ) . '<br />';
-						break;
-					case 'new_user_notification':
-						$message .= '<p><b>' . __( 'New User Signups', 'digest' ) . '</b></p>';
-						$message .= '<p>' . _n( 'The following user signed up on your site:', 'The following users signed up on your site:', count( $entries ), 'digest' ) . '</p>';
-						$message .= '<ul>' . implode( '', $entries ) . '</ul>';
-						break;
-					case 'password_change_notification':
-						$message .= '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
-						$message .= '<p>' . _n( 'The following user lost and changed his password:', 'The following users lost and changed their passwords:', count( $entries ), 'digest' ) . '</p>';
-						$message .= '<ul>' . implode( '', $entries ) . '</ul>';
-						break;
-					default:
-						break;
-				}
+				$message .= self::get_section( $event, $entries );
 			}
 
 			if ( '' === $message ) {
 				return;
 			}
 
-			if ( self::$user ) {
-				$salutation = sprintf( __( 'Hi %s', 'digest' ), self::$user->display_name );
-			} else {
-				$salutation = __( 'Hi there', 'digest' );
-			}
+			$salutation = self::$user ? sprintf( __( 'Hi %s', 'digest' ), self::$user->display_name ) : __( 'Hi there', 'digest' );
 
 			$message = '<p>' . $salutation . '</p><p>' . __( "See what's happening on your site:", 'digest' ) . '</p>' . $message;
 
@@ -148,6 +116,47 @@ class WP_Digest_Cron {
 
 		// Clear queue
 		WP_Digest_Queue::clear();
+	}
+
+	protected static function get_section( $event, $entries ) {
+		$message = '';
+
+		switch ( $event ) {
+			case 'comment_notification':
+				$message .= '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
+				$message .= implode( '', $entries );
+				break;
+			case 'comment_moderation':
+				$message .= '<p><b>' . __( 'Pending Comments', 'digest' ) . '</b></p>';
+				$message .= '<p>' . sprintf(
+						_n(
+							'Currently %s comment is waiting for approval.',
+							'Currently %s comments are waiting for approval.',
+							count( $entries ),
+							'digest'
+						),
+						number_format_i18n( count( $entries ) )
+					) . '</p>';
+
+				$message .= implode( '', $entries );
+
+				$message .= sprintf( __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ), admin_url( 'edit-comments.php?comment_status=moderated' ) ) . '<br />';
+				break;
+			case 'new_user_notification':
+				$message .= '<p><b>' . __( 'New User Signups', 'digest' ) . '</b></p>';
+				$message .= '<p>' . _n( 'The following user signed up on your site:', 'The following users signed up on your site:', count( $entries ), 'digest' ) . '</p>';
+				$message .= '<ul>' . implode( '', $entries ) . '</ul>';
+				break;
+			case 'password_change_notification':
+				$message .= '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
+				$message .= '<p>' . _n( 'The following user lost and changed his password:', 'The following users lost and changed their passwords:', count( $entries ), 'digest' ) . '</p>';
+				$message .= '<ul>' . implode( '', $entries ) . '</ul>';
+				break;
+			default:
+				break;
+		}
+
+		return $message;
 	}
 
 	/**
@@ -179,7 +188,9 @@ class WP_Digest_Cron {
 			$actions['spam'] = _x( 'Spam', 'verb', 'digest' );
 		}
 
-		$message .= self::comment_action_links( $actions, $comment_id );
+		if ( ! empty( $actions ) ) {
+			$message .= '<p>' . self::comment_action_links( $actions, $comment_id ) . '</p>';
+		}
 
 		return $message;
 	}
@@ -204,10 +215,12 @@ class WP_Digest_Cron {
 
 		$message .= '<a href="' . get_comment_link( $comment_id ) . '">' . __( 'Permalink', 'digest' ) . '</a>';
 
+		$actions = array();
+
 		if ( self::$user && user_can( self::$user, 'edit_comment' ) ) {
 			$message .= ' | ';
 
-			$actions = array( 'approve' => __( 'Approve', 'digest' ) );
+			$actions['approve'] = __( 'Approve', 'digest' );
 			if ( EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = _x( 'Trash', 'verb', 'digest' );
 			} else {
@@ -216,7 +229,9 @@ class WP_Digest_Cron {
 			$actions['spam'] = _x( 'Spam', 'verb', 'digest' );
 		}
 
-		$message .= self::comment_action_links( $actions, $comment_id ) . '<br /><br />';
+		if ( ! empty( $actions ) ) {
+			$message .= '<p>' . self::comment_action_links( $actions, $comment_id ) . '</p>';
+		}
 
 		return $message;
 	}
@@ -272,12 +287,12 @@ class WP_Digest_Cron {
 			case 'trackback':
 				$message = sprintf( __( 'Trackback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
 				$message .= sprintf( __( 'Website: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' ) . '<br />';
-				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . wpautop( $comment->comment_content ) );
+				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . self::comment_text( $comment->comment_ID ) );
 				break;
 			case 'pingback':
 				$message = sprintf( __( 'Pingback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
 				$message .= sprintf( __( 'Website: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' ) . '<br />';
-				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . wpautop( $comment->comment_content ) );
+				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . self::comment_text( $comment->comment_ID ) );
 				break;
 			default: // Comments
 				if ( ! empty( $comment->comment_author_url ) ) {
@@ -288,11 +303,25 @@ class WP_Digest_Cron {
 				$message = sprintf( __( 'Comment on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
 				$message .= $author . '<br />';
 				$message .= sprintf( __( 'Email: %s', 'digest' ), '<a href="mailto:' . esc_attr( $comment->comment_author_email ) . '">' . esc_html( $comment->comment_author_email ) . '</a>' ) . '<br />';
-				$message .= sprintf( __( 'Comment: %s', 'digest' ), '<br />' . wpautop( $comment->comment_content ) );
+				$message .= sprintf( __( 'Comment: %s', 'digest' ), '<br />' . self::comment_text( $comment->comment_ID ) );
 				break;
 		}
 
 		return $message;
+	}
+
+	/**
+	 * Get the comment text, which is already filtered by WordPress.
+	 *
+	 * @param int $comment_id The comment ID.
+	 *
+	 * @return string The filtered comment text
+	 */
+	protected static function comment_text( $comment_id ) {
+		ob_start();
+		comment_text( $comment_id );
+
+		return ob_get_clean();
 	}
 
 	/**
