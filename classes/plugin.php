@@ -103,11 +103,12 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	 * Settings field callback that prints the actual input fields.
 	 */
 	public function settings_field_frequency() {
-		$options = get_option( 'digest_frequency', array(
+		$options     = get_option( 'digest_frequency', array(
 			'period' => 'weekly',
 			'hour'   => 18,
 			'day'    => absint( get_option( 'start_of_week' ) ),
 		) );
+		$time_format = get_option( 'time_format' );
 		?>
 		<p>
 			<?php _e( 'Send me a digest of new site activity', 'digest' ); ?>
@@ -119,7 +120,9 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 				<?php _e( 'at', 'digest' ); ?>
 				<select name="digest_frequency[hour]" id="digest_frequency_hour">
 					<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
-						<option value="<?php echo esc_attr( $hour ); ?>" <?php selected( $hour, $options['hour'] ); ?>><?php printf( __( '%02d:00', 'digest' ), $hour ); ?></option>
+						<option value="<?php echo esc_attr( $hour ); ?>" <?php selected( $hour, $options['hour'] ); ?>>
+							<?php echo esc_html( date( $time_format, mktime( $hour, 0, 0, 1, 1, 2011 ) ) ); ?>
+						</option>
 					<?php endfor; ?>
 				</select>
 				<?php _e( "o'clock", 'digest' ); ?>
