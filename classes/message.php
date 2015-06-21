@@ -421,14 +421,15 @@ class WP_Digest_Message {
 	protected function comment_message( $comment, $time ) {
 		$post_link = '<a href="' . esc_url( get_permalink( $comment->comment_post_ID ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a>';
 
+		$message = '';
+
 		switch ( $comment->comment_type ) {
 			case 'trackback':
-				$message = sprintf( __( 'Trackback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
-				$message .= sprintf( __( 'Website: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' ) . '<br />';
-				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . $this->comment_text( $comment->comment_ID ) );
-				break;
+				$message .= sprintf( __( 'Trackback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
 			case 'pingback':
-				$message = sprintf( __( 'Pingback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
+				$message .= sprintf( __( 'Pingback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
+			case 'trackback':
+			case 'pingback':
 				$message .= sprintf( __( 'Website: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' ) . '<br />';
 				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . $this->comment_text( $comment->comment_ID ) );
 				break;
