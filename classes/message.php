@@ -134,10 +134,10 @@ class WP_Digest_Message {
 	 */
 	protected function get_comment_notification_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
-		$message .= '<p>' . sprintf(
-				_n( 'There was %s new comment.', 'There were %s new comments.', count( $entries ), 'digest' ),
-				number_format_i18n( count( $entries ) )
-			) . '</p>';
+		$message .= sprintf(
+			'<p>' . _n( 'There was %s new comment.', 'There were %s new comments.', count( $entries ), 'digest' ) . '</p>',
+			number_format_i18n( count( $entries ) )
+		);
 		$message .= implode( '', $entries );
 
 		return $message;
@@ -152,20 +152,22 @@ class WP_Digest_Message {
 	 */
 	protected function get_comment_moderation_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'Pending Comments', 'digest' ) . '</b></p>';
-		$message .= '<p>' . sprintf(
-				_n(
-					'There is %s new comment waiting for approval.',
-					'There are %s new comments waiting for approval.',
-					count( $entries ),
-					'digest'
-				),
-				number_format_i18n( count( $entries ) )
-			) . '</p>';
+		$message .= '<p>';
+		$message .= sprintf(
+			_n(
+				'There is %s new comment waiting for approval.',
+				'There are %s new comments waiting for approval.',
+				count( $entries ),
+				'digest'
+			),
+			number_format_i18n( count( $entries ) )
+		);
+		$message .= '</p>';
 		$message .= implode( '', $entries );
 		$message .= sprintf(
-			            __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ),
-			            admin_url( 'edit-comments.php?comment_status=moderated' )
-		            ) . '<br />';
+			'<p>' . __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ) . '</p>',
+			admin_url( 'edit-comments.php?comment_status=moderated' )
+		);
 
 		return $message;
 	}
@@ -354,22 +356,22 @@ class WP_Digest_Message {
 	 * @return string The core update message.
 	 */
 	protected function get_core_update_success_message( $version, $time ) {
-		$message = '<p>' . sprintf(
-				__( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.', 'digest' ),
-				esc_url( home_url() ),
-				esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
-				esc_html( $version ),
-				human_time_diff( $time, current_time( 'timestamp' ) )
-			) . '</p>';
+		$message = sprintf(
+			'<p>' . __( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.', 'digest' ) . '</p>',
+			esc_url( home_url() ),
+			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			esc_html( $version ),
+			human_time_diff( $time, current_time( 'timestamp' ) )
+		);
 
 		// Can only reference the About screen if their update was successful.
 		list( $about_version ) = explode( '-', $version, 2 );
 
-		$message .= '<p>' . sprintf(
-				__( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.', 'digest' ),
-				esc_html( $about_version ),
-				esc_url( admin_url( 'about.php' ) )
-			) . '</p>';
+		$message .= sprintf(
+			'<p>' . __( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.', 'digest' ) . '</p>',
+			esc_html( $about_version ),
+			esc_url( admin_url( 'about.php' ) )
+		);
 
 		return $message;
 	}
@@ -383,13 +385,13 @@ class WP_Digest_Message {
 	 * @return string The core update message.
 	 */
 	protected function get_core_update_fail_message( $version, $time ) {
-		$message = '<p>' . sprintf(
-				__( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ),
-				esc_url( home_url() ),
-				esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
-				esc_html( $version ),
-				human_time_diff( $time, current_time( 'timestamp' ) )
-			) . '</p>';
+		$message = sprintf(
+			'<p>' . __( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ) . '</p>',
+			esc_url( home_url() ),
+			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			esc_html( $version ),
+			human_time_diff( $time, current_time( 'timestamp' ) )
+		);
 
 		$message .= '<p>' . sprintf( '<a href="%s">%s</a>', network_admin_url( 'update-core.php' ), __( 'Update now', 'digest' ) ) . '</p>';
 
@@ -430,7 +432,7 @@ class WP_Digest_Message {
 				$message .= sprintf( __( 'Website: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' ) . '<br />';
 				$message .= sprintf( __( 'Excerpt: %s', 'digest' ), '<br />' . $this->comment_text( $comment->comment_ID ) );
 				break;
-			default: // Comments
+			default: // Comments.
 				$author = sprintf( __( 'Author: %s', 'digest' ), esc_html( $comment->comment_author ) );
 				if ( ! empty( $comment->comment_author_url ) ) {
 					$author = sprintf( __( 'Author: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' );
