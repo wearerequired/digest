@@ -35,11 +35,11 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) {
 			return;
 		}
 
-		$message = sprintf( __( 'Username: %s', 'default' ), $user->user_login ) . "\r\n";
-		$message .= sprintf( __( 'Password: %s', 'default' ), $plaintext_pass ) . "\r\n";
+		$message = sprintf( __( 'Username: %s' ), $user->user_login ) . "\r\n";
+		$message .= sprintf( __( 'Password: %s' ), $plaintext_pass ) . "\r\n";
 		$message .= wp_login_url() . "\r\n";
 
-		wp_mail( $user->user_email, sprintf( __( '[%s] Your username and password', 'default' ), $blogname ), $message );
+		wp_mail( $user->user_email, sprintf( __( '[%s] Your username and password' ), $blogname ), $message );
 	}
 }
 

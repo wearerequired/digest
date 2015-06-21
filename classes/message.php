@@ -341,7 +341,7 @@ class WP_Digest_Message {
 		}
 
 		return sprintf(
-			__( '<li>%s (ID: %s) %s ago</li>', 'digest' ),
+			'<li>' . __( '%s (ID: %d) %s ago', 'digest' ) . '</li>',
 			$user->display_name, $user->ID,
 			human_time_diff( $time, current_time( 'timestamp' ) )
 		);
@@ -363,7 +363,7 @@ class WP_Digest_Message {
 		}
 
 		return sprintf(
-			__( '<li>%s (ID: %d) %s ago</li>', 'digest' ),
+			'<li>' . __( '%s (ID: %d) %s ago', 'digest' ) . '</li>',
 			esc_html( $user->display_name ),
 			absint( $user->ID ),
 			human_time_diff( $time, current_time( 'timestamp' ) )

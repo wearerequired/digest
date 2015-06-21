@@ -3,7 +3,7 @@ module.exports = {
 		options: {
 			cwd            : '',
 			domainPath     : '/languages',
-			exclude        : ['release/.*'],
+			exclude        : ['release/.*', 'includes/pluggable.php'],
 			include        : [],
 			mainFile       : 'digest.php',
 			potComments    : '',
