@@ -36,14 +36,14 @@ class WP_Digest_Queue {
 	 * @return array The digest queue.
 	 */
 	public static function get() {
-		return apply_filters( 'digest_queue', get_site_option( self::$option, array() ) );
+		return apply_filters( 'digest_queue', get_option( self::$option, array() ) );
 	}
 
 	/**
 	 * Clear the digest queue.
 	 */
 	public static function clear() {
-		delete_site_option( self::$option );
+		delete_option( self::$option );
 	}
 
 	/**
@@ -60,6 +60,6 @@ class WP_Digest_Queue {
 
 		$queue[ $recipient ][] = array( current_time( 'timestamp' ), $event, $data );
 
-		update_site_option( self::$option, $queue );
+		update_option( self::$option, $queue );
 	}
 }
