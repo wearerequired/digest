@@ -93,7 +93,7 @@ class WP_Digest_Cron {
 		 *
 		 * @return string The filtered subject.
 		 */
-		$subject = apply_filters( 'digest_cron_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
+		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
 		// Loop through the queue.
 		foreach ( $queue as $recipient => $items ) {
@@ -107,7 +107,7 @@ class WP_Digest_Cron {
 			 *
 			 * @return string The filtered message.
 			 */
-			$message = apply_filters( 'digest_cron_message', $message->get_message(), $recipient );
+			$message = apply_filters( 'digest_cron_email_message', $message->get_message(), $recipient );
 
 			// Send digest.
 			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );

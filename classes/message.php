@@ -57,12 +57,24 @@ class WP_Digest_Message {
 				$item[1] = 'core_update';
 			}
 
+			$message = '';
+
 			if ( method_exists( $this, $method ) ) {
 				$message = $this->$method ( $item[2], $item[0] );
+			}
 
-				if ( '' !== $message ) {
-					$events[ $item[1] ][] = $message;
-				}
+			/**
+			 * Filter the single event message.
+			 *
+			 * @param string $message The message.
+			 * @param array  $item    The event item.
+			 *
+			 * @return string The filtered message.
+			 */
+			$message = apply_filters( 'digest_event_message', $message, $item );
+
+			if ( '' !== $message ) {
+				$events[ $item[1] ][] = $message;
 			}
 		}
 
@@ -115,12 +127,23 @@ class WP_Digest_Message {
 	protected function get_event_section( $section, array $entries ) {
 		$method = 'get_' . $section . '_section_message';
 
-		if ( method_exists( $this, $method ) ) {
-			return $this->$method( $entries );
-		}
-
 		$message = '<p><b>' . __( 'Others', 'digest' ) . '</b></p>';
 		$message .= implode( '', $entries );
+
+		if ( method_exists( $this, $method ) ) {
+			$message = $this->$method( $entries );
+		}
+
+		/**
+		 * Filter the event section message.
+		 *
+		 * @param string $message The message.
+		 * @param string $section The event section name.
+		 * @param array  $entries The event entries.
+		 *
+		 * @return string The filtered message.
+		 */
+		$message = apply_filters( 'digest_event_section_message', $message, $section, $entries );
 
 		return $message;
 	}
