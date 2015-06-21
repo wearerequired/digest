@@ -98,7 +98,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	public function add_settings() {
 		add_settings_section(
 			'digest_notifications',
-			__( 'Email Notifcations', 'digest' ),
+			__( 'Email Notifications', 'digest' ),
 			function () {
 				esc_html_e( "You get a daily or weekly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
 			},

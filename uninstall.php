@@ -1,6 +1,8 @@
 <?php
 /**
  * Delete all traces on uninstall.
+ *
+ * @package WP_Digest
  */
 
 defined( 'WPINC' ) or die;

@@ -6,6 +6,7 @@
  * we store that information in an option.
  * This way the plugin knows which hooks work and which don't.
  *
+ * @package WP_Digest
  */
 
 $enabled = array();
@@ -55,5 +56,5 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) {
 	}
 }
 
-// todo: Use this somewhere.
+// Todo: Use this somewhere.
 update_option( 'digest_hooks', $enabled, false );
