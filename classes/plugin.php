@@ -173,7 +173,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	 *
 	 * @return array The sanitized frequency option.
 	 */
-	public function sanitize_frequency_option( $value ) {
+	public function sanitize_frequency_option( array $value ) {
 		if ( 'daily' !== $value['period'] ) {
 			$value['period'] = 'weekly';
 		}
@@ -315,7 +315,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	 *
 	 * @return bool The modified $email array without a recipient.
 	 */
-	public function auto_core_update_email( $email, $type, $core_update ) {
+	public function auto_core_update_email( array $email, $type, $core_update ) {
 		$next_user_core_update = get_preferred_from_update_core();
 
 		// If the update transient is empty, use the update we just performed.

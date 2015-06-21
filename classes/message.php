@@ -34,7 +34,7 @@ class WP_Digest_Message {
 	 * @param string $recipient The recipient's email address.
 	 * @param array  $items     The queue items for this recipient.
 	 */
-	public function __construct( $recipient, $items ) {
+	public function __construct( $recipient, array $items ) {
 		// Load the user with this email address if it exists.
 		$this->user   = get_user_by( 'email', $recipient );
 		$this->events = $this->process_event_items( $items );
@@ -112,7 +112,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The section's content.
 	 */
-	protected function get_event_section( $section, $entries ) {
+	protected function get_event_section( $section, array $entries ) {
 		$method = 'get_' . $section . '_section_message';
 
 		if ( method_exists( $this, $method ) ) {
@@ -132,7 +132,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The section message.
 	 */
-	protected function get_comment_notification_section_message( $entries ) {
+	protected function get_comment_notification_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>' . sprintf(
 				_n( 'There was %s new comment.', 'There were %s new comments.', count( $entries ), 'digest' ),
@@ -150,7 +150,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The section message.
 	 */
-	protected function get_comment_moderation_section_message( $entries ) {
+	protected function get_comment_moderation_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'Pending Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>' . sprintf(
 				_n(
@@ -177,7 +177,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The section message.
 	 */
-	protected function get_new_user_notification_section_message( $entries ) {
+	protected function get_new_user_notification_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'New User Signups', 'digest' ) . '</b></p>';
 		$message .= '<p>' . _n( 'The following user signed up on your site:', 'The following users signed up on your site:', count( $entries ), 'digest' ) . '</p>';
 		$message .= '<ul>' . implode( '', $entries ) . '</ul>';
@@ -192,7 +192,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The section message.
 	 */
-	protected function get_password_change_notification_section_message( $entries ) {
+	protected function get_password_change_notification_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
 		$message .= '<p>' . _n( 'The following user lost and changed his password:', 'The following users lost and changed their passwords:', count( $entries ), 'digest' ) . '</p>';
 		$message .= '<ul>' . implode( '', $entries ) . '</ul>';
@@ -207,7 +207,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The section message.
 	 */
-	protected function get_core_update_section_message( $entries ) {
+	protected function get_core_update_section_message( array $entries ) {
 		$message = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
 		$message .= implode( '', $entries );
 
@@ -468,7 +468,7 @@ class WP_Digest_Message {
 	 *
 	 * @return string The comment action links.
 	 */
-	protected function comment_action_links( $actions, $comment_id ) {
+	protected function comment_action_links( array $actions, $comment_id ) {
 		$links = array();
 
 		foreach ( $actions as $action => $label ) {
