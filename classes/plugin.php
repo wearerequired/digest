@@ -43,6 +43,9 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		$this->hook( 'admin_enqueue_scripts' );
 		$this->hook( 'admin_init', 'add_settings' );
 
+		// Add an action link pointing to the options page.
+		$this->hook( 'plugin_action_links_' . plugin_basename( $this->__FILE__ ), 'plugin_action_links' );
+
 		// Hook into WordPress functions for the notifications.
 		$this->hook( 'comment_notification_recipients', 10, 2 );
 		$this->hook( 'comment_moderation_recipients', 10, 2 );
@@ -104,7 +107,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 
 		add_settings_field(
 			'digest_frequency',
-			sprintf( '<label for="digest_frequency_period">%s</label>', __( 'Frequency', 'digest' ) ),
+			sprintf( '<label for="digest_frequency_period" id="digest">%s</label>', __( 'Frequency', 'digest' ) ),
 			array( $this, 'settings_field_frequency' ),
 			'general',
 			'digest_notifications'
@@ -200,6 +203,26 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 		);
 
 		return $value;
+	}
+
+	/**
+	 * Add settings action link to the plugins page.
+	 *
+	 * @param array $links Plugin action links.
+	 *
+	 * @return array The modified plugin action links
+	 */
+	public function plugin_action_links( array $links ) {
+		return array_merge(
+			array(
+				'settings' => sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( admin_url( 'options-general.php#digest' ) ),
+					__( 'Settings', 'digest' )
+				),
+			),
+			$links
+		);
 	}
 
 	/**
