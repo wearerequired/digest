@@ -180,7 +180,7 @@ class WP_Digest_Message {
 	 * @return string The section message.
 	 */
 	protected function get_new_user_notification_section_message( array $entries ) {
-		$message = '<p><b>' . __( 'New User Signups', 'digest' ) . '</b></p>';
+		$message = '<p><b>' . __( 'New User Sign-ups', 'digest' ) . '</b></p>';
 		$message .= '<p>' . _n( 'The following user signed up on your site:', 'The following users signed up on your site:', count( $entries ), 'digest' ) . '</p>';
 		$message .= '<ul>' . implode( '', $entries ) . '</ul>';
 
