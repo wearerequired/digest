@@ -1,9 +1,9 @@
 {
-  "name": "wp-digest",
+  "name": "digest",
   "title": "Digest Notifications",
-  "description": "Receive a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
-  "version": "0.1.0",
-  "homepage": "https://github.com/wearerequired/digest/",
+  "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/wearerequired/digest",
   "author": {
     "name": "required+",
     "email": "support@required.ch",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/wearerequired/digest"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

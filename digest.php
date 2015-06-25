@@ -2,13 +2,15 @@
 /**
  * Plugin Name: Digest Notifications
  * Plugin URI:  https://github.com/wearerequired/digest/
- * Description: Receive a daily/weekly digest of what's happening on your site instead of receiving a single email each time.
- * Version:     0.1.0
+ * Description: Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.
+ * Version:     1.0.0
  * Author:      required+
  * Author URI:  http://required.ch
  * License:     GPLv2+
  * Text Domain: digest
  * Domain Path: /languages
+ *
+ * @package WP_Digest
  */
 
 /**
@@ -38,13 +40,19 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 	'php'   => '5.3',
 	'wp'    => '4.0',
 	'file'  => __FILE__,
-));
+) );
 
 if ( $wp_digest_requirements_check->passes() ) {
-	// Pull in the plugin classes and initialize
+	// Pull in the plugin classes and initialize.
 	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
+	include( dirname( __FILE__ ) . '/includes/pluggable.php' );
+	include( dirname( __FILE__ ) . '/classes/queue.php' );
+	include( dirname( __FILE__ ) . '/classes/cron.php' );
 	include( dirname( __FILE__ ) . '/classes/plugin.php' );
 	WP_Digest_Plugin::start( __FILE__ );
+
+	register_activation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'activate_plugin' ) );
+	register_deactivation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'deactivate_plugin' ) );
 }
 
 unset( $wp_digest_requirements_check );

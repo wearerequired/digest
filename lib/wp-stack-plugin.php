@@ -1,4 +1,10 @@
 <?php
+/**
+ * Convenience methods.
+ *
+ * @package WP_Digest
+ */
+
 defined( 'WPINC' ) or die;
 
 
@@ -8,7 +14,18 @@ if ( ! class_exists( 'WP_Stack_Plugin2' ) ) {
 	 * Convenience methods
 	 */
 	class WP_Stack_Plugin2 {
+		/**
+		 * Instance of this class.
+		 *
+		 * @var self
+		 */
 		protected static $instance;
+
+		/**
+		 * Main plugin file.
+		 *
+		 * @var string
+		 */
 		protected $__FILE__;
 
 		/**
@@ -77,7 +94,7 @@ if ( ! class_exists( 'WP_Stack_Plugin2' ) ) {
 		 *
 		 * @return string The sanitized method name.
 		 */
-		private function sanitize_method( $method ) {
+		protected function sanitize_method( $method ) {
 			return str_replace( array( '.', '-' ), array( '_DOT_', '_DASH_' ), $method );
 		}
 
@@ -85,8 +102,8 @@ if ( ! class_exists( 'WP_Stack_Plugin2' ) ) {
 		 * Includes a file (relative to the plugin base path)
 		 * and optionally globalizes a named array passed in
 		 *
-		 * @param  string $file the file to include
-		 * @param  array  $data a named array of data to globalize
+		 * @param  string $file the file to include.
+		 * @param  array  $data a named array of data to globalize.
 		 */
 		protected function include_file( $file, $data = array() ) {
 			extract( $data, EXTR_SKIP );
@@ -112,6 +129,8 @@ if ( ! class_exists( 'WP_Stack_Plugin2' ) ) {
 		}
 
 		/**
+		 * Load the plugin textdomain.
+		 *
 		 * @param string $domain The plugin textdomain.
 		 * @param string $path   Relative path to the `languages` folder.
 		 *

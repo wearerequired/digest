@@ -1,0 +1,247 @@
+# Copyright (C) 2015 required+
+# This file is distributed under the GPLv2+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Digest Notifications 1.0.0\n"
+"Report-Msgid-Bugs-To: http://required.ch\n"
+"POT-Creation-Date: 2015-06-18 12:02:50+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: required+\n"
+"Language-Team: required+ <support@required.ch>\n"
+"X-Generator: grunt-wp-i18n 0.5.2\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: Switzerland\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: classes/cron.php:87
+msgid "Today on %s"
+msgstr ""
+
+#: classes/cron.php:87
+msgid "Past Week on %s"
+msgstr ""
+
+#: classes/message.php:112
+msgid "Hi %s"
+msgstr ""
+
+#: classes/message.php:112
+msgid "Hi there"
+msgstr ""
+
+#: classes/message.php:113
+msgid "That's it, have a nice day!"
+msgstr ""
+
+#: classes/message.php:114
+msgid "See what's happening on your site:"
+msgstr ""
+
+#: classes/message.php:130
+msgid "Others"
+msgstr ""
+
+#: classes/message.php:159
+msgid "New Comments"
+msgstr ""
+
+#: classes/message.php:161
+msgid "There was %s new comment."
+msgid_plural "There were %s new comments."
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/message.php:177
+msgid "Pending Comments"
+msgstr ""
+
+#: classes/message.php:180
+msgid "There is %s new comment waiting for approval."
+msgid_plural "There are %s new comments waiting for approval."
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/message.php:191
+msgid "Please visit the <a href=\"%s\">moderation panel</a>."
+msgstr ""
+
+#: classes/message.php:206
+msgid "New User Sign-ups"
+msgstr ""
+
+#: classes/message.php:207
+msgid "The following user signed up on your site:"
+msgid_plural "The following users signed up on your site:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/message.php:221
+msgid "Password Changes"
+msgstr ""
+
+#: classes/message.php:222
+msgid "The following user lost and changed his password:"
+msgid_plural "The following users lost and changed their passwords:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/message.php:236
+msgid "Core Updates"
+msgstr ""
+
+#: classes/message.php:265 classes/message.php:307
+msgid "Permalink"
+msgstr ""
+
+#: classes/message.php:272 classes/message.php:316
+msgid "Delete"
+msgstr ""
+
+#: classes/message.php:311
+msgid "Approve"
+msgstr ""
+
+#: classes/message.php:344 classes/message.php:366
+msgid "%s (ID: %d) %s ago"
+msgstr ""
+
+#: classes/message.php:383
+msgid ""
+"Your site at <a href=\"%1$s\">%2$s</a> has been updated automatically to "
+"WordPress %3$s %4$s ago."
+msgstr ""
+
+#: classes/message.php:394
+msgid ""
+"For more on version %1$s, see the <a href=\"%2$s\">About WordPress</a> "
+"screen."
+msgstr ""
+
+#: classes/message.php:412
+msgid ""
+"Please update your site at <a href=\"%1$s\">%2$s</a> to WordPress %3$s. "
+"Updating is easy and only takes a few moments."
+msgstr ""
+
+#: classes/message.php:419
+msgid "Update now"
+msgstr ""
+
+#: classes/message.php:451
+msgid "Trackback on %1$s %2$s ago:"
+msgstr ""
+
+#: classes/message.php:453
+msgid "Pingback on %1$s %2$s ago:"
+msgstr ""
+
+#: classes/message.php:456
+msgid "Website: %s"
+msgstr ""
+
+#: classes/message.php:457
+msgid "Excerpt: %s"
+msgstr ""
+
+#: classes/message.php:460 classes/message.php:462
+msgid "Author: %s"
+msgstr ""
+
+#: classes/message.php:464
+msgid "Comment on %1$s %2$s ago:"
+msgstr ""
+
+#: classes/message.php:466
+msgid "Email: %s"
+msgstr ""
+
+#: classes/message.php:467
+msgid "Comment: %s"
+msgstr ""
+
+#: classes/plugin.php:101
+msgid "Email Notifications"
+msgstr ""
+
+#: classes/plugin.php:103
+msgid ""
+"You get a daily or weekly digest of what's happening on your site. Here you "
+"can configure its frequency."
+msgstr ""
+
+#: classes/plugin.php:110
+msgid "Frequency"
+msgstr ""
+
+#: classes/plugin.php:131
+msgid "Send me a digest of new site activity"
+msgstr ""
+
+#: classes/plugin.php:141
+msgid "at"
+msgstr ""
+
+#: classes/plugin.php:149
+msgid "o'clock"
+msgstr ""
+
+#: classes/plugin.php:153
+msgid "on"
+msgstr ""
+
+#: classes/plugin.php:221
+msgid "Settings"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Digest Notifications"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/wearerequired/digest/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Get a daily/weekly digest of what's happening on your site instead of "
+"receiving a single email each time."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "required+"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://required.ch"
+msgstr ""
+
+#: classes/message.php:270 classes/message.php:314
+msgctxt "verb"
+msgid "Trash"
+msgstr ""
+
+#: classes/message.php:274 classes/message.php:318
+msgctxt "verb"
+msgid "Spam"
+msgstr ""
+
+#: classes/plugin.php:134
+msgctxt "frequency"
+msgid "every day"
+msgstr ""
+
+#: classes/plugin.php:137
+msgctxt "frequency"
+msgid "every week"
+msgstr ""

@@ -10,9 +10,10 @@ module.exports = {
 		undef  : true,
 		boss   : true,
 		eqnull : true,
+		browser: true,
+		devel  : true,
 		globals: {
-			exports: true,
-			module : false
+			jQuery: true,
 		}
 	},
 	all    : [

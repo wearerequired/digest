@@ -22,7 +22,7 @@ module.exports = {
 			]
 		},
 		files  : [{
-			src   : ['*.php', '**/*.php', '!node_modules/**', '!tests/**', '!release/**'],
+			src   : ['*.php', '**/*.php', '!node_modules/**', '!tests/**', '!release/**', '!includes/pluggable.php'],
 			expand: true
 		}]
 	}

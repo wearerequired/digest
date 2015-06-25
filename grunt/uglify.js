@@ -1,7 +1,7 @@
 module.exports = {
 	all: {
 		files  : {
-			'js/wp-digest.min.js': ['js/wp-digest.js']
+			'js/digest.min.js': ['js/digest.js']
 		},
 		options: {
 			banner   : '/*! <%= package.title %> - v<%= package.version %>\n' +
