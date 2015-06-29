@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Digest Notifications 0.1.0\n"
 "Report-Msgid-Bugs-To: http://required.ch\n"
 "POT-Creation-Date: 2015-06-18 12:02:50+00:00\n"
-"PO-Revision-Date: 2015-06-21 14:36+0100\n"
+"PO-Revision-Date: 2015-06-29 10:42+0100\n"
 "Last-Translator: Pascal Birchler <pascal@required.ch>\n"
 "Language-Team: required+ <support@required.ch>\n"
 "Language: de_DE\n"
@@ -203,8 +203,8 @@ msgid "o'clock"
 msgstr "Uhr"
 
 #: classes/plugin.php:153
-msgid "every"
-msgstr "jeden"
+msgid "on"
+msgstr "am"
 
 #: classes/plugin.php:221
 msgid "Settings"
@@ -254,5 +254,5 @@ msgctxt "frequency"
 msgid "every week"
 msgstr "jede Woche"
 
-#~ msgid "on"
-#~ msgstr "am"
+#~ msgid "every"
+#~ msgstr "jeden"
