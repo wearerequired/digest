@@ -60,7 +60,7 @@ class WP_Digest_Message {
 			$message = '';
 
 			if ( method_exists( $this, $method ) ) {
-				$message = $this->$method ( $item[2], $item[0] );
+				$message = $this->$method( $item[2], $item[0] );
 			}
 
 			/**
