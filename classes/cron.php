@@ -52,7 +52,10 @@ class WP_Digest_Cron {
 		}
 
 		// Return early if the day is wrong.
-		if ( 'weekly' === self::$options['period'] && absint( self::$options['day'] ) !== absint( date_i18n( 'w' ) ) ) {
+		if (
+			'weekly' === self::$options['period'] &&
+			absint( self::$options['day'] ) !== absint( date_i18n( 'w' ) )
+		) {
 			return false;
 		}
 
