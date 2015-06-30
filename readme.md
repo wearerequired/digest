@@ -56,10 +56,16 @@ Developed by [required+](http://required.ch/).
 
 ## Changelog ##
 
+### 1.1.0 ###
+* Enhancement: Don’t include already processed items in the email.
+
 ### 1.0.0 ###
 * First release
 
 ## Upgrade Notice ##
+
+### 1.1.0 ###
+Already moderated comments won’t be listed in the emails now.
 
 ### 1.0.0 ###
 First release

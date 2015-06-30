@@ -97,7 +97,7 @@ class WP_Digest_Message {
 				'password_change_notification',
 			) as $event
 		) {
-			if ( isset( $this->events[ $event ] ) && ! empty( array_filter( $this->events[ $event ] ) ) ) {
+			if ( isset( $this->events[ $event ] ) && 0 < count( array_filter( $this->events[ $event ] ) ) ) {
 				// Add some text before and after the entries.
 				$message .= $this->get_event_section( $event, $this->events[ $event ] );
 			}

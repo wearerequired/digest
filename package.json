@@ -2,7 +2,7 @@
   "name": "digest",
   "title": "Digest Notifications",
   "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/wearerequired/digest",
   "author": {
     "name": "required+",
