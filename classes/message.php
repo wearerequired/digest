@@ -60,7 +60,7 @@ class WP_Digest_Message {
 			$message = '';
 
 			if ( method_exists( $this, $method ) ) {
-				$message = $this->$method ( $item[2], $item[0] );
+				$message = $this->$method( $item[2], $item[0] );
 			}
 
 			/**
@@ -73,9 +73,7 @@ class WP_Digest_Message {
 			 */
 			$message = apply_filters( 'digest_event_message', $message, $item );
 
-			if ( '' !== $message ) {
-				$events[ $item[1] ][] = $message;
-			}
+			$events[ $item[1] ][] = $message;
 		}
 
 		return $events;
@@ -99,7 +97,7 @@ class WP_Digest_Message {
 				'password_change_notification',
 			) as $event
 		) {
-			if ( ! empty( $this->events[ $event ] ) ) {
+			if ( isset( $this->events[ $event ] ) && 0 < count( array_filter( $this->events[ $event ] ) ) ) {
 				// Add some text before and after the entries.
 				$message .= $this->get_event_section( $event, $this->events[ $event ] );
 			}
@@ -156,11 +154,32 @@ class WP_Digest_Message {
 	 * @return string The section message.
 	 */
 	protected function get_comment_notification_section_message( array $entries ) {
+		$processed_count = count( $entries ) - count( array_filter( $entries ) );
+
 		$message = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
+		$message .= '<p>';
 		$message .= sprintf(
-			'<p>' . _n( 'There was %s new comment.', 'There were %s new comments.', count( $entries ), 'digest' ) . '</p>',
+			_n(
+				'There was %s new comment.',
+				'There were %s new comments.',
+				count( $entries ),
+				'digest'
+			),
 			number_format_i18n( count( $entries ) )
 		);
+		if ( 0 < $processed_count ) {
+			$message .= ' ';
+			$message .= sprintf(
+				_n(
+					'%s comment was already moderated.',
+					'%s comments were already moderated.',
+					$processed_count,
+					'digest'
+				),
+				number_format_i18n( $processed_count )
+			);
+		}
+		$message .= '</p>';
 		$message .= implode( '', $entries );
 
 		return $message;
@@ -174,6 +193,8 @@ class WP_Digest_Message {
 	 * @return string The section message.
 	 */
 	protected function get_comment_moderation_section_message( array $entries ) {
+		$processed_count = count( $entries ) - count( array_filter( $entries ) );
+
 		$message = '<p><b>' . __( 'Pending Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>';
 		$message .= sprintf(
@@ -185,6 +206,18 @@ class WP_Digest_Message {
 			),
 			number_format_i18n( count( $entries ) )
 		);
+		if ( 0 < $processed_count ) {
+			$message .= ' ';
+			$message .= sprintf(
+				_n(
+					'%s comment was already moderated.',
+					'%s comments were already moderated.',
+					$processed_count,
+					'digest'
+				),
+				number_format_i18n( $processed_count )
+			);
+		}
 		$message .= '</p>';
 		$message .= implode( '', $entries );
 		$message .= sprintf(
@@ -255,7 +288,7 @@ class WP_Digest_Message {
 		 */
 		$comment = get_comment( $comment_id );
 
-		if ( null === $comment ) {
+		if ( null === $comment || '1' !== $comment->comment_approved ) {
 			return '';
 		}
 
@@ -297,7 +330,7 @@ class WP_Digest_Message {
 		 */
 		$comment = get_comment( $comment_id );
 
-		if ( null === $comment ) {
+		if ( null === $comment || '0' !== $comment->comment_approved ) {
 			return '';
 		}
 
@@ -408,6 +441,13 @@ class WP_Digest_Message {
 	 * @return string The core update message.
 	 */
 	protected function get_core_update_fail_message( $version, $time ) {
+		global $wp_version;
+
+		// Check if WordPress hasn't already been updated.
+		if ( version_compare( $wp_version, $version, '>=' ) ) {
+			return '';
+		}
+
 		$message = sprintf(
 			'<p>' . __( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ) . '</p>',
 			esc_url( home_url() ),

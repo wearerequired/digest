@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Digest Notifications 1.0.0\n"
+"Project-Id-Version: Digest Notifications 1.1.0\n"
 "Report-Msgid-Bugs-To: http://required.ch\n"
 "POT-Creation-Date: 2015-06-18 12:02:50+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,31 +24,31 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: classes/cron.php:87
+#: classes/cron.php:90
 msgid "Today on %s"
 msgstr ""
 
-#: classes/cron.php:87
+#: classes/cron.php:90
 msgid "Past Week on %s"
 msgstr ""
 
-#: classes/message.php:112
+#: classes/message.php:110
 msgid "Hi %s"
 msgstr ""
 
-#: classes/message.php:112
+#: classes/message.php:110
 msgid "Hi there"
 msgstr ""
 
-#: classes/message.php:113
+#: classes/message.php:111
 msgid "That's it, have a nice day!"
 msgstr ""
 
-#: classes/message.php:114
+#: classes/message.php:112
 msgid "See what's happening on your site:"
 msgstr ""
 
-#: classes/message.php:130
+#: classes/message.php:128
 msgid "Others"
 msgstr ""
 
@@ -56,117 +56,123 @@ msgstr ""
 msgid "New Comments"
 msgstr ""
 
-#: classes/message.php:161
+#: classes/message.php:162
 msgid "There was %s new comment."
 msgid_plural "There were %s new comments."
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/message.php:177
+#: classes/message.php:173 classes/message.php:212
+msgid "%s comment was already moderated."
+msgid_plural "%s comments were already moderated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/message.php:198
 msgid "Pending Comments"
 msgstr ""
 
-#: classes/message.php:180
+#: classes/message.php:201
 msgid "There is %s new comment waiting for approval."
 msgid_plural "There are %s new comments waiting for approval."
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/message.php:191
+#: classes/message.php:224
 msgid "Please visit the <a href=\"%s\">moderation panel</a>."
 msgstr ""
 
-#: classes/message.php:206
+#: classes/message.php:239
 msgid "New User Sign-ups"
 msgstr ""
 
-#: classes/message.php:207
+#: classes/message.php:240
 msgid "The following user signed up on your site:"
 msgid_plural "The following users signed up on your site:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/message.php:221
+#: classes/message.php:254
 msgid "Password Changes"
 msgstr ""
 
-#: classes/message.php:222
+#: classes/message.php:255
 msgid "The following user lost and changed his password:"
 msgid_plural "The following users lost and changed their passwords:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/message.php:236
+#: classes/message.php:269
 msgid "Core Updates"
 msgstr ""
 
-#: classes/message.php:265 classes/message.php:307
+#: classes/message.php:298 classes/message.php:340
 msgid "Permalink"
 msgstr ""
 
-#: classes/message.php:272 classes/message.php:316
+#: classes/message.php:305 classes/message.php:349
 msgid "Delete"
 msgstr ""
 
-#: classes/message.php:311
+#: classes/message.php:344
 msgid "Approve"
 msgstr ""
 
-#: classes/message.php:344 classes/message.php:366
+#: classes/message.php:377 classes/message.php:399
 msgid "%s (ID: %d) %s ago"
 msgstr ""
 
-#: classes/message.php:383
+#: classes/message.php:416
 msgid ""
 "Your site at <a href=\"%1$s\">%2$s</a> has been updated automatically to "
 "WordPress %3$s %4$s ago."
 msgstr ""
 
-#: classes/message.php:394
+#: classes/message.php:427
 msgid ""
 "For more on version %1$s, see the <a href=\"%2$s\">About WordPress</a> "
 "screen."
 msgstr ""
 
-#: classes/message.php:412
+#: classes/message.php:452
 msgid ""
 "Please update your site at <a href=\"%1$s\">%2$s</a> to WordPress %3$s. "
 "Updating is easy and only takes a few moments."
 msgstr ""
 
-#: classes/message.php:419
+#: classes/message.php:459
 msgid "Update now"
 msgstr ""
 
-#: classes/message.php:451
+#: classes/message.php:491
 msgid "Trackback on %1$s %2$s ago:"
 msgstr ""
 
-#: classes/message.php:453
+#: classes/message.php:493
 msgid "Pingback on %1$s %2$s ago:"
 msgstr ""
 
-#: classes/message.php:456
+#: classes/message.php:496
 msgid "Website: %s"
 msgstr ""
 
-#: classes/message.php:457
+#: classes/message.php:497
 msgid "Excerpt: %s"
 msgstr ""
 
-#: classes/message.php:460 classes/message.php:462
+#: classes/message.php:500 classes/message.php:502
 msgid "Author: %s"
 msgstr ""
 
-#: classes/message.php:464
+#: classes/message.php:504
 msgid "Comment on %1$s %2$s ago:"
 msgstr ""
 
-#: classes/message.php:466
+#: classes/message.php:506
 msgid "Email: %s"
 msgstr ""
 
-#: classes/message.php:467
+#: classes/message.php:507
 msgid "Comment: %s"
 msgstr ""
 
@@ -226,12 +232,12 @@ msgstr ""
 msgid "http://required.ch"
 msgstr ""
 
-#: classes/message.php:270 classes/message.php:314
+#: classes/message.php:303 classes/message.php:347
 msgctxt "verb"
 msgid "Trash"
 msgstr ""
 
-#: classes/message.php:274 classes/message.php:318
+#: classes/message.php:307 classes/message.php:351
 msgctxt "verb"
 msgid "Spam"
 msgstr ""
