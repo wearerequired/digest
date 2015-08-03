@@ -1,0 +1,120 @@
+<?php
+/**
+ * This file holds the WP_Digest_Core_Update_Message class.
+ *
+ * @package WP_Digest
+ */
+
+defined( 'WPINC' ) or die;
+
+/**
+ * WP_Digest_Core_Update_Message class.
+ *
+ * Responsible for creating the core update section
+ */
+class WP_Digest_Core_Update_Message extends WP_Digest_Section_Message {
+	/**
+	 * The comment moderation entries.
+	 *
+	 * @var array
+	 */
+	protected $entries;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array   $entries The core update entries.
+	 * @param WP_User $user    The current user.
+	 * @param string  $event   The current event.
+	 */
+	public function __construct( $entries, $user, $event ) {
+		parent::__construct( $user );
+
+		foreach ( $entries as $version => $time ) {
+			$this->entries[] = $this->get_single_message( $version, $time, $event );
+		}
+	}
+
+	/**
+	 * Get core update section message.
+	 *
+	 * @return string The section message.
+	 */
+	public function get_message() {
+		return implode( '', $this->entries );
+	}
+
+	/**
+	 * Get the single core update/failure message.
+	 *
+	 * @param string $version The version WordPress was updated to.
+	 * @param int    $time    The timestamp when the update happened.
+	 * @param string $event   The current event.
+	 * @return string The core update message.
+	 */
+	protected function get_single_message( $version, $time, $event ) {
+		if ( 'core_update_success' === $event ) {
+			return $this->get_core_update_success_message( $version, $time );
+		} else {
+			return $this->get_core_update_fail_message( $version, $time );
+		}
+	}
+
+	/**
+	 * Get the message for a successful core update.
+	 *
+	 * @param string $version The version WordPress was updated to.
+	 * @param int    $time    The timestamp when the update happened.
+	 *
+	 * @return string The core update message.
+	 */
+	protected function get_core_update_success_message( $version, $time ) {
+		$message = sprintf(
+			'<p>' . __( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.', 'digest' ) . '</p>',
+			esc_url( home_url() ),
+			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			esc_html( $version ),
+			human_time_diff( $time, current_time( 'timestamp' ) )
+		);
+
+		// Can only reference the About screen if their update was successful.
+		list( $about_version ) = explode( '-', $version, 2 );
+
+		$message .= sprintf(
+			'<p>' . __( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.', 'digest' ) . '</p>',
+			esc_html( $about_version ),
+			esc_url( admin_url( 'about.php' ) )
+		);
+
+		return $message;
+	}
+
+	/**
+	 * Get the message for a failed core update.
+	 *
+	 * @param string $version The version WordPress was updated to.
+	 * @param int    $time    The timestamp when the update attempt happened.
+	 *
+	 * @return string The core update message.
+	 */
+	protected function get_core_update_fail_message( $version, $time ) {
+		global $wp_version;
+
+		// Check if WordPress hasn't already been updated.
+		if ( version_compare( $wp_version, $version, '>=' ) ) {
+			return '';
+		}
+
+		$message = sprintf(
+			'<p>' . __( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ) . '</p>',
+			esc_url( home_url() ),
+			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			esc_html( $version ),
+			human_time_diff( $time, current_time( 'timestamp' ) )
+		);
+
+		$message .= '<p>' . sprintf( '<a href="%s">%s</a>', network_admin_url( 'update-core.php' ), __( 'Update now', 'digest' ) ) . '</p>';
+
+		return $message;
+	}
+}

@@ -93,7 +93,6 @@ class WP_Digest_Cron {
 		 * Filter the digest subject.
 		 *
 		 * @param string $subject The digest's subject line.
-		 *
 		 * @return string The filtered subject.
 		 */
 		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
@@ -107,8 +106,6 @@ class WP_Digest_Cron {
 			 *
 			 * @param string $message   The message to be sent.
 			 * @param string $recipient The recipient's email address.
-			 *
-			 * @return string The filtered message.
 			 */
 			$message = apply_filters( 'digest_cron_email_message', $message->get_message(), $recipient );
 
@@ -120,5 +117,3 @@ class WP_Digest_Cron {
 		WP_Digest_Queue::clear();
 	}
 }
-
-add_action( 'digest_event', array( 'WP_Digest_Cron', 'init' ) );

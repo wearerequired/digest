@@ -44,11 +44,11 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 
 if ( $wp_digest_requirements_check->passes() ) {
 	// Pull in the plugin classes and initialize.
-	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
-	include( dirname( __FILE__ ) . '/includes/pluggable.php' );
-	include( dirname( __FILE__ ) . '/classes/queue.php' );
-	include( dirname( __FILE__ ) . '/classes/cron.php' );
-	include( dirname( __FILE__ ) . '/classes/plugin.php' );
+	require_once( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
+	require_once( dirname( __FILE__ ) . '/includes/pluggable.php' );
+	require_once( dirname( __FILE__ ) . '/classes/queue.php' );
+	require_once( dirname( __FILE__ ) . '/classes/plugin.php' );
+	require_once( dirname( __FILE__ ) . '/includes/cron.php' );
 	WP_Digest_Plugin::start( __FILE__ );
 
 	register_activation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'activate_plugin' ) );
