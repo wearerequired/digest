@@ -56,6 +56,10 @@ Developed by [required+](http://required.ch/).
 
 ## Changelog ##
 
+### 1.2.0 ###
+* Fixed: Supports the new password notification emails introduced in WordPress 4.3
+* Enhancement: Began writing user tests to ensure compatibility.
+
 ### 1.1.0 ###
 * Enhancement: Don’t include already processed items in the email.
 
@@ -63,6 +67,9 @@ Developed by [required+](http://required.ch/).
 * First release
 
 ## Upgrade Notice ##
+
+### 1.2.0 ###
+Now 100% compatible with WordPress 4.3. Update while it’s hot!
 
 ### 1.1.0 ###
 Already moderated comments won’t be listed in the emails now.
