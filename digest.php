@@ -3,7 +3,7 @@
  * Plugin Name: Digest Notifications
  * Plugin URI:  https://github.com/wearerequired/digest/
  * Description: Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.
- * Version:     1.1.0
+ * Version:     1.2.0
  * Author:      required+
  * Author URI:  http://required.ch
  * License:     GPLv2+
