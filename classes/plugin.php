@@ -24,7 +24,7 @@ class WP_Digest_Plugin extends WP_Stack_Plugin2 {
 	/**
 	 * Plugin version.
 	 */
-	const VERSION = '1.2.0';
+	const VERSION = '1.2.1';
 
 	/**
 	 * Constructs the object, hooks in to `plugins_loaded`.
