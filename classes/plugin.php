@@ -13,50 +13,57 @@ defined( 'WPINC' ) or die;
  * Responsible for adding the settings screen and
  * hooking into some WordPress functions for the notifications.
  */
-class WP_Digest_Plugin extends WP_Stack_Plugin2 {
-	/**
-	 * Instance of this class.
-	 *
-	 * @var self
-	 */
-	protected static $instance;
-
+class WP_Digest_Plugin {
 	/**
 	 * Plugin version.
 	 */
 	const VERSION = '1.2.1';
 
 	/**
-	 * Constructs the object, hooks in to `plugins_loaded`.
-	 */
-	protected function __construct() {
-		$this->hook( 'plugins_loaded', 'add_hooks' );
-	}
-
-	/**
 	 * Adds hooks.
 	 */
 	public function add_hooks() {
-		$this->hook( 'init' );
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 		// Settings screen.
-		$this->hook( 'admin_enqueue_scripts' );
-		$this->hook( 'admin_init', 'add_settings' );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_init', array( $this, 'add_settings' ) );
 
 		// Add an action link pointing to the options page.
-		$this->hook( 'plugin_action_links_' . plugin_basename( $this->__FILE__ ), 'plugin_action_links' );
+		add_action( 'plugin_action_links_' . plugin_basename( $this->get_path() ) . '/digest.php', array(
+			$this,
+			'plugin_action_links',
+		) );
 
 		// Hook into WordPress functions for the notifications.
-		$this->hook( 'comment_notification_recipients', 10, 2 );
-		$this->hook( 'comment_moderation_recipients', 10, 2 );
-		$this->hook( 'auto_core_update_email', 10, 3 );
+		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
+		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
+		add_action( 'auto_core_update_email', array( $this, 'auto_core_update_email' ), 10, 3 );
+	}
+
+	/**
+	 * Returns the URL to the plugin directory
+	 *
+	 * @return string The URL to the plugin directory.
+	 */
+	protected function get_url() {
+		return plugin_dir_url( __DIR__ );
+	}
+
+	/**
+	 * Returns the path to the plugin directory.
+	 *
+	 * @return string The absolute path to the plugin directory.
+	 */
+	protected function get_path() {
+		return plugin_dir_path( __DIR__ );
 	}
 
 	/**
 	 * Initializes the plugin, registers textdomain, etc.
 	 */
-	public function init() {
-		$this->load_textdomain( 'digest', '/languages' );
+	public function load_textdomain() {
+		load_plugin_textdomain( 'user-feedback', false, basename( $this->get_path() ) . '/languages' );
 	}
 
 	/**

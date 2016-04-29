@@ -44,15 +44,33 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 
 if ( $wp_digest_requirements_check->passes() ) {
 	// Pull in the plugin classes and initialize.
-	require_once( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
 	require_once( dirname( __FILE__ ) . '/includes/pluggable.php' );
 	require_once( dirname( __FILE__ ) . '/classes/queue.php' );
 	require_once( dirname( __FILE__ ) . '/classes/plugin.php' );
 	require_once( dirname( __FILE__ ) . '/includes/cron.php' );
-	WP_Digest_Plugin::start( __FILE__ );
 
-	register_activation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'activate_plugin' ) );
-	register_deactivation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'deactivate_plugin' ) );
+	/**
+	 * Get the main plugin instance.
+	 *
+	 * @return WP_Digest_Plugin
+	 */
+	function wp_digest() {
+		static $controller = null;
+
+		if ( null === $controller ) {
+			$controller = new WP_Digest_Plugin();
+		}
+
+		return $controller;
+	}
+
+	// Initialize the plugin.
+	add_action( 'plugins_loaded', function () {
+		wp_digest()->add_hooks();
+	} );
+
+	register_activation_hook( __FILE__, array( wp_digest(), 'activate_plugin' ) );
+	register_deactivation_hook( __FILE__, array( wp_digest(), 'deactivate_plugin' ) );
 }
 
 unset( $wp_digest_requirements_check );
