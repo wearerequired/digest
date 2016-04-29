@@ -5,21 +5,21 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
- * WP_Digest_User_Notification_Message class.
+ * User_Notification_Message class.
  *
  * Responsible for creating the comment notification section
  */
-class WP_Digest_User_Notification_Message extends WP_Digest_Section_Message {
+class User_Notification_Message extends Section_Message {
 	/**
 	 * Constructor.
 	 *
-	 * @param array   $entries The user notification entries.
-	 * @param WP_User $user    The current user.
+	 * @param array    $entries The user notification entries.
+	 * @param \WP_User $user    The current user.
 	 */
-	public function __construct( $entries, $user ) {
+	public function __construct( $entries, \WP_User $user ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $user_id => $time ) {

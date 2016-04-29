@@ -1,25 +1,25 @@
 <?php
 /**
- * This file holds the WP_Digest_Comment_Notification_Message class.
+ * This file holds the Comment_Notification_Message class.
  *
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
- * WP_Digest_Comment_Notification_Message class.
+ * Comment_Notification_Message class.
  *
  * Responsible for creating the comment notification section
  */
-class WP_Digest_Comment_Notification_Message extends WP_Digest_Comment_Moderation_Message {
+class Comment_Notification_Message extends Comment_Moderation_Message {
 	/**
 	 * Constructor.
 	 *
-	 * @param array   $entries The comment moder ation entries.
-	 * @param WP_User $user    The current user.
+	 * @param array    $entries The comment moderation entries.
+	 * @param \WP_User $user    The current user.
 	 */
-	public function __construct( $entries, $user ) {
+	public function __construct( $entries, \WP_User $user ) {
 		parent::__construct( $entries, $user );
 
 		$this->entries = array();
@@ -74,6 +74,7 @@ class WP_Digest_Comment_Notification_Message extends WP_Digest_Comment_Moderatio
 	 *
 	 * @param WP_Comment $comment The comment object.
 	 * @param int        $time    The timestamp when the comment was written.
+	 *
 	 * @return string The comment moderation message.
 	 */
 	protected function get_single_message( $comment, $time ) {

@@ -5,21 +5,21 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
- * WP_Digest_Comment_Moderation_Message class.
+ * Comment_Moderation_Message class.
  *
  * Responsible for creating the comment moderation section
  */
-class WP_Digest_Comment_Moderation_Message extends WP_Digest_Section_Message {
+class Comment_Moderation_Message extends Section_Message {
 	/**
 	 * Constructor.
 	 *
-	 * @param array   $entries The comment moder ation entries.
-	 * @param WP_User $user    The current user.
+	 * @param array    $entries The comment moderation entries.
+	 * @param \WP_User $user    The current user.
 	 */
-	public function __construct( $entries, $user ) {
+	public function __construct( $entries, \WP_User $user ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $comment => $time ) {
@@ -71,11 +71,12 @@ class WP_Digest_Comment_Moderation_Message extends WP_Digest_Section_Message {
 	/**
 	 * Get the comment moderation message.
 	 *
-	 * @param WP_Comment $comment The comment object.
-	 * @param int        $time    The timestamp when the comment was written.
+	 * @param \WP_Comment $comment The comment object.
+	 * @param int         $time    The timestamp when the comment was written.
+	 *
 	 * @return string The comment moderation message.
 	 */
-	protected function get_single_message( $comment, $time ) {
+	protected function get_single_message( \WP_Comment $comment, $time ) {
 		if ( null === $comment || '0' !== $comment->comment_approved ) {
 			return '';
 		}
@@ -107,11 +108,12 @@ class WP_Digest_Comment_Moderation_Message extends WP_Digest_Section_Message {
 	/**
 	 * Get the comment message.
 	 *
-	 * @param WP_Comment $comment The comment object.
-	 * @param int        $time    The timestamp when the comment was written.
+	 * @param \WP_Comment $comment The comment object.
+	 * @param int         $time    The timestamp when the comment was written.
+	 *
 	 * @return string The comment message.
 	 */
-	protected function get_single_comment_content( $comment, $time ) {
+	protected function get_single_comment_content( \WP_Comment $comment, $time ) {
 		$post_link = '<a href="' . esc_url( get_permalink( $comment->comment_post_ID ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a>';
 
 		$message = '';
@@ -148,6 +150,7 @@ class WP_Digest_Comment_Moderation_Message extends WP_Digest_Section_Message {
 	 * Get the comment text, which is already filtered by WordPress.
 	 *
 	 * @param int $comment_id The comment ID.
+	 *
 	 * @return string The filtered comment text
 	 */
 	protected function get_comment_text( $comment_id ) {
@@ -161,11 +164,12 @@ class WP_Digest_Comment_Moderation_Message extends WP_Digest_Section_Message {
 	/**
 	 * Add action links to the message
 	 *
-	 * @param array      $actions Actions for that comment.
-	 * @param WP_Comment $comment The comment object.
+	 * @param array       $actions Actions for that comment.
+	 * @param \WP_Comment $comment The comment object.
+	 *
 	 * @return string The comment action links.
 	 */
-	protected function get_comment_action_links( array $actions, $comment ) {
+	protected function get_comment_action_links( array $actions, \WP_Comment $comment ) {
 		$links = array();
 
 		foreach ( $actions as $action => $label ) {

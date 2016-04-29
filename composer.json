@@ -1,20 +1,25 @@
 {
-  "name": "wearerequired/digest",
+  "name":        "wearerequired/digest",
   "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
-  "version": "0.1.0",
-  "type": "wordpress-plugin",
-  "license": "GPL-2.0+",
-  "authors": [
+  "version":     "1.2.0",
+  "type":        "wordpress-plugin",
+  "license":     "GPL-2.0+",
+  "authors":     [
     {
-      "name": "required+",
-      "email": "support@required.ch",
+      "name":     "required+",
+      "email":    "support@required.ch",
       "homepage": "http://required.ch",
-      "role": "Developer"
+      "role":     "Developer"
     }
   ],
-  "require": {
+  "require":     {
   },
   "require-dev": {
     "phpmd/phpmd": "@stable"
+  },
+  "autoload":    {
+    "psr-4": {
+      "Required\\Digest\\": "classes"
+    }
   }
 }

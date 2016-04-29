@@ -5,21 +5,21 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
  * WP_Digest_Password_Change_Notification_Message class.
  *
  * Responsible for creating the password change notification messag.e
  */
-class WP_Digest_Password_Change_Notification_Message extends WP_Digest_Section_Message {
+class Password_Change_Notification_Message extends Section_Message {
 	/**
 	 * Constructor.
 	 *
-	 * @param array   $entries The user notification entries.
-	 * @param WP_User $user    The current user.
+	 * @param array    $entries The user notification entries.
+	 * @param \WP_User $user    The current user.
 	 */
-	public function __construct( $entries, $user ) {
+	public function __construct( $entries, \WP_User $user ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $user_id => $time ) {
@@ -49,6 +49,7 @@ class WP_Digest_Password_Change_Notification_Message extends WP_Digest_Section_M
 	 *
 	 * @param int $user_id The user ID.
 	 * @param int $time    The timestamp when the user changed his password.
+	 *
 	 * @return string The password change notification message.
 	 */
 	protected function get_single_message( $user_id, $time ) {

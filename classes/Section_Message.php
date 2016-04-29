@@ -5,12 +5,14 @@
  * @package WP_Digest
  */
 
+namespace Required\Digest;
+
 /**
- * WP_Digest_Section_Message class.
+ * Section_Message class.
  *
  * Can be extended by other classes to modify the section message.
  */
-abstract class WP_Digest_Section_Message {
+abstract class Section_Message {
 	/**
 	 * The section entries.
 	 *
@@ -21,7 +23,7 @@ abstract class WP_Digest_Section_Message {
 	/**
 	 * The current user object.
 	 *
-	 * @var WP_User|false User object if user exists, false otherwise.
+	 * @var \WP_User|false User object if user exists, false otherwise.
 	 */
 	protected $user = false;
 
@@ -35,9 +37,9 @@ abstract class WP_Digest_Section_Message {
 	/**
 	 * Constructor. Sets the current user.
 	 *
-	 * @param WP_User $user The current user.
+	 * @param \WP_User $user The current user.
 	 */
-	public function __construct( $user ) {
+	public function __construct( \WP_User $user ) {
 		$this->user = $user;
 	}
 }

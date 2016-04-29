@@ -5,10 +5,10 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
- * WP_Digest_Queue class.
+ * Queue class.
  *
  * Responsible for adding message to the queue and
  * clearing it after it has been processed.
@@ -20,7 +20,7 @@ defined( 'WPINC' ) or die;
  * WP_Digest_Queue::add( 'test@example.com', 'password_change_notification', $user_id );
  * WP_Digest_Queue::add( 'test@example.com', 'core_update_success', $version );
  */
-class WP_Digest_Queue {
+class Queue {
 	/**
 	 * Digest queue option name.
 	 *

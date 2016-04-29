@@ -5,7 +5,7 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
  * WP_Digest_Plugin class.
@@ -13,7 +13,7 @@ defined( 'WPINC' ) or die;
  * Responsible for adding the settings screen and
  * hooking into some WordPress functions for the notifications.
  */
-class WP_Digest_Plugin {
+class Controller {
 	/**
 	 * Plugin version.
 	 */

@@ -5,15 +5,14 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
- * WP_Digest_Message class.
+ * Message class.
  *
- * Responsible for creating a new digest message
- * to be sent per email.
+ * Responsible for creating a new digest message to be sent per email.
  */
-class WP_Digest_Message {
+class Message {
 	/**
 	 * The queue items.
 	 *
@@ -24,7 +23,7 @@ class WP_Digest_Message {
 	/**
 	 * The current user object.
 	 *
-	 * @var WP_User|false User object if user exists, false otherwise.
+	 * @var \WP_User|false User object if user exists, false otherwise.
 	 */
 	protected $user;
 
@@ -102,4 +101,4 @@ class WP_Digest_Message {
 	}
 }
 
-add_action( 'digest_event', array( 'WP_Digest_Cron', 'init' ) );
+add_action( 'digest_event', array( 'Required\\Digest\\Cron', 'init' ) );

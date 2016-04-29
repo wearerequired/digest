@@ -5,18 +5,18 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 if ( ! defined( 'EMPTY_TRASH_DAYS' ) ) {
 	define( 'EMPTY_TRASH_DAYS', 30 );
 }
 
 /**
- * WP_Digest_Cron class.
+ * Cron class.
  *
  * It's run every hour.
  */
-class WP_Digest_Cron {
+class Cron {
 	/**
 	 * The plugin options.
 	 *
@@ -70,15 +70,16 @@ class WP_Digest_Cron {
 		require_once( ABSPATH . WPINC . '/pluggable.php' );
 		require_once( ABSPATH . WPINC . '/locale.php' );
 		require_once( ABSPATH . WPINC . '/rewrite.php' );
-		$GLOBALS['wp_locale']  = new WP_Locale();
-		$GLOBALS['wp_rewrite'] = new WP_Rewrite();
+
+		$GLOBALS['wp_locale']  = new \WP_Locale();
+		$GLOBALS['wp_rewrite'] = new \WP_Rewrite();
 	}
 
 	/**
 	 * Run Boy Run
 	 */
 	protected static function run() {
-		$queue = WP_Digest_Queue::get();
+		$queue = Queue::get();
 
 		if ( empty( $queue ) ) {
 			return;
@@ -93,13 +94,14 @@ class WP_Digest_Cron {
 		 * Filter the digest subject.
 		 *
 		 * @param string $subject The digest's subject line.
+		 *
 		 * @return string The filtered subject.
 		 */
 		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
 		// Loop through the queue.
 		foreach ( $queue as $recipient => $items ) {
-			$message = new WP_Digest_Message( $recipient, $items );
+			$message = new Message( $recipient, $items );
 
 			/**
 			 * Filter the digest message.
@@ -114,6 +116,6 @@ class WP_Digest_Cron {
 		}
 
 		// Clear queue.
-		WP_Digest_Queue::clear();
+		Queue::clear();
 	}
 }

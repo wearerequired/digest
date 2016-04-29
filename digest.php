@@ -2,13 +2,9 @@
 /**
  * Plugin Name: Digest Notifications
  * Plugin URI:  https://github.com/wearerequired/digest/
- * Description: Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.
- * Version:     1.2.1
- * Author:      required+
- * Author URI:  http://required.ch
- * License:     GPLv2+
- * Text Domain: digest
- * Domain Path: /languages
+ * Description: Get a daily/weekly digest of what's happening on your site instead of receiving a single email each
+ * time. Version:     1.2.1 Author:      required+ Author URI:  http://required.ch License:     GPLv2+ Text Domain:
+ * digest Domain Path: /languages
  *
  * @package WP_Digest
  */
@@ -43,22 +39,20 @@ $wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
 ) );
 
 if ( $wp_digest_requirements_check->passes() ) {
-	// Pull in the plugin classes and initialize.
-	require_once( dirname( __FILE__ ) . '/includes/pluggable.php' );
-	require_once( dirname( __FILE__ ) . '/classes/queue.php' );
-	require_once( dirname( __FILE__ ) . '/classes/plugin.php' );
-	require_once( dirname( __FILE__ ) . '/includes/cron.php' );
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		include( __DIR__ . '/vendor/autoload.php' );
+	}
 
 	/**
 	 * Get the main plugin instance.
 	 *
-	 * @return WP_Digest_Plugin
+	 * @return \Required\Digest\Controller
 	 */
 	function wp_digest() {
 		static $controller = null;
 
 		if ( null === $controller ) {
-			$controller = new WP_Digest_Plugin();
+			$controller = new \Required\Digest\Controller();
 		}
 
 		return $controller;

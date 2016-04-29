@@ -1,18 +1,18 @@
 <?php
 /**
- * This file holds the WP_Digest_Core_Update_Message class.
+ * This file holds the Core_Update_Message class.
  *
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 /**
- * WP_Digest_Core_Update_Message class.
+ * Core_Update_Message class.
  *
  * Responsible for creating the core update section
  */
-class WP_Digest_Core_Update_Message extends WP_Digest_Section_Message {
+class Core_Update_Message extends Section_Message {
 	/**
 	 * The comment moderation entries.
 	 *
@@ -23,11 +23,11 @@ class WP_Digest_Core_Update_Message extends WP_Digest_Section_Message {
 	/**
 	 * Constructor.
 	 *
-	 * @param array   $entries The core update entries.
-	 * @param WP_User $user    The current user.
-	 * @param string  $event   The current event.
+	 * @param array    $entries The core update entries.
+	 * @param \WP_User $user    The current user.
+	 * @param string   $event   The current event.
 	 */
-	public function __construct( $entries, $user, $event ) {
+	public function __construct( $entries, \WP_User $user, $event ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $version => $time ) {
@@ -50,6 +50,7 @@ class WP_Digest_Core_Update_Message extends WP_Digest_Section_Message {
 	 * @param string $version The version WordPress was updated to.
 	 * @param int    $time    The timestamp when the update happened.
 	 * @param string $event   The current event.
+	 *
 	 * @return string The core update message.
 	 */
 	protected function get_single_message( $version, $time, $event ) {
