@@ -72,12 +72,12 @@ class Comment_Notification_Message extends Comment_Moderation_Message {
 	/**
 	 * Get the comment moderation message.
 	 *
-	 * @param WP_Comment $comment The comment object.
+	 * @param \WP_Comment $comment The comment object.
 	 * @param int        $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment moderation message.
 	 */
-	protected function get_single_message( $comment, $time ) {
+	protected function get_single_message( \WP_Comment $comment, $time ) {
 		if ( null === $comment ) {
 			return '';
 		}
