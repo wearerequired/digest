@@ -4,16 +4,9 @@ namespace Required\Digest\Tests;
 
 use Required\Digest\Queue;
 use \WP_UnitTestCase;
+use \MockAction;
 
 class Plugin extends WP_UnitTestCase {
-	protected $email_message = '';
-
-	public function filter_digest_cron_email_message( $message ) {
-		$this->email_message = $message;
-
-		return $message;
-	}
-
 	public function test_plugin_is_activated() {
 		$this->assertTrue( class_exists( 'Required\\Digest\\Controller' ) );
 	}
@@ -47,11 +40,13 @@ class Plugin extends WP_UnitTestCase {
 	}
 
 	public function test_send_email_empty_queue() {
-		add_filter( 'digest_cron_email_message', array( $this, 'filter_digest_cron_email_message' ) );
-		digest()->send_email( 'Foo' );
-		remove_filter( 'digest_cron_email_message', array( $this, 'filter_digest_cron_email_message' ) );
+		$action = new MockAction();
 
-		$this->assertEmpty( $this->email_message );
+		add_filter( 'digest_cron_email_message', array( $action, 'filter' ) );
+		digest()->send_email( 'Foo' );
+		remove_filter( 'digest_cron_email_message', array( $action, 'filter' ) );
+
+		$this->assertSame( 0, $action->get_call_count() );
 	}
 
 	public function test_comment_moderation_recipients() {
