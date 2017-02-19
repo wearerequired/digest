@@ -8,20 +8,12 @@ module.exports = {
 	},
 
 	sass: {
-		files: ['css/src/*.scss'],
-		tasks: ['sass', 'postcss']
-	},
-
-	php: {
-		files  : ['**/*.php'],
-		tasks  : ['checktextdomain', 'phpunit'],
-		options: {
-			debounceDelay: 5000
-		}
+		files: [ 'css/src/*.scss' ],
+		tasks: [ 'sass', 'postcss' ]
 	},
 
 	scripts: {
 		files: 'js/src/**/*.*',
-		tasks: ['jshint', 'concat', 'uglify', 'clean:js']
+		tasks: [ 'jshint', 'concat', 'uglify' ]
 	}
-}
+};

@@ -4,4 +4,4 @@ module.exports = {
 			'css/digest.css': 'css/src/digest.scss'
 		}
 	}
-}
+};

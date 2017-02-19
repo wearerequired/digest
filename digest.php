@@ -1,11 +1,12 @@
 <?php
 /**
  * Plugin Name: Digest Notifications
- * Plugin URI:  https://github.com/wearerequired/digest/
- * Description: Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.
+ * Plugin URI:  https://required.com/services/wordpress-plugins/digest-notifications/
+ * Description: Get a daily or weekly digest of what's happening on your site
+ *              instead of receiving a single email each time.
  * Version:     1.2.1
- * Author:      required+
- * Author URI:  http://required.ch
+ * Author:      required
+ * Author URI:  https://required.com
  * License:     GPLv2+
  * Text Domain: digest
  * Domain Path: /languages
@@ -14,7 +15,7 @@
  */
 
 /**
- * Copyright (c) 2015 required+ (email : support@required.ch)
+ * Copyright (c) 2015-2107 required (email : support@required.ch)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -33,26 +34,41 @@
 
 defined( 'WPINC' ) or die;
 
-include( dirname( __FILE__ ) . '/lib/requirements-check.php' );
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	include( __DIR__ . '/vendor/autoload.php' );
+}
 
-$wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
+$requirements_check = new WP_Requirements_Check( array(
 	'title' => 'Digest Notifications',
 	'php'   => '5.3',
-	'wp'    => '4.0',
+	'wp'    => '4.4',
 	'file'  => __FILE__,
 ) );
 
-if ( $wp_digest_requirements_check->passes() ) {
-	// Pull in the plugin classes and initialize.
-	include( dirname( __FILE__ ) . '/lib/wp-stack-plugin.php' );
-	include( dirname( __FILE__ ) . '/includes/pluggable.php' );
-	include( dirname( __FILE__ ) . '/classes/queue.php' );
-	include( dirname( __FILE__ ) . '/classes/cron.php' );
-	include( dirname( __FILE__ ) . '/classes/plugin.php' );
-	WP_Digest_Plugin::start( __FILE__ );
+if ( $requirements_check->passes() ) {
+	/**
+	 * Get the main plugin instance.
+	 *
+	 * @return \Required\Digest\Controller
+	 */
+	function wp_digest() {
+		static $controller = null;
 
-	register_activation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'activate_plugin' ) );
-	register_deactivation_hook( __FILE__, array( WP_Digest_Plugin::get_instance(), 'deactivate_plugin' ) );
+		if ( null === $controller ) {
+			$controller = new \Required\Digest\Controller();
+		}
+
+		return $controller;
+	}
+
+	// Initialize the plugin.
+	add_action( 'plugins_loaded', array( wp_digest(), 'add_hooks' ) );
+
+	// Add cron callback.
+	add_action( 'digest_event', array( 'Required\\Digest\\Cron', 'init' ) );
+
+	register_activation_hook( __FILE__, array( wp_digest(), 'activate_plugin' ) );
+	register_deactivation_hook( __FILE__, array( wp_digest(), 'deactivate_plugin' ) );
 }
 
-unset( $wp_digest_requirements_check );
+unset( $requirements_check );

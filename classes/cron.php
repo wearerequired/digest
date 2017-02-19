@@ -5,18 +5,18 @@
  * @package WP_Digest
  */
 
-defined( 'WPINC' ) or die;
+namespace Required\Digest;
 
 if ( ! defined( 'EMPTY_TRASH_DAYS' ) ) {
 	define( 'EMPTY_TRASH_DAYS', 30 );
 }
 
 /**
- * WP_Digest_Cron class.
+ * Cron class.
  *
  * It's run every hour.
  */
-class WP_Digest_Cron {
+class Cron {
 	/**
 	 * The plugin options.
 	 *
@@ -70,21 +70,20 @@ class WP_Digest_Cron {
 		require_once( ABSPATH . WPINC . '/pluggable.php' );
 		require_once( ABSPATH . WPINC . '/locale.php' );
 		require_once( ABSPATH . WPINC . '/rewrite.php' );
-		$GLOBALS['wp_locale']  = new WP_Locale();
-		$GLOBALS['wp_rewrite'] = new WP_Rewrite();
+
+		$GLOBALS['wp_locale']  = new \WP_Locale();
+		$GLOBALS['wp_rewrite'] = new \WP_Rewrite();
 	}
 
 	/**
 	 * Run Boy Run
 	 */
 	protected static function run() {
-		$queue = WP_Digest_Queue::get();
+		$queue = Queue::get();
 
 		if ( empty( $queue ) ) {
 			return;
 		}
-
-		require_once( dirname( __FILE__ ) . '/message.php' );
 
 		// Set up the correct subject.
 		$subject = ( 'daily' === self::$options['period'] ) ? __( 'Today on %s', 'digest' ) : __( 'Past Week on %s', 'digest' );
@@ -98,27 +97,9 @@ class WP_Digest_Cron {
 		 */
 		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
-		// Loop through the queue.
-		foreach ( $queue as $recipient => $items ) {
-			$message = new WP_Digest_Message( $recipient, $items );
-
-			/**
-			 * Filter the digest message.
-			 *
-			 * @param string $message   The message to be sent.
-			 * @param string $recipient The recipient's email address.
-			 *
-			 * @return string The filtered message.
-			 */
-			$message = apply_filters( 'digest_cron_email_message', $message->get_message(), $recipient );
-
-			// Send digest.
-			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
-		}
+		wp_digest()->send_email( $subject );
 
 		// Clear queue.
-		WP_Digest_Queue::clear();
+		Queue::clear();
 	}
 }
-
-add_action( 'digest_event', array( 'WP_Digest_Cron', 'init' ) );
