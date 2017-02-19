@@ -176,11 +176,12 @@ class Comment_Moderation extends Section {
 	 * @return string The filtered comment text
 	 */
 	protected function get_comment_text( $comment_id ) {
-		ob_start();
+		$comment = get_comment( $comment_id );
 
-		comment_text( $comment_id );
+		$comment_text = get_comment_text( $comment );
 
-		return ob_get_clean();
+		/** This filter is documented in wp-includes/comment-template.php */
+		return apply_filters( 'comment_text', $comment_text, $comment, array() );
 	}
 
 	/**
