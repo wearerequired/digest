@@ -5,9 +5,6 @@ namespace Required\Digest\Tests;
 use \WP_UnitTestCase;
 use \Required\Digest\Queue as Digest_Queue;
 
-/**
- * Class WP_Digest_Test_Queue.
- */
 class Queue extends WP_UnitTestCase {
 	public function test_empty_queue() {
 		$this->assertEmpty( Digest_Queue::get() );
