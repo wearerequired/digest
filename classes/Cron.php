@@ -97,7 +97,7 @@ class Cron {
 		 */
 		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
-		wp_digest()->send_email( $subject );
+		digest()->send_email( $subject );
 
 		// Clear queue.
 		Queue::clear();

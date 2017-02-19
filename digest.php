@@ -51,7 +51,7 @@ if ( $requirements_check->passes() ) {
 	 *
 	 * @return \Required\Digest\Controller
 	 */
-	function wp_digest() {
+	function digest() {
 		static $controller = null;
 
 		if ( null === $controller ) {
@@ -62,13 +62,13 @@ if ( $requirements_check->passes() ) {
 	}
 
 	// Initialize the plugin.
-	add_action( 'plugins_loaded', array( wp_digest(), 'add_hooks' ) );
+	add_action( 'plugins_loaded', array( digest(), 'add_hooks' ) );
 
 	// Add cron callback.
 	add_action( 'digest_event', array( 'Required\\Digest\\Cron', 'init' ) );
 
-	register_activation_hook( __FILE__, array( wp_digest(), 'activate_plugin' ) );
-	register_deactivation_hook( __FILE__, array( wp_digest(), 'deactivate_plugin' ) );
+	register_activation_hook( __FILE__, array( digest(), 'activate_plugin' ) );
+	register_deactivation_hook( __FILE__, array( digest(), 'deactivate_plugin' ) );
 }
 
 unset( $requirements_check );
