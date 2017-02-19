@@ -7,10 +7,6 @@
 
 namespace Required\Digest;
 
-if ( ! defined( 'EMPTY_TRASH_DAYS' ) ) {
-	define( 'EMPTY_TRASH_DAYS', 30 );
-}
-
 /**
  * Cron class.
  *

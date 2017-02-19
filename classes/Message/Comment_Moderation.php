@@ -90,7 +90,7 @@ class Comment_Moderation extends Section {
 		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && get_option( 'admin_email' ) === $this->user->user_email ) {
 			$actions['approve'] = __( 'Approve', 'digest' );
 
-			if ( EMPTY_TRASH_DAYS ) {
+			if ( defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = _x( 'Trash', 'verb', 'digest' );
 			} else {
 				$actions['delete'] = __( 'Delete', 'digest' );
