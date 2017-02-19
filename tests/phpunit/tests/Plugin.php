@@ -73,4 +73,74 @@ class Plugin extends WP_UnitTestCase {
 
 		Queue::clear();
 	}
+
+	public function data_sanitize_frequency_option() {
+		return array(
+			// Period.
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => 1 ),
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => 1 ),
+			),
+			array(
+				array( 'period' => 'daily', 'hour' => 1, 'day' => 1 ),
+				array( 'period' => 'daily', 'hour' => 1, 'day' => 1 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => 1 ),
+				array( 'period' => 'foo', 'hour' => 1, 'day' => 1 ),
+			),
+			// Hour.
+			array(
+				array( 'period' => 'weekly', 'hour' => 18, 'day' => 1 ),
+				array( 'period' => 'weekly', 'hour' => -1, 'day' => 1 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 0, 'day' => 1 ),
+				array( 'period' => 'weekly', 'hour' => 0, 'day' => 1 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 18, 'day' => 1 ),
+				array( 'period' => 'weekly', 'hour' => 24, 'day' => 1 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 23, 'day' => 1 ),
+				array( 'period' => 'weekly', 'hour' => 23, 'day' => 1 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 18, 'day' => 1 ),
+				array( 'period' => 'weekly', 'hour' => 'foo', 'day' => 1 ),
+			),
+			// Day.
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ),
+				array( 'period' => 'foo', 'hour' => 1, 'day' => -1 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => 0 ),
+				array( 'period' => 'foo', 'hour' => 1, 'day' => 0 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ),
+				array( 'period' => 'foo', 'hour' => 1, 'day' => 7 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => 6 ),
+				array( 'period' => 'foo', 'hour' => 1, 'day' => 6 ),
+			),
+			array(
+				array( 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ),
+				array( 'period' => 'foo', 'hour' => 1, 'day' => 'foo' ),
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider data_sanitize_frequency_option
+	 *
+	 * @param array $expected
+	 * @param array $actual
+	 */
+	public function test_sanitize_frequency_option( $expected, $actual ) {
+		$this->assertEqualSets( $expected, digest()->sanitize_frequency_option( $actual ) );
+	}
 }

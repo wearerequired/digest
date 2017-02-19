@@ -236,7 +236,7 @@ class Controller {
 		}
 
 		$value['hour'] = filter_var(
-			absint( $value['hour'] ),
+			$value['hour'],
 			FILTER_VALIDATE_INT,
 			array(
 				'options' => array(
@@ -248,11 +248,11 @@ class Controller {
 		);
 
 		$value['day'] = filter_var(
-			absint( $value['day'] ),
+			$value['day'],
 			FILTER_VALIDATE_INT,
 			array(
 				'options' => array(
-					'default'   => get_option( 'start_of_week' ),
+					'default'   => get_option( 'start_of_week', 0 ),
 					'min_range' => 0,
 					'max_range' => 6,
 				),
