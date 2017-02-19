@@ -72,10 +72,10 @@ abstract class Section implements MessageInterface {
 	 * @param WP_User $user    The current user.
 	 */
 	public function __construct( $entries, WP_User $user = null ) {
+		$this->user = $user;
+
 		foreach ( $entries as $entry => $time ) {
 			$this->entries[] = $this->get_single_message( $entry, $time );
 		}
-
-		$this->user = $user;
 	}
 }

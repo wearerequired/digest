@@ -40,7 +40,7 @@ class CommentModeration extends Section {
 			),
 			number_format_i18n( count( $this->entries ) )
 		);
-		if ( 0 < $processed_count ) {
+		if ( $processed_count > 0 ) {
 			$message .= ' ';
 			$message .= sprintf(
 				_n(
@@ -53,6 +53,7 @@ class CommentModeration extends Section {
 			);
 		}
 		$message .= '</p>';
+
 		$message .= implode( '', $this->entries );
 		$message .= sprintf(
 			'<p>' . __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ) . '</p>',
@@ -75,6 +76,7 @@ class CommentModeration extends Section {
 	 */
 	protected function get_single_message( $comment, $time ) {
 		$comment = get_comment( $comment );
+
 		if ( null === $comment || '0' !== $comment->comment_approved ) {
 			return '';
 		}
