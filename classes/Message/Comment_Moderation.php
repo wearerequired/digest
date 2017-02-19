@@ -1,6 +1,6 @@
 <?php
 /**
- * This file holds the WP_Digest_Comment_Moderation_Message class.
+ * Comment moderation class.
  *
  * @package Digest
  */
@@ -8,13 +8,18 @@
 namespace Required\Digest\Message;
 
 /**
- * Comment_Moderation_Message class.
+ * Comment moderation message class.
  *
- * Responsible for creating the comment moderation section
+ * Responsible for creating the comment moderation section.
+ *
+ * @since 2.0.0
  */
 class Comment_Moderation extends Section {
 	/**
 	 * Constructor.
+	 *
+	 * @since  2.0.0
+	 * @access public
 	 *
 	 * @param array    $entries The comment moderation entries.
 	 * @param \WP_User $user    The current user.
@@ -28,7 +33,10 @@ class Comment_Moderation extends Section {
 	}
 
 	/**
-	 * Get comment moderation section message.
+	 * Returns the comment moderation section message.
+	 *
+	 * @since  2.0.0
+	 * @access public
 	 *
 	 * @return string The section message.
 	 */
@@ -69,14 +77,17 @@ class Comment_Moderation extends Section {
 	}
 
 	/**
-	 * Get the comment moderation message.
+	 * Returns the comment moderation message.
 	 *
-	 * @param \WP_Comment $comment The comment object.
-	 * @param int         $time    The timestamp when the comment was written.
+	 * @since  2.0.0
+	 * @access protected
+	 *
+	 * @param WP_Comment $comment The comment object.
+	 * @param int        $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment moderation message.
 	 */
-	protected function get_single_message( \WP_Comment $comment, $time ) {
+	protected function get_single_message( WP_Comment $comment, $time ) {
 		if ( null === $comment || '0' !== $comment->comment_approved ) {
 			return '';
 		}
@@ -106,14 +117,17 @@ class Comment_Moderation extends Section {
 	}
 
 	/**
-	 * Get the comment message.
+	 * Returns the message for a single comment.
 	 *
-	 * @param \WP_Comment $comment The comment object.
-	 * @param int         $time    The timestamp when the comment was written.
+	 * @since  2.0.0
+	 * @access protected
+	 *
+	 * @param WP_Comment $comment The comment object.
+	 * @param int        $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment message.
 	 */
-	protected function get_single_comment_content( \WP_Comment $comment, $time ) {
+	protected function get_single_comment_content( WP_Comment $comment, $time ) {
 		$post_link = '<a href="' . esc_url( get_permalink( $comment->comment_post_ID ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a>';
 
 		$message = '';
@@ -147,7 +161,12 @@ class Comment_Moderation extends Section {
 	}
 
 	/**
-	 * Get the comment text, which is already filtered by WordPress.
+	 * Returns the comment text.
+	 *
+	 * It is already filtered by WordPress.
+	 *
+	 * @since  2.0.0
+	 * @access protected
 	 *
 	 * @param int $comment_id The comment ID.
 	 *
@@ -162,14 +181,17 @@ class Comment_Moderation extends Section {
 	}
 
 	/**
-	 * Add action links to the message
+	 * Adds action links to the message.
 	 *
-	 * @param array       $actions Actions for that comment.
-	 * @param \WP_Comment $comment The comment object.
+	 * @since  2.0.0
+	 * @access protected
+	 *
+	 * @param array      $actions Actions for that comment.
+	 * @param WP_Comment $comment The comment object.
 	 *
 	 * @return string The comment action links.
 	 */
-	protected function get_comment_action_links( array $actions, \WP_Comment $comment ) {
+	protected function get_comment_action_links( array $actions, WP_Comment $comment ) {
 		$links = array();
 
 		foreach ( $actions as $action => $label ) {
@@ -191,6 +213,9 @@ class Comment_Moderation extends Section {
 
 	/**
 	 * Whether the current user can edit a given comment or not.
+	 *
+	 * @since  2.0.0
+	 * @access protected
 	 *
 	 * @param int $comment_id Comment ID.
 	 *
