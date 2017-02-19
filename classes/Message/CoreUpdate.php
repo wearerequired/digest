@@ -14,7 +14,7 @@ use WP_User;
  *
  * Responsible for creating the core update section
  */
-class Core_Update extends Section {
+class CoreUpdate extends Section {
 	/**
 	 * The comment moderation entries.
 	 *

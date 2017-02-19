@@ -17,7 +17,7 @@ use WP_User;
  *
  * @since 2.0.0
  */
-class Comment_Moderation extends Section {
+class CommentModeration extends Section {
 	/**
 	 * Constructor.
 	 *

@@ -15,7 +15,7 @@ use WP_User;
  *
  * Responsible for creating the comment notification section
  */
-class Comment_Notification extends Comment_Moderation {
+class CommentNotification extends CommentModeration {
 	/**
 	 * Constructor.
 	 *

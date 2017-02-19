@@ -7,11 +7,11 @@
 
 namespace Required\Digest\Event;
 
-use Required\Digest\Message\Comment_Moderation;
-use Required\Digest\Message\Comment_Notification;
-use Required\Digest\Message\Core_Update;
-use Required\Digest\Message\Password_Change_Notification;
-use Required\Digest\Message\User_Notification;
+use Required\Digest\Message\CommentModeration;
+use Required\Digest\Message\CommentNotification;
+use Required\Digest\Message\CoreUpdate;
+use Required\Digest\Message\PasswordChangeNotification;
+use Required\Digest\Message\UserNotification;
 
 /**
  * Event registry.
@@ -89,7 +89,7 @@ class Registry implements RegistryInterface {
 	public function register_default_events() {
 		// Register default events.
 		$this->register_event( 'core_update_success', function ( $content, $entries, $user, $event ) {
-			$message = new Core_Update( $entries, $user, $event );
+			$message = new CoreUpdate( $entries, $user, $event );
 
 			if ( '' === $content ) {
 				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
@@ -99,7 +99,7 @@ class Registry implements RegistryInterface {
 		} );
 
 		$this->register_event( 'core_update_failure', function ( $content, $entries, $user, $event ) {
-			$message = new Core_Update( $entries, $user, $event );
+			$message = new CoreUpdate( $entries, $user, $event );
 
 			if ( '' === $content ) {
 				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
@@ -109,20 +109,20 @@ class Registry implements RegistryInterface {
 		} );
 
 		$this->register_event( 'comment_moderation', function ( $content, $entries, $user ) {
-			$message = new Comment_Moderation( $entries, $user );
+			$message = new CommentModeration( $entries, $user );
 
 			return $content . $message->get_message();
 		} );
 
 		$this->register_event( 'comment_notification', function ( $content, $entries, $user ) {
-			$message = new Comment_Notification( $entries, $user );
+			$message = new CommentNotification( $entries, $user );
 
 			return $content . $message->get_message();
 		} );
 
 		if ( in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
 			$this->register_event( 'new_user_notification', function ( $content, $entries, $user ) {
-				$message = new User_Notification( $entries, $user );
+				$message = new UserNotification( $entries, $user );
 
 				return $content . $message->get_message();
 			} );
@@ -130,7 +130,7 @@ class Registry implements RegistryInterface {
 
 		if ( in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
 			$this->register_event( 'password_change_notification', function ( $content, $entries, $user ) {
-				$message = new Password_Change_Notification( $entries, $user );
+				$message = new PasswordChangeNotification( $entries, $user );
 
 				return $content . $message->get_message();
 			} );

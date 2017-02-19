@@ -1,6 +1,6 @@
 <?php
 /**
- * User_Notification class.
+ * PasswordChangeNotification class.
  *
  * @package Digest
  */
@@ -10,13 +10,13 @@ namespace Required\Digest\Message;
 use WP_User;
 
 /**
- * User notification message class.
+ * Password change notification message class.
  *
- * Responsible for creating the comment notification section.
+ * Responsible for creating the password change notification message.
  *
  * @since 2.0.0
  */
-class User_Notification extends Section {
+class PasswordChangeNotification extends Section {
 	/**
 	 * Constructor.
 	 *
@@ -35,7 +35,7 @@ class User_Notification extends Section {
 	}
 
 	/**
-	 * Returns the core update section message.
+	 * Get password change notification section message.
 	 *
 	 * @since  2.0.0
 	 * @access public
@@ -43,19 +43,27 @@ class User_Notification extends Section {
 	 * @return string The section message.
 	 */
 	public function get_message() {
-		return implode( '', $this->entries );
+		$message = '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
+		if ( 1 === count( $this->entries ) ) {
+			$message .= '<p>' . __( 'The following user lost and changed his password:', 'digest' ) . '</p>';
+		} else {
+			$message .= '<p>' . __( 'The following users lost and changed their passwords:', 'digest' ) . '</p>';
+		}
+		$message .= '<ul>' . implode( '', $this->entries ) . '</ul>';
+
+		return $message;
 	}
 
 	/**
-	 * Returns the new user notification message.
+	 * Returns the password change notification message.
 	 *
 	 * @since  2.0.0
 	 * @access protected
 	 *
 	 * @param int $user_id The user ID.
-	 * @param int $time    The timestamp when the user signed up.
+	 * @param int $time    The timestamp when the user changed his password.
 	 *
-	 * @return string The new user notification message.
+	 * @return string The password change notification message.
 	 */
 	protected function get_single_message( $user_id, $time ) {
 		$user = get_user_by( 'ID', $user_id );
@@ -67,7 +75,8 @@ class User_Notification extends Section {
 		return sprintf(
 			/* translators: 1: user display name, 2: user ID, 3: human time dif */
 			'<li>' . __( '%1$s (ID: %2$d) %3$s ago', 'digest' ) . '</li>',
-			$user->display_name, $user->ID,
+			esc_html( $user->display_name ),
+			absint( $user->ID ),
 			human_time_diff( $time, current_time( 'timestamp' ) )
 		);
 	}
