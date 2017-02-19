@@ -26,6 +26,12 @@ class PasswordChangeNotification extends Section {
 	 * @return string The section message.
 	 */
 	public function get_message() {
+		$this->entries = array_filter( $this->entries );
+
+		if ( empty( $this->entries ) ) {
+			return '';
+		}
+
 		$message = '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
 		if ( 1 === count( $this->entries ) ) {
 			$message .= '<p>' . __( 'The following user lost and changed his password:', 'digest' ) . '</p>';
