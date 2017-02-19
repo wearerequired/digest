@@ -5,14 +5,14 @@
  * @package WP_Digest
  */
 
-namespace Required\Digest;
+namespace Required\Digest\Message;
 
 /**
  * Core_Update_Message class.
  *
  * Responsible for creating the core update section
  */
-class Core_Update_Message extends Section_Message {
+class Core_Update extends Section {
 	/**
 	 * The comment moderation entries.
 	 *

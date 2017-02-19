@@ -5,14 +5,14 @@
  * @package WP_Digest
  */
 
-namespace Required\Digest;
+namespace Required\Digest\Message;
 
 /**
  * Comment_Notification_Message class.
  *
  * Responsible for creating the comment notification section
  */
-class Comment_Notification_Message extends Comment_Moderation_Message {
+class Comment_Notification extends Comment_Moderation {
 	/**
 	 * Constructor.
 	 *
@@ -73,7 +73,7 @@ class Comment_Notification_Message extends Comment_Moderation_Message {
 	 * Get the comment moderation message.
 	 *
 	 * @param \WP_Comment $comment The comment object.
-	 * @param int        $time    The timestamp when the comment was written.
+	 * @param int         $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment moderation message.
 	 */
@@ -88,7 +88,7 @@ class Comment_Notification_Message extends Comment_Moderation_Message {
 			'view' => __( 'Permalink', 'digest' ),
 		);
 
-		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && $this->user->user_email === get_option( 'admin_email' ) ) {
+		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && get_option( 'admin_email' ) === $this->user->user_email ) {
 			if ( EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = _x( 'Trash', 'verb', 'digest' );
 			} else {

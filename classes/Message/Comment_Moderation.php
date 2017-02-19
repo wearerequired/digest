@@ -5,14 +5,14 @@
  * @package WP_Digest
  */
 
-namespace Required\Digest;
+namespace Required\Digest\Message;
 
 /**
  * Comment_Moderation_Message class.
  *
  * Responsible for creating the comment moderation section
  */
-class Comment_Moderation_Message extends Section_Message {
+class Comment_Moderation extends Section {
 	/**
 	 * Constructor.
 	 *
@@ -87,7 +87,7 @@ class Comment_Moderation_Message extends Section_Message {
 			'view' => __( 'Permalink', 'digest' ),
 		);
 
-		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && $this->user->user_email === get_option( 'admin_email' ) ) {
+		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && get_option( 'admin_email' ) === $this->user->user_email ) {
 			$actions['approve'] = __( 'Approve', 'digest' );
 
 			if ( EMPTY_TRASH_DAYS ) {

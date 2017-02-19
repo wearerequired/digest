@@ -6,6 +6,11 @@
  */
 
 namespace Required\Digest;
+use Required\Digest\Message;
+use Required\Digest\Message\Comment_Notification;
+use Required\Digest\Message\Core_Update;
+use Required\Digest\Message\Password_Change_Notification;
+use Required\Digest\Message\User_Notification;
 
 /**
  * WP_Digest_Plugin class.
@@ -39,6 +44,51 @@ class Controller {
 		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
 		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
 		add_action( 'auto_core_update_email', array( $this, 'auto_core_update_email' ), 10, 3 );
+
+		// Hook into the digest notification messages.
+		add_filter( 'digest_message_section_core_update_success', function ( $content, $entries, $user, $event ) {
+			$message = new Core_Update( $entries, $user, $event );
+
+			if ( '' === $content ) {
+				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+			}
+
+			return $content . $message->get_message();
+		}, 10, 4 );
+
+		add_filter( 'digest_message_section_core_update_failure', function ( $content, $entries, $user, $event ) {
+			$message = new Core_Update( $entries, $user, $event );
+
+			if ( '' === $content ) {
+				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+			}
+
+			return $content . $message->get_message();
+		}, 10, 4 );
+
+		add_filter( 'digest_message_section_comment_moderation', function ( $content, $entries, $user ) {
+			$message = new Comment_Moderation( $entries, $user );
+
+			return $content . $message->get_message();
+		}, 10, 3 );
+
+		add_filter( 'digest_message_section_comment_notification', function ( $content, $entries, $user ) {
+			$message = new Comment_Notification( $entries, $user );
+
+			return $content . $message->get_message();
+		}, 10, 3 );
+
+		add_filter( 'digest_message_section_new_user_notification', function ( $content, $entries, $user ) {
+			$message = new User_Notification( $entries, $user );
+
+			return $content . $message->get_message();
+		}, 10, 3 );
+
+		add_filter( 'digest_message_section_password_change_notification', function ( $content, $entries, $user ) {
+			$message = new Password_Change_Notification( $entries, $user );
+
+			return $content . $message->get_message();
+		}, 10, 3 );
 	}
 
 	/**
@@ -63,7 +113,7 @@ class Controller {
 	 * Initializes the plugin, registers textdomain, etc.
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'user-feedback', false, basename( $this->get_path() ) . '/languages' );
+		load_plugin_textdomain( 'user-feedback' );
 	}
 
 	/**
@@ -92,7 +142,7 @@ class Controller {
 	 */
 	public function admin_enqueue_scripts( $hook_suffix ) {
 		if ( 'options-general.php' === $hook_suffix ) {
-			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+			$suffix = SCRIPT_DEBUG ? '' : '.min';
 
 			wp_enqueue_script( 'digest', $this->get_url() . 'js/digest' . $suffix . '.js', array(), self::VERSION, true );
 			wp_enqueue_style( 'digest', $this->get_url() . 'css/digest' . $suffix . '.css', array(), self::VERSION );
@@ -265,7 +315,7 @@ class Controller {
 		}
 
 		// The author moderated a comment on their own post.
-		if ( $author && ! $notify_author && $post->post_author === get_current_user_id() ) {
+		if ( $author && ! $notify_author && get_current_user_id() === $post->post_author ) {
 			unset( $emails[ $author->user_email ] );
 		}
 
@@ -341,7 +391,9 @@ class Controller {
 	}
 
 	/**
-	 * @param string $subject Email subject
+	 * Sends the scheduled email to all the recipients in the digest queue.
+	 *
+	 * @param string $subject Email subject.
 	 */
 	public function send_email( $subject ) {
 		$queue = Queue::get();
@@ -352,18 +404,18 @@ class Controller {
 
 		// Loop through the queue.
 		foreach ( $queue as $recipient => $items ) {
-			$message = new Message( $recipient, $items );
+			$digest = new Digest( $recipient, $items );
 
 			/**
 			 * Filter the digest message.
 			 *
-			 * @param string $message   The message to be sent.
+			 * @param string $digest   The message to be sent.
 			 * @param string $recipient The recipient's email address.
 			 */
-			$message = apply_filters( 'digest_cron_email_message', $message->get_message(), $recipient );
+			$digest = apply_filters( 'digest_cron_email_message', $digest->get_message(), $recipient );
 
 			// Send digest.
-			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+			wp_mail( $recipient, $subject, $digest, array( 'Content-Type: text/html; charset=UTF-8' ) );
 		}
 	}
 }

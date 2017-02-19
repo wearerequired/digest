@@ -8,11 +8,11 @@
 namespace Required\Digest;
 
 /**
- * Message class.
+ * Digest class.
  *
  * Responsible for creating a new digest message to be sent per email.
  */
-class Message {
+class Digest {
 	/**
 	 * The queue items.
 	 *
@@ -76,7 +76,7 @@ class Message {
 				'password_change_notification',
 			) as $event
 		) {
-			if ( isset( $this->events[ $event ] ) && 0 < count( array_filter( $this->events[ $event ] ) ) ) {
+			if ( isset( $this->events[ $event ] ) && ! empty( array_filter( $this->events[ $event ] ) ) ) {
 				/**
 				 * Filter the message section
 				 *

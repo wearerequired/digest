@@ -1,34 +1,25 @@
 <?php
-/**
- * Test the queue.
- *
- * @package WP_Digest
- */
+
+namespace Required\Digest\Tests;
+
+use \WP_UnitTestCase;
+use \Required\Digest\Queue as Digest_Queue;
 
 /**
  * Class WP_Digest_Test_Queue.
  */
-class WP_Digest_Test_Queue extends WP_Digest_TestCase {
-	/**
-	 * Test an empty queue.
-	 */
+class Queue extends WP_UnitTestCase {
 	public function test_empty_queue() {
-		$this->assertEmpty( WP_Digest_Queue::get() );
+		$this->assertEmpty( Digest_Queue::get() );
 	}
 
-	/**
-	 * Test clearing the queue.
-	 */
 	public function test_queue_clearing() {
-		WP_Digest_Queue::add( 'johndoe@example.org', 'foo', 'bar' );
-		$this->assertEquals( 1, count( WP_Digest_Queue::get() ) );
-		WP_Digest_Queue::clear();
-		$this->assertEquals( 0, count( WP_Digest_Queue::get() ) );
+		Digest_Queue::add( 'johndoe@example.org', 'foo', 'bar' );
+		$this->assertEquals( 1, count( Digest_Queue::get() ) );
+		Digest_Queue::clear();
+		$this->assertEquals( 0, count( Digest_Queue::get() ) );
 	}
 
-	/**
-	 * Test adding entries to the queue.
-	 */
 	public function test_queue_add() {
 		$current_time = current_time( 'timestamp' );
 
@@ -42,14 +33,11 @@ class WP_Digest_Test_Queue extends WP_Digest_TestCase {
 			),
 		);
 
-		WP_Digest_Queue::add( 'johndoe@example.org', 'foo', 'bar' );
+		Digest_Queue::add( 'johndoe@example.org', 'foo', 'bar' );
 
-		$this->assertEquals( $expected, WP_Digest_Queue::get() );
+		$this->assertEquals( $expected, Digest_Queue::get() );
 	}
 
-	/**
-	 * Test adding duplicate entries to the queue.
-	 */
 	public function test_queue_add_duplicate() {
 		$current_time = current_time( 'timestamp' );
 
@@ -68,10 +56,10 @@ class WP_Digest_Test_Queue extends WP_Digest_TestCase {
 			),
 		);
 
-		WP_Digest_Queue::add( 'johndoe@example.org', 'foo', 'bar' );
-		WP_Digest_Queue::add( 'johndoe@example.org', 'hello', 'world' );
+		Digest_Queue::add( 'johndoe@example.org', 'foo', 'bar' );
+		Digest_Queue::add( 'johndoe@example.org', 'hello', 'world' );
 
-		$this->assertEquals( $expected, WP_Digest_Queue::get() );
+		$this->assertEquals( $expected, Digest_Queue::get() );
 	}
 
 	/**
@@ -88,19 +76,15 @@ class WP_Digest_Test_Queue extends WP_Digest_TestCase {
 
 		$expected = array( array( $current_time, $event, $data ) );
 
-		WP_Digest_Queue::add( $recipient, $event, $data );
+		Digest_Queue::add( $recipient, $event, $data );
 
-		$queue = WP_Digest_Queue::get();
+		$queue = Digest_Queue::get();
 
 		$this->assertArrayHasKey( $recipient, $queue );
 		$this->assertEquals( 1, count( $queue[ $recipient ] ) );
 		$this->assertEquals( $expected, $queue[ $recipient ] );
 	}
 
-	/**
-	 * Returns a dummy data set for the tests.
-	 * @return array
-	 */
 	public function get_queue_entries() {
 		return array(
 			array( 'johndoe@example.org', 'foo', 'bar' ),

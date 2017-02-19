@@ -5,14 +5,14 @@
  * @package WP_Digest
  */
 
-namespace Required\Digest;
+namespace Required\Digest\Message;
 
 /**
  * User_Notification_Message class.
  *
  * Responsible for creating the comment notification section
  */
-class User_Notification_Message extends Section_Message {
+class User_Notification extends Section {
 	/**
 	 * Constructor.
 	 *
@@ -52,7 +52,8 @@ class User_Notification_Message extends Section_Message {
 		}
 
 		return sprintf(
-			'<li>' . __( '%s (ID: %d) %s ago', 'digest' ) . '</li>',
+			/* translators: 1: user display name, 2: user ID, 3: human time dif */
+			'<li>' . __( '%1$s (ID: %2$d) %3$s ago', 'digest' ) . '</li>',
 			$user->display_name, $user->ID,
 			human_time_diff( $time, current_time( 'timestamp' ) )
 		);

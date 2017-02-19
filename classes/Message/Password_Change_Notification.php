@@ -5,14 +5,14 @@
  * @package WP_Digest
  */
 
-namespace Required\Digest;
+namespace Required\Digest\Message;
 
 /**
  * WP_Digest_Password_Change_Notification_Message class.
  *
  * Responsible for creating the password change notification messag.e
  */
-class Password_Change_Notification_Message extends Section_Message {
+class Password_Change_Notification extends Section {
 	/**
 	 * Constructor.
 	 *
@@ -60,7 +60,8 @@ class Password_Change_Notification_Message extends Section_Message {
 		}
 
 		return sprintf(
-			'<li>' . __( '%s (ID: %d) %s ago', 'digest' ) . '</li>',
+			/* translators: 1: user display name, 2: user ID, 3: human time dif */
+			'<li>' . __( '%1$s (ID: %2$d) %3$s ago', 'digest' ) . '</li>',
 			esc_html( $user->display_name ),
 			absint( $user->ID ),
 			human_time_diff( $time, current_time( 'timestamp' ) )

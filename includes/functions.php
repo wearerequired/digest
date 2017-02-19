@@ -5,6 +5,8 @@
  * @package WP_Digest
  */
 
+use Required\Digest\Queue;
+
 /**
  * Retrieve the digest queue option.
  *
@@ -13,7 +15,7 @@
  * @return array The digest queue.
  */
 function digest_queue_get() {
-	return WP_Digest_Queue::get();
+	return Queue::get();
 }
 
 /**
@@ -24,12 +26,12 @@ function digest_queue_get() {
  * @param string $data      Data to store for this event, for example a comment ID.
  */
 function digest_queue_add( $recipient, $event, $data ) {
-	WP_Digest_Queue::add( $recipient, $event, $data );
+	Queue::add( $recipient, $event, $data );
 }
 
 /**
  * Clear the digest queue.
  */
 function digest_queue_clear() {
-	WP_Digest_Queue::clear();
+	Queue::clear();
 }

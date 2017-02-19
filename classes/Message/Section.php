@@ -5,14 +5,14 @@
  * @package WP_Digest
  */
 
-namespace Required\Digest;
+namespace Required\Digest\Message;
 
 /**
  * Section_Message class.
  *
  * Can be extended by other classes to modify the section message.
  */
-abstract class Section_Message {
+abstract class Section {
 	/**
 	 * The section entries.
 	 *
