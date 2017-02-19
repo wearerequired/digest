@@ -88,7 +88,7 @@ class Comment_Notification extends Comment_Moderation {
 			'view' => __( 'Permalink', 'digest' ),
 		);
 
-		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && get_option( 'admin_email' ) === $this->user->user_email ) {
+		if ( $this->user_can_edit_comment( $comment->comment_ID ) ) {
 			if ( defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = _x( 'Trash', 'verb', 'digest' );
 			} else {

@@ -87,7 +87,7 @@ class Comment_Moderation extends Section {
 			'view' => __( 'Permalink', 'digest' ),
 		);
 
-		if ( $this->user && user_can( $this->user, 'edit_comment' ) || $this->user && get_option( 'admin_email' ) === $this->user->user_email ) {
+		if ( $this->user_can_edit_comment( $comment->comment_ID ) ) {
 			$actions['approve'] = __( 'Approve', 'digest' );
 
 			if ( defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS ) {
@@ -187,5 +187,16 @@ class Comment_Moderation extends Section {
 		}
 
 		return implode( ' | ', $links );
+	}
+
+	/**
+	 * Whether the current user can edit a given comment or not.
+	 *
+	 * @param int $comment_id Comment ID.
+	 *
+	 * @return bool True if the user can edit the comment, false otherwise.
+	 */
+	protected function user_can_edit_comment( $comment_id ) {
+		return $this->user && ( user_can( $this->user, 'edit_comment', $comment_id ) || get_option( 'admin_email' ) === $this->user->user_email );
 	}
 }
