@@ -23,7 +23,7 @@ class Digest {
 	/**
 	 * The current user object.
 	 *
-	 * @var \WP_User|false User object if user exists, false otherwise.
+	 * @var WP_User|null User object if user exists, null otherwise.
 	 */
 	protected $user;
 
@@ -35,7 +35,11 @@ class Digest {
 	 */
 	public function __construct( $recipient, array $items ) {
 		// Load the user with this email address if it exists.
-		$this->user = get_user_by( 'email', $recipient );
+		$user = get_user_by( 'email', $recipient );
+
+		if ( $user ) {
+			$this->user = $user;
+		}
 
 		$this->events = $this->process_event_items( $items );
 	}

@@ -29,7 +29,7 @@ class Core_Update extends Section {
 	 * @param WP_User $user    The current user.
 	 * @param string  $event   The current event.
 	 */
-	public function __construct( $entries, WP_User $user, $event ) {
+	public function __construct( $entries, WP_User $user = null, $event ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $version => $time ) {

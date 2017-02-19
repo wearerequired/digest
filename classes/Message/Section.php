@@ -33,9 +33,9 @@ abstract class Section implements MessageInterface {
 	 * @since  2.0.0
 	 * @access protected
 	 *
-	 * @var WP_User|false User object if user exists, false otherwise.
+	 * @var WP_User|null User object if user exists, false otherwise.
 	 */
-	protected $user = false;
+	protected $user = null;
 
 	/**
 	 * Returns the section message.
@@ -57,7 +57,7 @@ abstract class Section implements MessageInterface {
 	 *
 	 * @param WP_User $user The current user.
 	 */
-	public function __construct( WP_User $user ) {
+	public function __construct( WP_User $user = null ) {
 		$this->user = $user;
 	}
 }

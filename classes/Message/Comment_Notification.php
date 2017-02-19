@@ -22,7 +22,7 @@ class Comment_Notification extends Comment_Moderation {
 	 * @param array   $entries The comment moderation entries.
 	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( $entries, WP_User $user ) {
+	public function __construct( $entries, WP_User $user = null ) {
 		parent::__construct( $entries, $user );
 
 		$this->entries = array();

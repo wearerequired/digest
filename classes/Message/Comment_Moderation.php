@@ -27,7 +27,7 @@ class Comment_Moderation extends Section {
 	 * @param array   $entries The comment moderation entries.
 	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( $entries, WP_User $user ) {
+	public function __construct( $entries, WP_User $user = null ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $comment => $time ) {
