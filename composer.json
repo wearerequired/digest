@@ -21,11 +21,7 @@
     "php":                                 ">=5.3",
     "wearerequired/wp-requirements-check": "dev-master"
   },
-  "require-dev":  {
-    "phpmd/phpmd":                   "@stable",
-    "wp-coding-standards/wpcs":      "dev-develop",
-    "codeclimate/php-test-reporter": "dev-master"
-  },
+  "require-dev":  {},
   "autoload":     {
     "psr-4": {
       "Required\\Digest\\": "classes"
