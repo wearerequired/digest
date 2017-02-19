@@ -319,7 +319,7 @@ class Controller {
 	 *                            'success', 'fail', 'manual', 'critical'.
 	 * @param object $core_update The update offer that was attempted.
 	 *
-	 * @return bool The modified $email array without a recipient.
+	 * @return array The modified $email array without a recipient.
 	 */
 	public function auto_core_update_email( array $email, $type, $core_update ) {
 		$next_user_core_update = get_preferred_from_update_core();
