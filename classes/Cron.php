@@ -59,7 +59,9 @@ class Cron {
 	 * Run Boy Run
 	 */
 	protected static function run() {
-		if ( empty( Queue::get() ) ) {
+		$queue = Queue::get();
+
+		if ( empty( $queue ) ) {
 			return;
 		}
 
