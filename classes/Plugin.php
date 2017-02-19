@@ -18,7 +18,7 @@ use Required\Digest\Message\User_Notification;
  * Responsible for adding the settings screen and
  * hooking into some WordPress functions for the notifications.
  */
-class Controller {
+class Plugin {
 	/**
 	 * Plugin version.
 	 */

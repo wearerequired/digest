@@ -52,16 +52,16 @@ if ( $requirements_check->passes() ) {
 	/**
 	 * Get the main plugin instance.
 	 *
-	 * @return \Required\Digest\Controller
+	 * @return \Required\Digest\Plugin
 	 */
 	function digest() {
-		static $controller = null;
+		static $plugin = null;
 
-		if ( null === $controller ) {
-			$controller = new \Required\Digest\Controller();
+		if ( null === $plugin ) {
+			$plugin = new \Required\Digest\Plugin();
 		}
 
-		return $controller;
+		return $plugin;
 	}
 
 	// Initialize the plugin.

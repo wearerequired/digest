@@ -8,7 +8,7 @@ use \MockAction;
 
 class Plugin extends WP_UnitTestCase {
 	public function test_plugin_is_activated() {
-		$this->assertTrue( class_exists( 'Required\\Digest\\Controller' ) );
+		$this->assertTrue( class_exists( 'Required\\Digest\\Plugin' ) );
 	}
 
 	public function test_cron_event_scheduled() {
