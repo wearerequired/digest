@@ -16,16 +16,6 @@ use WP_User;
  */
 class CoreUpdate extends Section {
 	/**
-	 * The comment moderation entries.
-	 *
-	 * @since  2.0.0
-	 * @access protected
-	 *
-	 * @var array
-	 */
-	protected $entries;
-
-	/**
 	 * The event type.
 	 *
 	 * @since  2.0.0
