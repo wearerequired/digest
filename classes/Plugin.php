@@ -225,6 +225,8 @@ class Plugin {
 			/**
 			 * Filter the digest message.
 			 *
+			 * @since 1.0.0
+			 *
 			 * @param string $digest    The message to be sent.
 			 * @param string $recipient The recipient's email address.
 			 */
