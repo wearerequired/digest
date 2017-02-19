@@ -67,17 +67,19 @@ class Digest {
 
 		// Loop through the processed events.
 		foreach ( digest_get_registered_events() as $event ) {
-			if ( isset( $this->events[ $event ] ) && ! empty( array_filter( $this->events[ $event ] ) ) ) {
-				/**
-				 * Filter the message section
-				 *
-				 * @param string $message The message.
-				 * @param array  $entries The event items.
-				 * @param object $user    The current user.
-				 * @param string $event   The current event.
-				 */
-				$message .= apply_filters( 'digest_message_section_' . $event, '', $this->events[ $event ], $this->user, $event );
+			if ( ! isset( $this->events[ $event ] ) ) {
+				continue;
 			}
+
+			/**
+			 * Filter the message section
+			 *
+			 * @param string $message The message.
+			 * @param array  $entries The event items.
+			 * @param object $user    The current user.
+			 * @param string $event   The current event.
+			 */
+			$message .= apply_filters( 'digest_message_section_' . $event, '', $this->events[ $event ], $this->user, $event );
 		}
 
 		if ( '' === $message ) {
