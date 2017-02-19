@@ -65,17 +65,8 @@ class Digest {
 	public function get_message() {
 		$message = '';
 
-		// Loop through the processed events in manual order.
-		foreach (
-			array(
-				'core_update_success',
-				'core_update_failure',
-				'comment_notification',
-				'comment_moderation',
-				'new_user_notification',
-				'password_change_notification',
-			) as $event
-		) {
+		// Loop through the processed events.
+		foreach ( digest_get_registered_events() as $event ) {
 			if ( isset( $this->events[ $event ] ) && ! empty( array_filter( $this->events[ $event ] ) ) ) {
 				/**
 				 * Filter the message section

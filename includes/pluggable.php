@@ -91,5 +91,4 @@ if ( ! function_exists( 'wp_password_change_notification' ) ) {
 	}
 }
 
-// Todo: Use this somewhere.
 update_option( 'digest_hooks', $enabled, false );

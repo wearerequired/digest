@@ -46,6 +46,9 @@ $requirements_check = new WP_Requirements_Check( array(
 ) );
 
 if ( $requirements_check->passes() ) {
+	require_once( dirname( __FILE__ ) . '/includes/pluggable.php' );
+	require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+
 	/**
 	 * Get the main plugin instance.
 	 *

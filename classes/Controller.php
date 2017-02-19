@@ -6,7 +6,7 @@
  */
 
 namespace Required\Digest;
-use Required\Digest\Message;
+use Required\Digest\Message\Comment_Moderation;
 use Required\Digest\Message\Comment_Notification;
 use Required\Digest\Message\Core_Update;
 use Required\Digest\Message\Password_Change_Notification;
@@ -23,6 +23,31 @@ class Controller {
 	 * Plugin version.
 	 */
 	const VERSION = '2.0.0-alpha';
+
+	/**
+	 * Registered events.
+	 *
+	 * @var array
+	 */
+	protected $registered_events = array();
+
+	/**
+	 * Returns the URL to the plugin directory
+	 *
+	 * @return string The URL to the plugin directory.
+	 */
+	protected function get_url() {
+		return plugin_dir_url( __DIR__ );
+	}
+
+	/**
+	 * Returns the path to the plugin directory.
+	 *
+	 * @return string The absolute path to the plugin directory.
+	 */
+	protected function get_path() {
+		return plugin_dir_path( __DIR__ );
+	}
 
 	/**
 	 * Adds hooks.
@@ -45,8 +70,32 @@ class Controller {
 		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
 		add_action( 'auto_core_update_email', array( $this, 'auto_core_update_email' ), 10, 3 );
 
-		// Hook into the digest notification messages.
-		add_filter( 'digest_message_section_core_update_success', function ( $content, $entries, $user, $event ) {
+		add_action( 'init', array( $this, 'register_default_events' ) );
+	}
+
+	public function register_event( $event, $callback = null ) {
+		if ( $this->is_registered_event( $event ) ) {
+			return;
+		}
+
+		$this->registered_events[] = $event;
+
+		if ( null !== $callback ) {
+			add_filter( 'digest_message_section_' . $event, $callback, 10, 9999 );
+		}
+	}
+
+	public function is_registered_event( $event ) {
+		return in_array( $event, $this->registered_events, true);
+	}
+
+	public function get_registered_events() {
+		return $this->registered_events;
+	}
+
+	public function register_default_events() {
+		// Register default events.
+		$this->register_event( 'core_update_success', function ( $content, $entries, $user, $event ) {
 			$message = new Core_Update( $entries, $user, $event );
 
 			if ( '' === $content ) {
@@ -54,9 +103,9 @@ class Controller {
 			}
 
 			return $content . $message->get_message();
-		}, 10, 4 );
+		} );
 
-		add_filter( 'digest_message_section_core_update_failure', function ( $content, $entries, $user, $event ) {
+		$this->register_event( 'core_update_failure', function ( $content, $entries, $user, $event ) {
 			$message = new Core_Update( $entries, $user, $event );
 
 			if ( '' === $content ) {
@@ -64,49 +113,40 @@ class Controller {
 			}
 
 			return $content . $message->get_message();
-		}, 10, 4 );
+		} );
 
-		add_filter( 'digest_message_section_comment_moderation', function ( $content, $entries, $user ) {
+		$this->register_event( 'comment_moderation', function ( $content, $entries, $user ) {
 			$message = new Comment_Moderation( $entries, $user );
 
 			return $content . $message->get_message();
-		}, 10, 3 );
+		} );
 
-		add_filter( 'digest_message_section_comment_notification', function ( $content, $entries, $user ) {
+		$this->register_event( 'comment_notification', function ( $content, $entries, $user ) {
 			$message = new Comment_Notification( $entries, $user );
 
 			return $content . $message->get_message();
-		}, 10, 3 );
+		} );
 
-		add_filter( 'digest_message_section_new_user_notification', function ( $content, $entries, $user ) {
-			$message = new User_Notification( $entries, $user );
+		if ( in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
+			$this->register_event( 'new_user_notification', function ( $content, $entries, $user ) {
+				$message = new User_Notification( $entries, $user );
 
-			return $content . $message->get_message();
-		}, 10, 3 );
+				return $content . $message->get_message();
+			} );
+		}
 
-		add_filter( 'digest_message_section_password_change_notification', function ( $content, $entries, $user ) {
-			$message = new Password_Change_Notification( $entries, $user );
+		if ( in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
+			$this->register_event( 'password_change_notification', function ( $content, $entries, $user ) {
+				$message = new Password_Change_Notification( $entries, $user );
 
-			return $content . $message->get_message();
-		}, 10, 3 );
-	}
+				return $content . $message->get_message();
+			} );
+		}
 
-	/**
-	 * Returns the URL to the plugin directory
-	 *
-	 * @return string The URL to the plugin directory.
-	 */
-	protected function get_url() {
-		return plugin_dir_url( __DIR__ );
-	}
-
-	/**
-	 * Returns the path to the plugin directory.
-	 *
-	 * @return string The absolute path to the plugin directory.
-	 */
-	protected function get_path() {
-		return plugin_dir_path( __DIR__ );
+		/**
+		 * Fired after registering the default events.
+		 */
+		do_action( 'digest_register_events' );
 	}
 
 	/**

@@ -7,6 +7,18 @@
 
 use Required\Digest\Queue;
 
+function digest_register_event( $event, $callback ) {
+	digest()->register_event( $event, $callback );
+}
+
+function digest_is_registered_event( $event ) {
+	return digest()->is_registered_event( $event );
+}
+
+function digest_get_registered_events() {
+	return digest()->get_registered_events();
+}
+
 /**
  * Retrieve the digest queue option.
  *
