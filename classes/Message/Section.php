@@ -7,6 +7,8 @@
 
 namespace Required\Digest\Message;
 
+use WP_User;
+
 /**
  * Class for a single section of the digest email.
  *
@@ -31,7 +33,7 @@ abstract class Section implements MessageInterface {
 	 * @since  2.0.0
 	 * @access protected
 	 *
-	 * @var \WP_User|false User object if user exists, false otherwise.
+	 * @var WP_User|false User object if user exists, false otherwise.
 	 */
 	protected $user = false;
 
@@ -53,9 +55,9 @@ abstract class Section implements MessageInterface {
 	 * @since  2.0.0
 	 * @access public
 	 *
-	 * @param \WP_User $user The current user.
+	 * @param WP_User $user The current user.
 	 */
-	public function __construct( \WP_User $user ) {
+	public function __construct( WP_User $user ) {
 		$this->user = $user;
 	}
 }

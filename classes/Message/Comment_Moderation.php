@@ -7,6 +7,9 @@
 
 namespace Required\Digest\Message;
 
+use WP_Comment;
+use WP_User;
+
 /**
  * Comment moderation message class.
  *
@@ -21,10 +24,10 @@ class Comment_Moderation extends Section {
 	 * @since  2.0.0
 	 * @access public
 	 *
-	 * @param array    $entries The comment moderation entries.
-	 * @param \WP_User $user    The current user.
+	 * @param array   $entries The comment moderation entries.
+	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( $entries, \WP_User $user ) {
+	public function __construct( $entries, WP_User $user ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $comment => $time ) {

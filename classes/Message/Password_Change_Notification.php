@@ -1,25 +1,32 @@
 <?php
 /**
- * This file holds the WP_Digest_Comment_Notification_Message class.
+ * Password_Change_Notification class.
  *
  * @package Digest
  */
 
 namespace Required\Digest\Message;
 
+use WP_User;
+
 /**
- * WP_Digest_Password_Change_Notification_Message class.
+ * Password change notification message class.
  *
- * Responsible for creating the password change notification messag.e
+ * Responsible for creating the password change notification message.
+ *
+ * @since 2.0.0
  */
 class Password_Change_Notification extends Section {
 	/**
 	 * Constructor.
 	 *
-	 * @param array    $entries The user notification entries.
-	 * @param \WP_User $user    The current user.
+	 * @since  2.0.0
+	 * @access public
+	 *
+	 * @param array   $entries The user notification entries.
+	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( $entries, \WP_User $user ) {
+	public function __construct( $entries, WP_User $user ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $user_id => $time ) {
@@ -29,6 +36,9 @@ class Password_Change_Notification extends Section {
 
 	/**
 	 * Get password change notification section message.
+	 *
+	 * @since  2.0.0
+	 * @access public
 	 *
 	 * @return string The section message.
 	 */
@@ -45,7 +55,10 @@ class Password_Change_Notification extends Section {
 	}
 
 	/**
-	 * Get the password change notification message.
+	 * Returns the password change notification message.
+	 *
+	 * @since  2.0.0
+	 * @access protected
 	 *
 	 * @param int $user_id The user ID.
 	 * @param int $time    The timestamp when the user changed his password.

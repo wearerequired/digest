@@ -2,10 +2,8 @@
 
 namespace Required\Digest\Tests;
 
-use Required\Digest\Queue;
 use Required\Digest\Setting\FrequencySetting;
-use \WP_UnitTestCase;
-use \MockAction;
+use WP_UnitTestCase;
 
 class Settings extends WP_UnitTestCase {
 	/**

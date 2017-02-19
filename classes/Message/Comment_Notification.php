@@ -7,6 +7,9 @@
 
 namespace Required\Digest\Message;
 
+use WP_Comment;
+use WP_User;
+
 /**
  * Comment_Notification_Message class.
  *
@@ -16,10 +19,10 @@ class Comment_Notification extends Comment_Moderation {
 	/**
 	 * Constructor.
 	 *
-	 * @param array    $entries The comment moderation entries.
-	 * @param \WP_User $user    The current user.
+	 * @param array   $entries The comment moderation entries.
+	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( $entries, \WP_User $user ) {
+	public function __construct( $entries, WP_User $user ) {
 		parent::__construct( $entries, $user );
 
 		$this->entries = array();
@@ -72,12 +75,12 @@ class Comment_Notification extends Comment_Moderation {
 	/**
 	 * Get the comment moderation message.
 	 *
-	 * @param \WP_Comment $comment The comment object.
-	 * @param int         $time    The timestamp when the comment was written.
+	 * @param WP_Comment $comment The comment object.
+	 * @param int        $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment moderation message.
 	 */
-	protected function get_single_message( \WP_Comment $comment, $time ) {
+	protected function get_single_message( WP_Comment $comment, $time ) {
 		if ( null === $comment ) {
 			return '';
 		}

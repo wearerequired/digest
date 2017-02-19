@@ -60,6 +60,8 @@ if ( $requirements_check->passes() ) {
 	/**
 	 * Get the main plugin instance.
 	 *
+	 * @since 2.0.0
+	 *
 	 * @return \Required\Digest\Plugin
 	 */
 	function digest() {

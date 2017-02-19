@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Digest Queue implementation.
+ * Queue class.
  *
  * @package Digest
  */
@@ -19,19 +19,27 @@ namespace Required\Digest;
  * Queue::add( 'test@example.com', 'new_user_notification', $user_id );
  * Queue::add( 'test@example.com', 'password_change_notification', $user_id );
  * Queue::add( 'test@example.com', 'core_update_success', $version );
+ *
+ * @since 1.0.0
  */
 class Queue {
 	/**
 	 * Digest queue option name.
+	 *
+	 * @since 1.0.0
+	 * @access protected
 	 *
 	 * @var string
 	 */
 	protected static $option = 'digest_queue';
 
 	/**
-	 * Retrieve the digest queue option.
+	 * Retrieves the digest queue option.
 	 *
 	 * It can be modified using the `digest_queue` filter.
+	 *
+	 * @since  1.0.0
+	 * @access public
 	 *
 	 * @return array The digest queue.
 	 */
@@ -40,14 +48,20 @@ class Queue {
 	}
 
 	/**
-	 * Clear the digest queue.
+	 * Clears the digest queue.
+	 *
+	 * @since 1.0.0
+	 * @access public
 	 */
 	public static function clear() {
 		delete_option( self::$option );
 	}
 
 	/**
-	 * Add an event to the queue for a specific recipient.
+	 * Adds an event to the queue for a specific recipient.
+	 *
+	 * @since 1.0.0
+	 * @access public
 	 *
 	 * @param string $recipient The recipient's email address.
 	 * @param string $event     The type of the event.

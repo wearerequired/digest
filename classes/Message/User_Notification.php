@@ -1,25 +1,32 @@
 <?php
 /**
- * This file holds the WP_Digest_Comment_Notification_Message class.
+ * User_Notification class.
  *
  * @package Digest
  */
 
 namespace Required\Digest\Message;
 
+use WP_User;
+
 /**
- * User_Notification_Message class.
+ * User notification message class.
  *
- * Responsible for creating the comment notification section
+ * Responsible for creating the comment notification section.
+ *
+ * @since 2.0.0
  */
 class User_Notification extends Section {
 	/**
 	 * Constructor.
 	 *
-	 * @param array    $entries The user notification entries.
-	 * @param \WP_User $user    The current user.
+	 * @since  2.0.0
+	 * @access public
+	 *
+	 * @param array   $entries The user notification entries.
+	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( $entries, \WP_User $user ) {
+	public function __construct( $entries, WP_User $user ) {
 		parent::__construct( $user );
 
 		foreach ( $entries as $user_id => $time ) {
@@ -28,7 +35,10 @@ class User_Notification extends Section {
 	}
 
 	/**
-	 * Get core update section message.
+	 * Returns the core update section message.
+	 *
+	 * @since  2.0.0
+	 * @access public
 	 *
 	 * @return string The section message.
 	 */
@@ -37,7 +47,10 @@ class User_Notification extends Section {
 	}
 
 	/**
-	 * Get the new user notification message.
+	 * Returns the new user notification message.
+	 *
+	 * @since  2.0.0
+	 * @access protected
 	 *
 	 * @param int $user_id The user ID.
 	 * @param int $time    The timestamp when the user signed up.
