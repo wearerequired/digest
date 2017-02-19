@@ -7,8 +7,6 @@
 
 namespace Required\Digest\Message;
 
-use WP_User;
-
 /**
  * User notification message class.
  *
