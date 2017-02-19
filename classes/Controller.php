@@ -275,7 +275,7 @@ class Controller {
 		}
 
 		foreach ( $emails as $recipient ) {
-			WP_Digest_Queue::add( $recipient, 'comment_notification', $comment_id );
+			Queue::add( $recipient, 'comment_notification', $comment_id );
 		}
 
 		return array();
@@ -291,12 +291,11 @@ class Controller {
 	 */
 	public function comment_moderation_recipients( $emails, $comment_id ) {
 		foreach ( $emails as $recipient ) {
-			WP_Digest_Queue::add( $recipient, 'comment_moderation', $comment_id );
+			Queue::add( $recipient, 'comment_moderation', $comment_id );
 		}
 
 		return array();
 	}
-
 
 	/**
 	 * Add core update notifications to our queue.
@@ -334,7 +333,7 @@ class Controller {
 		$version = 'success' === $type ? $core_update->current : $next_user_core_update->current;
 
 		if ( in_array( $type, array( 'success', 'fail', 'manual' ) ) ) {
-			WP_Digest_Queue::add( get_site_option( 'admin_email' ), 'core_update_' . $type, $version );
+			Queue::add( get_site_option( 'admin_email' ), 'core_update_' . $type, $version );
 			$email['to'] = array();
 		}
 
