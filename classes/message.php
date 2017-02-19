@@ -100,5 +100,3 @@ class Message {
 		return $salutation . $message . $valediction;
 	}
 }
-
-add_action( 'digest_event', array( 'Required\\Digest\\Cron', 'init' ) );
