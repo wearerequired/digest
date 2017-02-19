@@ -85,8 +85,6 @@ class Cron {
 			return;
 		}
 
-		require_once( dirname( __FILE__ ) . '/message.php' );
-
 		// Set up the correct subject.
 		$subject = ( 'daily' === self::$options['period'] ) ? __( 'Today on %s', 'digest' ) : __( 'Past Week on %s', 'digest' );
 
@@ -99,21 +97,7 @@ class Cron {
 		 */
 		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
-		// Loop through the queue.
-		foreach ( $queue as $recipient => $items ) {
-			$message = new Message( $recipient, $items );
-
-			/**
-			 * Filter the digest message.
-			 *
-			 * @param string $message   The message to be sent.
-			 * @param string $recipient The recipient's email address.
-			 */
-			$message = apply_filters( 'digest_cron_email_message', $message->get_message(), $recipient );
-
-			// Send digest.
-			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
-		}
+		wp_digest()->send_email( $subject );
 
 		// Clear queue.
 		Queue::clear();

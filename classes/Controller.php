@@ -339,4 +339,31 @@ class Controller {
 
 		return $email;
 	}
+
+	/**
+	 * @param string $subject Email subject
+	 */
+	public function send_email( $subject ) {
+		$queue = Queue::get();
+
+		if ( empty( $queue ) ) {
+			return;
+		}
+
+		// Loop through the queue.
+		foreach ( $queue as $recipient => $items ) {
+			$message = new Message( $recipient, $items );
+
+			/**
+			 * Filter the digest message.
+			 *
+			 * @param string $message   The message to be sent.
+			 * @param string $recipient The recipient's email address.
+			 */
+			$message = apply_filters( 'digest_cron_email_message', $message->get_message(), $recipient );
+
+			// Send digest.
+			wp_mail( $recipient, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+		}
+	}
 }
