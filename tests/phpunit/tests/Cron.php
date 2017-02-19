@@ -90,7 +90,7 @@ class Cron extends WP_UnitTestCase {
 
 	public function test_run_cron_wrong_day() {
 		update_option( 'digest_frequency', array(
-			'period' => 'daily',
+			'period' => 'weekly',
 			'hour'   => date( 'H' ),
 			'day'    => date( 'w' ) + 1,
 		) );
