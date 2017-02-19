@@ -34,10 +34,7 @@ class Cron {
 			'day'    => absint( get_option( 'start_of_week' ) ),
 		) );
 
-		if ( self::ready() ) {
-			self::load_globals();
-			self::run();
-		}
+		self::ready() && self::run();
 	}
 
 	/**
@@ -63,25 +60,10 @@ class Cron {
 	}
 
 	/**
-	 * Load required files and set up needed globals.
-	 */
-	protected static function load_globals() {
-		// Load WP_Locale and other needed functions.
-		require_once( ABSPATH . WPINC . '/pluggable.php' );
-		require_once( ABSPATH . WPINC . '/locale.php' );
-		require_once( ABSPATH . WPINC . '/rewrite.php' );
-
-		$GLOBALS['wp_locale']  = new \WP_Locale();
-		$GLOBALS['wp_rewrite'] = new \WP_Rewrite();
-	}
-
-	/**
 	 * Run Boy Run
 	 */
 	protected static function run() {
-		$queue = Queue::get();
-
-		if ( empty( $queue ) ) {
+		if ( empty( Queue::get() ) ) {
 			return;
 		}
 
