@@ -1,16 +1,21 @@
 <?php
 /**
  * Plugin Name: Digest Notifications
- * Plugin URI:  https://github.com/wearerequired/digest/
- * Description: Get a daily/weekly digest of what's happening on your site instead of receiving a single email each
- * time. Version:     1.2.1 Author:      required+ Author URI:  http://required.ch License:     GPLv2+ Text Domain:
- * digest Domain Path: /languages
+ * Plugin URI:  https://required.com/services/wordpress-plugins/digest-notifications/
+ * Description: Get a daily or weekly digest of what's happening on your site
+ *              instead of receiving a single email each time.
+ * Version:     1.2.1
+ * Author:      required
+ * Author URI:  https://required.com
+ * License:     GPLv2+
+ * Text Domain: digest
+ * Domain Path: /languages
  *
  * @package WP_Digest
  */
 
 /**
- * Copyright (c) 2015 required+ (email : support@required.ch)
+ * Copyright (c) 2015-2107 required (email : support@required.ch)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -29,20 +34,18 @@
 
 defined( 'WPINC' ) or die;
 
-include( dirname( __FILE__ ) . '/lib/requirements-check.php' );
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	include( __DIR__ . '/vendor/autoload.php' );
+}
 
-$wp_digest_requirements_check = new WP_Digest_Requirements_Check( array(
+$requirements_check = new WP_Requirements_Check( array(
 	'title' => 'Digest Notifications',
 	'php'   => '5.3',
-	'wp'    => '4.0',
+	'wp'    => '4.4',
 	'file'  => __FILE__,
 ) );
 
-if ( $wp_digest_requirements_check->passes() ) {
-	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-		include( __DIR__ . '/vendor/autoload.php' );
-	}
-
+if ( $requirements_check->passes() ) {
 	/**
 	 * Get the main plugin instance.
 	 *
@@ -59,12 +62,10 @@ if ( $wp_digest_requirements_check->passes() ) {
 	}
 
 	// Initialize the plugin.
-	add_action( 'plugins_loaded', function () {
-		wp_digest()->add_hooks();
-	} );
+	add_action( 'plugins_loaded', array( wp_digest(), 'add_hooks' ) );
 
 	register_activation_hook( __FILE__, array( wp_digest(), 'activate_plugin' ) );
 	register_deactivation_hook( __FILE__, array( wp_digest(), 'deactivate_plugin' ) );
 }
 
-unset( $wp_digest_requirements_check );
+unset( $requirements_check );

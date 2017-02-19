@@ -23,11 +23,5 @@ module.exports = {
 			'!vendor/**'
 		],
 		dest: 'release/<%= package.version %>/'
-	},
-	svn:  {
-		cwd:    'release/<%= package.version %>/',
-		expand: true,
-		src:    '**',
-		dest:   'release/svn/'
 	}
 };
