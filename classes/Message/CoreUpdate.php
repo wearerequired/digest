@@ -18,23 +18,37 @@ class CoreUpdate extends Section {
 	/**
 	 * The comment moderation entries.
 	 *
+	 * @since  2.0.0
+	 * @access protected
+	 *
 	 * @var array
 	 */
 	protected $entries;
 
 	/**
+	 * The event type.
+	 *
+	 * @since  2.0.0
+	 * @access protected
+	 *
+	 * @var string
+	 */
+	protected $event;
+
+	/**
 	 * Constructor.
+	 *
+	 * @since  2.0.0
+	 * @access protected
 	 *
 	 * @param array   $entries The core update entries.
 	 * @param WP_User $user    The current user.
 	 * @param string  $event   The current event.
 	 */
 	public function __construct( $entries, WP_User $user = null, $event ) {
-		parent::__construct( $user );
+		parent::__construct( $entries, $user );
 
-		foreach ( $entries as $version => $time ) {
-			$this->entries[] = $this->get_single_message( $version, $time, $event );
-		}
+		$this->event = $event;
 	}
 
 	/**
@@ -51,12 +65,11 @@ class CoreUpdate extends Section {
 	 *
 	 * @param string $version The version WordPress was updated to.
 	 * @param int    $time    The timestamp when the update happened.
-	 * @param string $event   The current event.
 	 *
 	 * @return string The core update message.
 	 */
-	protected function get_single_message( $version, $time, $event ) {
-		if ( 'core_update_success' === $event ) {
+	protected function get_single_message( $version, $time ) {
+		if ( 'core_update_success' === $this->event ) {
 			return $this->get_core_update_success_message( $version, $time );
 		} else {
 			return $this->get_core_update_fail_message( $version, $time );

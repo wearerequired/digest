@@ -48,6 +48,19 @@ abstract class Section implements MessageInterface {
 	abstract public function get_message();
 
 	/**
+	 * Returns a single message in the section.
+	 *
+	 * @since  2.0.0
+	 * @access protected
+	 *
+	 * @param string|int $entry The single entry item. For example a user ID or comment ID.
+	 * @param int        $time  The timestamp when the update happened.
+	 *
+	 * @return string The single message.
+	 */
+	abstract protected function get_single_message( $entry, $time );
+
+	/**
 	 * Constructor.
 	 *
 	 * Sets the current user.
@@ -55,9 +68,14 @@ abstract class Section implements MessageInterface {
 	 * @since  2.0.0
 	 * @access public
 	 *
-	 * @param WP_User $user The current user.
+	 * @param array   $entries The message entries.
+	 * @param WP_User $user    The current user.
 	 */
-	public function __construct( WP_User $user = null ) {
+	public function __construct( $entries, WP_User $user = null ) {
+		foreach ( $entries as $entry => $time ) {
+			$this->entries[] = $this->get_single_message( $entry, $time );
+		}
+
 		$this->user = $user;
 	}
 }

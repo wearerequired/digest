@@ -17,21 +17,6 @@ use WP_User;
  */
 class CommentNotification extends CommentModeration {
 	/**
-	 * Constructor.
-	 *
-	 * @param array   $entries The comment moderation entries.
-	 * @param WP_User $user    The current user.
-	 */
-	public function __construct( $entries, WP_User $user = null ) {
-		parent::__construct( $entries, $user );
-
-		$this->entries = array();
-		foreach ( $entries as $comment => $time ) {
-			$this->entries[] = $this->get_single_message( get_comment( $comment ), $time );
-		}
-	}
-
-	/**
 	 * Get comment moderation section message.
 	 *
 	 * @return string The section message.
@@ -75,12 +60,14 @@ class CommentNotification extends CommentModeration {
 	/**
 	 * Get the comment moderation message.
 	 *
-	 * @param WP_Comment $comment The comment object.
-	 * @param int        $time    The timestamp when the comment was written.
+	 * @param int $comment The comment ID.
+	 * @param int $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment moderation message.
 	 */
-	protected function get_single_message( WP_Comment $comment, $time ) {
+	protected function get_single_message( $comment, $time ) {
+		$comment = get_comment( $comment );
+
 		if ( null === $comment ) {
 			return '';
 		}

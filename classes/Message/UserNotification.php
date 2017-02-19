@@ -18,23 +18,6 @@ use WP_User;
  */
 class UserNotification extends Section {
 	/**
-	 * Constructor.
-	 *
-	 * @since  2.0.0
-	 * @access public
-	 *
-	 * @param array   $entries The user notification entries.
-	 * @param WP_User $user    The current user.
-	 */
-	public function __construct( $entries, WP_User $user = null ) {
-		parent::__construct( $user );
-
-		foreach ( $entries as $user_id => $time ) {
-			$this->entries[] = $this->get_single_message( $user_id, $time );
-		}
-	}
-
-	/**
 	 * Returns the core update section message.
 	 *
 	 * @since  2.0.0

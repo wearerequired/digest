@@ -19,23 +19,6 @@ use WP_User;
  */
 class CommentModeration extends Section {
 	/**
-	 * Constructor.
-	 *
-	 * @since  2.0.0
-	 * @access public
-	 *
-	 * @param array   $entries The comment moderation entries.
-	 * @param WP_User $user    The current user.
-	 */
-	public function __construct( $entries, WP_User $user = null ) {
-		parent::__construct( $user );
-
-		foreach ( $entries as $comment => $time ) {
-			$this->entries[] = $this->get_single_message( get_comment( $comment ), $time );
-		}
-	}
-
-	/**
 	 * Returns the comment moderation section message.
 	 *
 	 * @since  2.0.0
@@ -85,12 +68,13 @@ class CommentModeration extends Section {
 	 * @since  2.0.0
 	 * @access protected
 	 *
-	 * @param WP_Comment $comment The comment object.
-	 * @param int        $time    The timestamp when the comment was written.
+	 * @param int $comment The comment ID.
+	 * @param int $time    The timestamp when the comment was written.
 	 *
 	 * @return string The comment moderation message.
 	 */
-	protected function get_single_message( WP_Comment $comment, $time ) {
+	protected function get_single_message( $comment, $time ) {
+		$comment = get_comment( $comment );
 		if ( null === $comment || '0' !== $comment->comment_approved ) {
 			return '';
 		}
