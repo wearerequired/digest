@@ -2,7 +2,7 @@
 /**
  * This file holds the abstract digest section message class.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 namespace Required\Digest\Message;

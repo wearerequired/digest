@@ -6,7 +6,7 @@
  * we store that information in an option.
  * This way the plugin knows which hooks work and which don't.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 use Required\Digest\Queue;

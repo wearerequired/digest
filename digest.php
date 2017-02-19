@@ -11,7 +11,7 @@
  * Text Domain: digest
  * Domain Path: /languages
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 /**
@@ -32,20 +32,28 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-defined( 'WPINC' ) or die;
+defined( 'ABSPATH' ) or die;
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	include( __DIR__ . '/vendor/autoload.php' );
 }
 
+if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
+	trigger_error( sprintf( '%s does not exist. Check Composer\'s autoloader.',  'Required\\Digest\\Plugin' ) );
+	return;
+}
+
 $requirements_check = new WP_Requirements_Check( array(
-	'title' => 'Digest Notifications',
+	'title' => __( 'Digest Notifications', 'digest' ),
 	'php'   => '5.3',
 	'wp'    => '4.4',
 	'file'  => __FILE__,
 ) );
 
 if ( $requirements_check->passes() ) {
+	define( 'Required\\Digest\\PLUGIN_FILE', __FILE__ );
+	define( 'Required\\Digest\\PLUGIN_DIR', __DIR__ );
+
 	require_once( dirname( __FILE__ ) . '/includes/pluggable.php' );
 	require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 
@@ -58,7 +66,7 @@ if ( $requirements_check->passes() ) {
 		static $plugin = null;
 
 		if ( null === $plugin ) {
-			$plugin = new \Required\Digest\Plugin();
+			$plugin = new \Required\Digest\Plugin( new \Required\Digest\Event\Registry() );
 		}
 
 		return $plugin;

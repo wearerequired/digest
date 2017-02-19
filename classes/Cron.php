@@ -1,20 +1,25 @@
 <?php
 /**
- * WP Digest Cron implementation.
+ * Cron class.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 namespace Required\Digest;
 
 /**
- * Cron class.
+ * Digest Cron implementation.
  *
- * It's run every hour.
+ * By default, the cron is run every hour.
+ *
+ * @since 2.0.0
  */
 class Cron {
 	/**
 	 * The plugin options.
+	 *
+	 * @since  2.0.0
+	 * @access protected
 	 *
 	 * @var array The plugin options.
 	 */
@@ -22,6 +27,9 @@ class Cron {
 
 	/**
 	 * This method hooks to the cron action to process the queue.
+	 *
+	 * @since  1.0.0
+	 * @access public
 	 */
 	public static function init() {
 		self::$options = get_option( 'digest_frequency', array(
@@ -35,6 +43,9 @@ class Cron {
 
 	/**
 	 * Checks if it's already time to send the emails.
+	 *
+	 * @since  1.0.0
+	 * @access protected
 	 *
 	 * @return bool True if the queue can be processed, false otherwise.
 	 */
@@ -56,7 +67,12 @@ class Cron {
 	}
 
 	/**
-	 * Run Boy Run
+	 * Processes the queue and sends the emails.
+	 *
+	 * Run Boy Run.
+	 *
+	 * @since  1.0.0
+	 * @access protected
 	 */
 	protected static function run() {
 		$queue = Queue::get();

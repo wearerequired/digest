@@ -2,7 +2,7 @@
 /**
  * WP Digest Queue implementation.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 namespace Required\Digest;

@@ -2,7 +2,7 @@
 /**
  * This file holds the Comment_Notification_Message class.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 namespace Required\Digest\Message;

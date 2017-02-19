@@ -2,15 +2,13 @@
 /**
  * Main plugin file.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 namespace Required\Digest;
-use Required\Digest\Message\Comment_Moderation;
-use Required\Digest\Message\Comment_Notification;
-use Required\Digest\Message\Core_Update;
-use Required\Digest\Message\Password_Change_Notification;
-use Required\Digest\Message\User_Notification;
+
+use Required\Digest\Event\RegistryInterface;
+use Required\Digest\Setting\FrequencySetting;
 
 /**
  * WP_Digest_Plugin class.
@@ -21,32 +19,40 @@ use Required\Digest\Message\User_Notification;
 class Plugin {
 	/**
 	 * Plugin version.
+	 *
+	 * @since 2.0.0
 	 */
 	const VERSION = '2.0.0-alpha';
 
 	/**
-	 * Registered events.
+	 * Event registry.
 	 *
-	 * @var array
+	 * @since 2.0.0
+	 * @access protected
+	 *
+	 * @var RegistryInterface
 	 */
-	protected $registered_events = array();
+	protected $event_registry;
 
 	/**
-	 * Returns the URL to the plugin directory
+	 * Plugin constructor.
 	 *
-	 * @return string The URL to the plugin directory.
+	 * @since  2.0.0
+	 * @access public
+	 *
+	 * @param RegistryInterface $event_registry The event registry to use.
 	 */
-	protected function get_url() {
-		return plugin_dir_url( __DIR__ );
+	public function __construct( RegistryInterface $event_registry ) {
+		$this->event_registry = $event_registry;
 	}
 
 	/**
-	 * Returns the path to the plugin directory.
+	 * Returns the digest event registry.
 	 *
-	 * @return string The absolute path to the plugin directory.
+	 * @return RegistryInterface
 	 */
-	protected function get_path() {
-		return plugin_dir_path( __DIR__ );
+	public function event_registry() {
+		return $this->event_registry;
 	}
 
 	/**
@@ -55,98 +61,15 @@ class Plugin {
 	public function add_hooks() {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 
-		// Settings screen.
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_init', array( $this, 'add_settings' ) );
-
-		// Add an action link pointing to the options page.
-		add_action( 'plugin_action_links_' . plugin_basename( $this->get_path() ) . '/digest.php', array(
-			$this,
-			'plugin_action_links',
-		) );
+		$frequency_setting = new FrequencySetting();
+		add_action( 'init', array( $frequency_setting, 'register' ) );
 
 		// Hook into WordPress functions for the notifications.
 		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
 		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
 		add_action( 'auto_core_update_email', array( $this, 'auto_core_update_email' ), 10, 3 );
 
-		add_action( 'init', array( $this, 'register_default_events' ) );
-	}
-
-	public function register_event( $event, $callback = null ) {
-		if ( $this->is_registered_event( $event ) ) {
-			return;
-		}
-
-		$this->registered_events[] = $event;
-
-		if ( null !== $callback ) {
-			add_filter( 'digest_message_section_' . $event, $callback, 10, 9999 );
-		}
-	}
-
-	public function is_registered_event( $event ) {
-		return in_array( $event, $this->registered_events, true);
-	}
-
-	public function get_registered_events() {
-		return $this->registered_events;
-	}
-
-	public function register_default_events() {
-		// Register default events.
-		$this->register_event( 'core_update_success', function ( $content, $entries, $user, $event ) {
-			$message = new Core_Update( $entries, $user, $event );
-
-			if ( '' === $content ) {
-				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
-			}
-
-			return $content . $message->get_message();
-		} );
-
-		$this->register_event( 'core_update_failure', function ( $content, $entries, $user, $event ) {
-			$message = new Core_Update( $entries, $user, $event );
-
-			if ( '' === $content ) {
-				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
-			}
-
-			return $content . $message->get_message();
-		} );
-
-		$this->register_event( 'comment_moderation', function ( $content, $entries, $user ) {
-			$message = new Comment_Moderation( $entries, $user );
-
-			return $content . $message->get_message();
-		} );
-
-		$this->register_event( 'comment_notification', function ( $content, $entries, $user ) {
-			$message = new Comment_Notification( $entries, $user );
-
-			return $content . $message->get_message();
-		} );
-
-		if ( in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
-			$this->register_event( 'new_user_notification', function ( $content, $entries, $user ) {
-				$message = new User_Notification( $entries, $user );
-
-				return $content . $message->get_message();
-			} );
-		}
-
-		if ( in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
-			$this->register_event( 'password_change_notification', function ( $content, $entries, $user ) {
-				$message = new Password_Change_Notification( $entries, $user );
-
-				return $content . $message->get_message();
-			} );
-		}
-
-		/**
-		 * Fired after registering the default events.
-		 */
-		do_action( 'digest_register_events' );
+		add_action( 'init', array( $this->event_registry(), 'register_default_events' ) );
 	}
 
 	/**
@@ -173,153 +96,6 @@ class Plugin {
 	 */
 	public function deactivate_plugin() {
 		wp_unschedule_event( wp_next_scheduled( 'digest_event' ), 'digest_event' );
-	}
-
-	/**
-	 * Enqueue scripts and styles.
-	 *
-	 * @param string $hook_suffix The current admin page.
-	 */
-	public function admin_enqueue_scripts( $hook_suffix ) {
-		if ( 'options-general.php' === $hook_suffix ) {
-			$suffix = SCRIPT_DEBUG ? '' : '.min';
-
-			wp_enqueue_script( 'digest', $this->get_url() . 'js/digest' . $suffix . '.js', array(), self::VERSION, true );
-			wp_enqueue_style( 'digest', $this->get_url() . 'css/digest' . $suffix . '.css', array(), self::VERSION );
-		}
-	}
-
-	/**
-	 * Create settings sections and fields.
-	 */
-	public function add_settings() {
-		add_settings_section(
-			'digest_notifications',
-			__( 'Email Notifications', 'digest' ),
-			function () {
-				esc_html_e( "You get a daily or weekly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
-			},
-			'general'
-		);
-
-		add_settings_field(
-			'digest_frequency',
-			sprintf( '<label for="digest_frequency_period" id="digest">%s</label>', __( 'Frequency', 'digest' ) ),
-			array( $this, 'settings_field_frequency' ),
-			'general',
-			'digest_notifications'
-		);
-
-		register_setting( 'general', 'digest_frequency', array( $this, 'sanitize_frequency_option' ) );
-	}
-
-	/**
-	 * Settings field callback that prints the actual input fields.
-	 */
-	public function settings_field_frequency() {
-		$options     = get_option( 'digest_frequency', array(
-			'period' => 'weekly',
-			'hour'   => 18,
-			'day'    => absint( get_option( 'start_of_week' ) ),
-		) );
-		$time_format = get_option( 'time_format' );
-		?>
-		<p>
-			<?php esc_html_e( 'Send me a digest of new site activity', 'digest' ); ?>
-			<select name="digest_frequency[period]" id="digest_frequency_period">
-				<option value="daily" <?php selected( 'daily', $options['period'] ); ?>>
-					<?php echo esc_attr_x( 'every day', 'frequency', 'digest' ); ?>
-				</option>
-				<option value="weekly" <?php selected( 'weekly', $options['period'] ); ?>>
-					<?php echo esc_attr_x( 'every week', 'frequency', 'digest' ); ?>
-				</option>
-			</select>
-			<span id="digest_frequency_hour_wrapper">
-				<?php esc_html_e( 'at', 'digest' ); ?>
-				<select name="digest_frequency[hour]" id="digest_frequency_hour">
-					<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
-						<option value="<?php echo esc_attr( $hour ); ?>" <?php selected( $hour, $options['hour'] ); ?>>
-							<?php echo esc_html( date( $time_format, mktime( $hour, 0, 0, 1, 1, 2011 ) ) ); ?>
-						</option>
-					<?php endfor; ?>
-				</select>
-				<?php esc_html_e( "o'clock", 'digest' ); ?>
-			</span>
-			<span id="digest_frequency_day_wrapper" <?php echo 'weekly' !== $options['period'] ? 'class="digest-hidden"' : ''; ?>>
-				<?php
-				esc_html_e( 'on', 'digest' );
-
-				global $wp_locale;
-				?>
-				<select name="digest_frequency[day]" id="digest_frequency_day">
-					<?php for ( $day_index = 0; $day_index <= 6; $day_index ++ ) : ?>
-						<option value="<?php echo esc_attr( $day_index ); ?>" <?php selected( $day_index, $options['day'] ); ?>>
-							<?php echo esc_html( $wp_locale->get_weekday( $day_index ) ); ?>
-						</option>
-					<?php endfor; ?>
-				</select>
-			</span>
-		</p>
-		<?php
-	}
-
-	/**
-	 * Sanitize the digest frequency option.
-	 *
-	 * @param array $value The POST da.
-	 *
-	 * @return array The sanitized frequency option.
-	 */
-	public function sanitize_frequency_option( array $value ) {
-		if ( 'daily' !== $value['period'] ) {
-			$value['period'] = 'weekly';
-		}
-
-		$value['hour'] = filter_var(
-			$value['hour'],
-			FILTER_VALIDATE_INT,
-			array(
-				'options' => array(
-					'default'   => 18,
-					'min_range' => 0,
-					'max_range' => 23,
-				),
-			)
-		);
-
-		$value['day'] = filter_var(
-			$value['day'],
-			FILTER_VALIDATE_INT,
-			array(
-				'options' => array(
-					'default'   => get_option( 'start_of_week', 0 ),
-					'min_range' => 0,
-					'max_range' => 6,
-				),
-			)
-		);
-
-		return $value;
-	}
-
-	/**
-	 * Add settings action link to the plugins page.
-	 *
-	 * @param array $links Plugin action links.
-	 *
-	 * @return array The modified plugin action links
-	 */
-	public function plugin_action_links( array $links ) {
-		return array_merge(
-			array(
-				'settings' => sprintf(
-					'<a href="%s">%s</a>',
-					esc_url( admin_url( 'options-general.php#digest' ) ),
-					__( 'Settings', 'digest' )
-				),
-			),
-			$links
-		);
 	}
 
 	/**
@@ -393,7 +169,7 @@ class Plugin {
 	 * This is only done when the update failed or was successful.
 	 * If there was a critical error, WordPress should still send the email immediately.
 	 *
-	 * @see WP_Upgrader::send_email()
+	 * @see WP_Automatic_Updater::send_email()
 	 *
 	 * @param array  $email       {
 	 *                            Array of email arguments that will be passed to wp_mail().
@@ -412,15 +188,15 @@ class Plugin {
 	 * @return array The modified $email array without a recipient.
 	 */
 	public function auto_core_update_email( array $email, $type, $core_update ) {
-		$next_user_core_update = get_preferred_from_update_core();
+		$next_core_update = get_preferred_from_update_core();
 
 		// If the update transient is empty, use the update we just performed.
-		if ( ! $next_user_core_update ) {
-			$next_user_core_update = $core_update;
+		if ( ! $next_core_update ) {
+			$next_core_update = $core_update;
 		}
 
 		// If the auto update is not to the latest version, say that the current version of WP is available instead.
-		$version = 'success' === $type ? $core_update->current : $next_user_core_update->current;
+		$version = 'success' === $type ? $core_update->current : $next_core_update->current;
 
 		if ( in_array( $type, array( 'success', 'fail', 'manual' ) ) ) {
 			Queue::add( get_site_option( 'admin_email' ), 'core_update_' . $type, $version );
@@ -449,7 +225,7 @@ class Plugin {
 			/**
 			 * Filter the digest message.
 			 *
-			 * @param string $digest   The message to be sent.
+			 * @param string $digest    The message to be sent.
 			 * @param string $recipient The recipient's email address.
 			 */
 			$digest = apply_filters( 'digest_cron_email_message', $digest->get_message(), $recipient );

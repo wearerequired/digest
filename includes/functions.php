@@ -2,27 +2,55 @@
 /**
  * Template Tags
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 use Required\Digest\Queue;
 
+/**
+ * Registers an event for the digest.
+ *
+ * @since 2.0.0
+ *
+ * @param string   $event    Event name.
+ * @param callable $callback Optional. Callback to be used when sending the digest.
+ *
+ * @return void
+ */
 function digest_register_event( $event, $callback ) {
-	digest()->register_event( $event, $callback );
-}
-
-function digest_is_registered_event( $event ) {
-	return digest()->is_registered_event( $event );
-}
-
-function digest_get_registered_events() {
-	return digest()->get_registered_events();
+	digest()->event_registry()->register_event( $event, $callback );
 }
 
 /**
- * Retrieve the digest queue option.
+ * Determines if an event has been registered.
+ *
+ * @since 2.0.0
+ *
+ * @param string $event Event name.
+ *
+ * @return bool True if the event has been registered, false otherwise.
+ */
+function digest_is_registered_event( $event ) {
+	return digest()->event_registry()->is_registered_event( $event );
+}
+
+/**
+ * Returns all registered events.
+ *
+ * @since 2.0.0
+ *
+ * @return array The registered events.
+ */
+function digest_get_registered_events() {
+	return digest()->event_registry()->get_registered_events();
+}
+
+/**
+ * Retrieves the digest queue.
  *
  * It can be modified using the `digest_queue` filter.
+ *
+ * @since 1.0.0
  *
  * @return array The digest queue.
  */
@@ -31,7 +59,9 @@ function digest_queue_get() {
 }
 
 /**
- * Add an event to the queue for a specific recipient.
+ * Adds an event to the queue for a specific recipient.
+ *
+ * @since 1.0.0
  *
  * @param string $recipient The recipient's email address.
  * @param string $event     The type of the event.
@@ -42,7 +72,9 @@ function digest_queue_add( $recipient, $event, $data ) {
 }
 
 /**
- * Clear the digest queue.
+ * Clears the digest queue.
+ *
+ * @since 1.0.0
  */
 function digest_queue_clear() {
 	Queue::clear();

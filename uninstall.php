@@ -2,7 +2,7 @@
 /**
  * Delete all traces on uninstall.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 defined( 'WPINC' ) or die;

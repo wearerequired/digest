@@ -2,7 +2,7 @@
 /**
  * This file holds the Core_Update_Message class.
  *
- * @package WP_Digest
+ * @package Digest
  */
 
 namespace Required\Digest\Message;
