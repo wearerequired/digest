@@ -3,9 +3,10 @@
 namespace Required\Digest\Tests;
 
 use MockPHPMailer;
+use Required\Digest\Event\Registry;
 use Required\Digest\Queue;
-use \WP_UnitTestCase;
-use \MockAction;
+use WP_UnitTestCase;
+use MockAction;
 
 class Plugin extends WP_UnitTestCase {
 	public function test_plugin_is_activated() {
@@ -58,5 +59,62 @@ class Plugin extends WP_UnitTestCase {
 
 		$this->assertSame( 'Foo', $mailer->get_sent()->subject );
 		$this->assertContains( 'Hi there', $mailer->get_sent()->body );
+	}
+
+	public function test_load_textdomain() {
+		$action = new MockAction();
+
+		add_action( 'load_textdomain', array( $action, 'action' ) );
+		digest()->load_textdomain();
+		remove_action( 'load_textdomain', array( $action, 'action' ) );
+
+		$this->assertGreaterThan( 0, $action->get_call_count() );
+	}
+
+	public function test_event_registry() {
+		$registry = new Registry();
+		$plugin   = new \Required\Digest\Plugin( $registry );
+
+		$this->assertSame( $registry, $plugin->event_registry() );
+	}
+
+	public function test_add_hooks() {
+		$registry = new Registry();
+		$plugin   = new \Required\Digest\Plugin( $registry );
+
+		$plugin->add_hooks();
+
+		$this->assertNotFalse(
+			has_action( 'init', array(
+				$plugin,
+				'load_textdomain',
+			) )
+		);
+
+		$this->assertNotFalse(
+			has_action( 'comment_notification_recipients', array(
+				$plugin,
+				'comment_notification_recipients',
+			) )
+		);
+		$this->assertNotFalse(
+			has_action( 'comment_moderation_recipients', array(
+				$plugin,
+				'comment_moderation_recipients',
+			) )
+		);
+		$this->assertNotFalse(
+			has_action( 'auto_core_update_email', array(
+				$plugin,
+				'auto_core_update_email',
+			) )
+		);
+
+		$this->assertNotFalse(
+			has_action( 'init', array(
+				$registry,
+				'register_default_events',
+			) )
+		);
 	}
 }
