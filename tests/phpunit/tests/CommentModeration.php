@@ -4,7 +4,6 @@ namespace Required\Digest\Tests;
 
 use \WP_UnitTestCase;
 use \Required\Digest\Message\CommentModeration as CommentModerationMessage;
-use WP_User;
 
 class CommentModeration extends WP_UnitTestCase {
 	public function test_no_entries() {

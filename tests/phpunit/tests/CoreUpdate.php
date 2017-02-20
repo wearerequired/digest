@@ -2,8 +2,8 @@
 
 namespace Required\Digest\Tests;
 
-use \WP_UnitTestCase;
-use \Required\Digest\Message\CoreUpdate as CoreUpdateMessage;
+use Required\Digest\Message\CoreUpdate as CoreUpdateMessage;
+use WP_UnitTestCase;
 
 class CoreUpdate extends WP_UnitTestCase {
 	public function test_no_entries() {
