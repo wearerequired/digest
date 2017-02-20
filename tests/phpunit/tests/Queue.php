@@ -107,6 +107,143 @@ class Queue extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_comment_notification_recipients_returns_empty_aray() {
+		$post_id    = self::factory()->post->create();
+		$comment_id = self::factory()->comment->create( array(
+			'comment_post_ID' => $post_id,
+		) );
+
+		$actual = digest()->comment_notification_recipients( array(
+			'foo@example.com',
+			'bar@example.com',
+		), $comment_id );
+
+		$this->assertEmpty( $actual );
+	}
+
+	public function test_comment_notification_recipients() {
+		$post_id    = self::factory()->post->create();
+		$comment_id = self::factory()->comment->create( array(
+			'comment_post_ID' => $post_id,
+		) );
+
+		digest()->comment_notification_recipients( array(
+			'foo@example.com',
+			'bar@example.com',
+		), $comment_id );
+
+		$expected = array(
+			'foo@example.com' => array(
+				array(
+					current_time( 'timestamp'),
+					'comment_notification',
+					$comment_id,
+				),
+			),
+			'bar@example.com' => array(
+				array(
+					current_time( 'timestamp'),
+					'comment_notification',
+					$comment_id,
+				),
+			),
+		);
+
+		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
+	}
+
+	public function test_comment_notification_recipients_comment_by_author() {
+		$user_id    = self::factory()->user->create( array(
+			'user_email' => 'foo@example.com',
+		) );
+		$post_id    = self::factory()->post->create( array(
+			'post_author' => $user_id,
+		) );
+		$comment_id = self::factory()->comment->create( array(
+			'comment_post_ID' => $post_id,
+			'user_id'         => $user_id,
+		) );
+
+		digest()->comment_notification_recipients( array(
+			'foo@example.com',
+			'bar@example.com',
+		), $comment_id );
+
+		$expected = array(
+			'foo@example.com' => array(
+				array(
+					current_time( 'timestamp'),
+					'comment_notification',
+					$comment_id,
+				),
+			)
+		);
+
+		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
+	}
+
+	public function test_comment_notification_recipients_comment_by_current_user() {
+		$user_id    = self::factory()->user->create( array(
+			'user_email' => 'foo@example.com',
+		) );
+		$post_id    = self::factory()->post->create( array(
+			'post_author' => $user_id,
+		) );
+		$comment_id = self::factory()->comment->create( array(
+			'comment_post_ID' => $post_id,
+		) );
+
+		wp_set_current_user( $user_id );
+
+		digest()->comment_notification_recipients( array(
+			'foo@example.com',
+			'bar@example.com',
+		), $comment_id );
+
+		$expected = array(
+			'foo@example.com' => array(
+				array(
+					current_time( 'timestamp'),
+					'comment_notification',
+					$comment_id,
+				),
+			)
+		);
+
+		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
+	}
+
+	public function test_comment_notification_recipients_author_has_no_capabilities() {
+		$user_id    = self::factory()->user->create( array(
+			'user_email' => 'foo@example.com',
+		) );
+		$post_id    = self::factory()->post->create( array(
+			'post_author' => $user_id,
+			'post_status' => 'private',
+			'post_type'   => 'revision',
+		) );
+		$comment_id = self::factory()->comment->create( array(
+			'comment_post_ID' => $post_id,
+		) );
+
+		digest()->comment_notification_recipients( array(
+			'foo@example.com',
+			'bar@example.com',
+		), $comment_id );
+
+		$expected = array(
+			'foo@example.com' => array(
+				array(
+					current_time( 'timestamp' ),
+					'comment_notification',
+					$comment_id,
+				),
+			),
+		);
+
+		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
+	}
+
 	public function test_comment_moderation_recipients() {
 		digest()->comment_moderation_recipients( array(
 			'foo@example.com',

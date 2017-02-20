@@ -116,23 +116,29 @@ class Plugin {
 		/** This filters is documented in wp-includes/pluggable.php */
 		$notify_author = apply_filters( 'comment_notification_notify_author', false, $comment_id );
 
-		// The comment was left by the author.
-		if ( $author && ! $notify_author && $comment->user_id === $post->post_author ) {
-			unset( $emails[ $author->user_email ] );
-		}
+		$skipped = array();
 
-		// The author moderated a comment on their own post.
-		if ( $author && ! $notify_author && get_current_user_id() === $post->post_author ) {
-			unset( $emails[ $author->user_email ] );
-		}
+		if ( $author && ! $notify_author ) {
+			// The comment was left by the author.
+			if ( $comment->user_id === $post->post_author ) {
+				$skipped[] = $author->user_email;
+			}
 
-		// The post author is no longer a member of the blog.
-		if ( $author && ! $notify_author && ! user_can( $post->post_author, 'read_post', $post->ID ) ) {
-			unset( $emails[ $author->user_email ] );
+			// The author moderated a comment on their own post.
+			if ( get_current_user_id() === (int) $post->post_author ) {
+				$skipped[] = $author->user_email;
+			}
+
+			// The post author is no longer a member of the blog.
+			if ( ! user_can( $post->post_author, 'read_post', $post->ID ) ) {
+				$skipped[] = $author->user_email;
+			}
 		}
 
 		foreach ( $emails as $recipient ) {
-			Queue::add( $recipient, 'comment_notification', $comment_id );
+			if ( ! in_array( $recipient, $skipped, true ) ) {
+				Queue::add( $recipient, 'comment_notification', $comment_id );
+			}
 		}
 
 		return array();
