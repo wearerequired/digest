@@ -39,7 +39,7 @@ class CommentModeration extends WP_UnitTestCase {
 
 		$user = self::factory()->user->create_and_get( array(
 			'role'  => 'administrator',
-			'email' => 'foo@example.com',
+			'user_email' => 'foo@example.com',
 		) );
 
 		$message = new CommentModerationMessage( array(
@@ -58,7 +58,7 @@ class CommentModeration extends WP_UnitTestCase {
 
 		$user = self::factory()->user->create_and_get( array(
 			'role'  => 'subscriber',
-			'email' => 'foo@example.com',
+			'user_email' => 'foo@example.com',
 		) );
 
 		$message = new CommentModerationMessage( array(
