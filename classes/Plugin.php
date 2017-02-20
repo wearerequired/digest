@@ -113,16 +113,7 @@ class Plugin {
 		$post    = get_post( $comment->comment_post_ID );
 		$author  = get_userdata( $post->post_author );
 
-		/**
-		 * Filter whether to notify comment authors of their comments on their own posts.
-		 *
-		 * By default, comment authors aren't notified of their comments on their own
-		 * posts. This filter allows you to override that.
-		 *
-		 * @param bool $notify     Whether to notify the post author of their own comment.
-		 *                         Default false.
-		 * @param int  $comment_id The comment ID.
-		 */
+		/** This filters is documented in wp-includes/pluggable.php */
 		$notify_author = apply_filters( 'comment_notification_notify_author', false, $comment_id );
 
 		// The comment was left by the author.
