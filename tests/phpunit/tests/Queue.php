@@ -19,8 +19,8 @@ class Queue extends WP_UnitTestCase {
 	}
 
 	public function assertEqualSetsWithDelta($expected, $actual) {
-		sort( $expected );
-		sort( $actual );
+		ksort( $expected );
+		ksort( $actual );
 		$this->assertEquals( $expected, $actual, '', 1 );
 	}
 
@@ -170,7 +170,7 @@ class Queue extends WP_UnitTestCase {
 		), $comment_id );
 
 		$expected = array(
-			'foo@example.com' => array(
+			'bar@example.com' => array(
 				array(
 					current_time( 'timestamp'),
 					'comment_notification',
@@ -201,7 +201,7 @@ class Queue extends WP_UnitTestCase {
 		), $comment_id );
 
 		$expected = array(
-			'foo@example.com' => array(
+			'bar@example.com' => array(
 				array(
 					current_time( 'timestamp'),
 					'comment_notification',
@@ -232,7 +232,7 @@ class Queue extends WP_UnitTestCase {
 		), $comment_id );
 
 		$expected = array(
-			'foo@example.com' => array(
+			'bar@example.com' => array(
 				array(
 					current_time( 'timestamp' ),
 					'comment_notification',
