@@ -10,6 +10,18 @@ use Required\Digest\Cron as Digest_Cron;
 class Cron extends WP_UnitTestCase {
 	protected $email_subject = '';
 
+	public function setUp() {
+		parent::setUp();
+
+		delete_option( 'digest_frequency', false );
+	}
+
+	public function tearDown() {
+		delete_option( 'digest_frequency', false );
+
+		parent::tearDown();
+	}
+
 	public function filter_digest_cron_email_subject( $subject ) {
 		$this->email_subject = $subject;
 
@@ -21,7 +33,7 @@ class Cron extends WP_UnitTestCase {
 	public function test_run_cron() {
 		update_option( 'digest_frequency', array(
 			'period' => 'daily',
-			'hour'   => date( 'H' ),
+			'hour'   => date( 'G' ),
 			'day'    => date( 'w' ),
 		) );
 
@@ -40,7 +52,7 @@ class Cron extends WP_UnitTestCase {
 	public function test_run_cron_weekly() {
 		update_option( 'digest_frequency', array(
 			'period' => 'weekly',
-			'hour'   => date( 'H' ),
+			'hour'   => date( 'G' ),
 			'day'    => date( 'w' ),
 		) );
 
@@ -59,7 +71,7 @@ class Cron extends WP_UnitTestCase {
 	public function test_run_cron_empty_queue() {
 		update_option( 'digest_frequency', array(
 			'period' => 'daily',
-			'hour'   => date( 'H' ),
+			'hour'   => date( 'G' ),
 			'day'    => date( 'w' ),
 		) );
 
