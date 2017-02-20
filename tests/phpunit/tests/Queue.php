@@ -269,4 +269,58 @@ class Queue extends WP_UnitTestCase {
 
 		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
 	}
+
+	public function test_auto_core_update_email_returns_empty_array() {
+		set_site_transient( 'update_core', new \stdClass() );
+
+		$actual = digest()->auto_core_update_email( array(), 'success', (object) array( 'current' => '100.1.0' ) );
+
+		$this->assertSame( array( 'to' => array() ), $actual );
+	}
+
+	public function test_auto_core_update_email() {
+		set_site_transient( 'update_core', new \stdClass() );
+
+		digest()->auto_core_update_email( array(), 'success', (object) array( 'current' => '100.1.0' ) );
+
+		$expected = array(
+			get_bloginfo( 'admin_email' ) => array(
+				array(
+					current_time( 'timestamp' ),
+					'core_update_success',
+					'100.1.0',
+				),
+			),
+		);
+
+		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
+	}
+
+	public function test_auto_core_update_email_invalid_type() {
+		set_site_transient( 'update_core', new \stdClass() );
+
+		digest()->auto_core_update_email( array(), 'foo', (object) array( 'current' => '100.1.0' ) );
+
+		$this->assertEmpty( Digest_Queue::get() );
+	}
+
+	public function test_auto_core_update_email_no_updates() {
+		set_site_transient( 'update_core', (object) array(
+			'updates' => array(),
+		) );
+
+		digest()->auto_core_update_email( array(), 'success', (object) array( 'current' => '100.1.0' ) );
+
+		$expected = array(
+			get_bloginfo( 'admin_email' ) => array(
+				array(
+					current_time( 'timestamp' ),
+					'core_update_success',
+					'100.1.0',
+				),
+			),
+		);
+
+		$this->assertEqualSetsWithDelta( $expected, Digest_Queue::get() );
+	}
 }
