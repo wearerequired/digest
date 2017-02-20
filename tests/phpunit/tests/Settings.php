@@ -17,6 +17,33 @@ class Settings extends WP_UnitTestCase {
 		self::$frequency_setting = new FrequencySetting();
 	}
 
+	public function test_register() {
+		self::$frequency_setting->register();
+
+		$this->assertNotFalse(
+			has_action( 'admin_init', array(
+				self::$frequency_setting,
+				'add_settings_fields',
+			) )
+		);
+
+		$this->assertNotFalse(
+			has_action( 'admin_enqueue_scripts', array(
+				self::$frequency_setting,
+				'admin_enqueue_scripts',
+			) )
+		);
+	}
+
+	public function test_add_settings_fields() {
+		global $wp_settings_sections, $wp_settings_fields;
+
+		self::$frequency_setting->add_settings_fields();
+
+		$this->assertArrayHasKey( 'digest_notifications', $wp_settings_sections['general'] );
+		$this->assertArrayHasKey( 'digest_frequency', $wp_settings_fields['general']['digest_notifications'] );
+	}
+
 	public function test_plugin_action_links() {
 		$this->assertEqualSets(
 			array(
