@@ -66,7 +66,7 @@ class Plugin {
 
 		// Hook into WordPress functions for the notifications.
 		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
-		add_action( 'comment_notification_recipients', array( $this, 'comment_notification_recipients' ), 10, 2 );
+		add_action( 'comment_moderation_recipients', array( $this, 'comment_moderation_recipients' ), 10, 2 );
 		add_action( 'auto_core_update_email', array( $this, 'auto_core_update_email' ), 10, 3 );
 
 		add_action( 'init', array( $this->event_registry(), 'register_default_events' ) );
