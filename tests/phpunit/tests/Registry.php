@@ -32,7 +32,7 @@ class Registry extends WP_UnitTestCase {
 	public function test_register_event_adds_filter_with_callback() {
 		$this->registry->register_event( 'foo', 'bar' );
 
-		$this->assertSame( 10, has_filter( 'digest_message_section_foo', 'bar' ) );
+		$this->assertNotFalse( has_filter( 'digest_message_section_foo', 'bar' ) );
 	}
 
 	public function test_is_registered_event() {
