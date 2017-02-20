@@ -44,6 +44,20 @@ class Settings extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'digest_frequency', $wp_settings_fields['general']['digest_notifications'] );
 	}
 
+	public function test_admin_enqueue_scripts_invalid_hook_suffix() {
+		self::$frequency_setting->admin_enqueue_scripts( 'foo' );
+
+		$this->assertFalse( wp_script_is( 'digest' ) );
+		$this->assertFalse( wp_style_is( 'digest' ) );
+	}
+
+	public function test_admin_enqueue_scripts() {
+		self::$frequency_setting->admin_enqueue_scripts( 'options-general.php' );
+
+		$this->assertTrue( wp_script_is( 'digest' ) );
+		$this->assertTrue( wp_style_is( 'digest' ) );
+	}
+
 	public function test_plugin_action_links() {
 		$this->assertEqualSets(
 			array(
