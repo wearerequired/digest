@@ -97,6 +97,6 @@ class Settings extends WP_UnitTestCase {
 	 * @param array $actual
 	 */
 	public function test_sanitize_frequency_option( $expected, $actual ) {
-		$this->assertEqualSets( $expected, self::$frequency_setting->sanitize_frequency_option( $actual ) );
+		$this->assertEqualSetsWithIndex( $expected, self::$frequency_setting->sanitize_frequency_option( $actual ) );
 	}
 }

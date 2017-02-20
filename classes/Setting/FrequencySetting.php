@@ -122,17 +122,24 @@ class FrequencySetting implements SettingInterface {
 	 * @since  2.0.0
 	 * @access public
 	 *
-	 * @param array $value The POST da.
+	 * @param mixed $value The unsanitized value.
 	 *
 	 * @return array The sanitized frequency option.
 	 */
-	public function sanitize_frequency_option( array $value ) {
-		if ( 'daily' !== $value['period'] ) {
-			$value['period'] = 'weekly';
+	public function sanitize_frequency_option( $value ) {
+		$value = (array) $value;
+		$new_value = array();
+
+		$new_value['period'] = isset( $value['period'] ) ? $value['period'] : 'weekly';
+		$new_value['hour']   = isset( $value['hour'] ) ? $value['hour'] : 18;
+		$new_value['day']    = isset( $value['day'] ) ? $value['day'] : get_option( 'start_of_week', 0 );
+
+		if ( 'daily' !== $new_value['period'] ) {
+			$new_value['period'] = 'weekly';
 		}
 
-		$value['hour'] = filter_var(
-			$value['hour'],
+		$new_value['hour'] = filter_var(
+			$new_value['hour'],
 			FILTER_VALIDATE_INT,
 			array(
 				'options' => array(
@@ -143,8 +150,8 @@ class FrequencySetting implements SettingInterface {
 			)
 		);
 
-		$value['day'] = filter_var(
-			$value['day'],
+		$new_value['day'] = filter_var(
+			$new_value['day'],
 			FILTER_VALIDATE_INT,
 			array(
 				'options' => array(
@@ -155,7 +162,7 @@ class FrequencySetting implements SettingInterface {
 			)
 		);
 
-		return $value;
+		return $new_value;
 	}
 
 	/**
