@@ -36,9 +36,9 @@ class CoreUpdate extends Section {
 	 * @param string  $event   The current event.
 	 */
 	public function __construct( $entries, WP_User $user = null, $event ) {
-		parent::__construct( $entries, $user );
-
 		$this->event = $event;
+
+		parent::__construct( $entries, $user );
 	}
 
 	/**
