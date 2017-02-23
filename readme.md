@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td>
-			Made with ❤️ by [**required**](https://required.com). Maintained by @swissspidy.
+			Made with ❤️ by <a href="https://required.com/"><strong>required</strong></a>. Maintained by @swissspidy.
 		</td>
 		<td align="center">
 			<img src="https://required.com/content/themes/required-valencia/img/logo-required.svg" width="100" />
