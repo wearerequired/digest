@@ -12,6 +12,10 @@
 			<a href="https://codecov.io/gh/wearerequired/digest?branch=master">
 				<img src="https://codecov.io/gh/wearerequired/digest/coverage.svg?branch=master" alt="Coverage via Codecov" />
 			</a>
+			<br />
+			<a href="https://codeclimate.com/github/wearerequired/digest">
+				<img src="https://codeclimate.com/github/wearerequired/digest/badges/gpa.svg" />
+			</a>
 		</td>
 	</tr>
 	<tr>
