@@ -1,4 +1,32 @@
+<table width="100%">
+	<tr>
+		<td align="left" width="70%">
+			<strong>Digest Notifications</strong><br />
+			Get a daily/weekly digest of what's happening on your WordPress site instead of dozens of individual emails.
+		</td>
+		<td align="right" width="30%">
+			<a href="https://travis-ci.org/wearerequired/digest">
+				<img src="https://travis-ci.org/wearerequired/digest.svg?branch=master" alt="Build Status" />
+			</a>
+			<br />
+			<a href="https://codecov.io/gh/wearerequired/digest?branch=master">
+				<img src="https://codecov.io/gh/wearerequired/digest/coverage.svg?branch=master" alt="Coverage via Codecov" />
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Made with ❤️ by [**required**](https://required.com). Maintained by @swissspidy.
+		</td>
+		<td align="center">
+			<img src="https://required.com/content/themes/required-valencia/img/logo-required.svg" width="100" />
+		</td>
+	</tr>
+</table>
+
+
 # Digest Notifications #
+
 Contributors:      wearerequired, swissspidy  
 Tags:              admin, emails, comments, notification, updates  
 Requires at least: 4.4  
