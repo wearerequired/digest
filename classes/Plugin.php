@@ -76,7 +76,7 @@ class Plugin {
 	 * Initializes the plugin, registers textdomain, etc.
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'user-feedback' );
+		load_plugin_textdomain( 'digest' );
 	}
 
 	/**
