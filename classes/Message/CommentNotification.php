@@ -8,7 +8,6 @@
 namespace Required\Digest\Message;
 
 use WP_Comment;
-use WP_User;
 
 /**
  * Comment_Notification_Message class.
@@ -66,6 +65,7 @@ class CommentNotification extends CommentModeration {
 	 * @return string The comment moderation message.
 	 */
 	protected function get_single_message( $comment, $time ) {
+		/* @var WP_Comment $comment */
 		$comment = get_comment( $comment );
 
 		if ( null === $comment ) {

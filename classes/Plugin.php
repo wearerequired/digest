@@ -168,19 +168,19 @@ class Plugin {
 	 *
 	 * @see WP_Automatic_Updater::send_email()
 	 *
-	 * @param array  $email       {
-	 *                            Array of email arguments that will be passed to wp_mail().
+	 * @param array    $email       {
+	 *                              Array of email arguments that will be passed to wp_mail().
 	 *
-	 * @type string  $to          The email recipient. An array of emails
-	 *                            can be returned, as handled by wp_mail().
-	 * @type string  $subject     The email's subject.
-	 * @type string  $body        The email message body.
-	 * @type string  $headers     Any email headers, defaults to no headers.
+	 * @type string    $to          The email recipient. An array of emails
+	 *                              can be returned, as handled by wp_mail().
+	 * @type string    $subject     The email's subject.
+	 * @type string    $body        The email message body.
+	 * @type string    $headers     Any email headers, defaults to no headers.
 	 * }
 	 *
-	 * @param string $type        The type of email being sent. Can be one of
-	 *                            'success', 'fail', 'manual', 'critical'.
-	 * @param object $core_update The update offer that was attempted.
+	 * @param string   $type        The type of email being sent. Can be one of
+	 *                              'success', 'fail', 'manual', 'critical'.
+	 * @param stdClass $core_update The update offer that was attempted.
 	 *
 	 * @return array The modified $email array without a recipient.
 	 */
@@ -195,7 +195,7 @@ class Plugin {
 		// If the auto update is not to the latest version, say that the current version of WP is available instead.
 		$version = 'success' === $type ? $core_update->current : $next_core_update->current;
 
-		if ( in_array( $type, array( 'success', 'fail', 'manual' ) ) ) {
+		if ( in_array( $type, array( 'success', 'fail', 'manual' ), true ) ) {
 			Queue::add( get_site_option( 'admin_email' ), 'core_update_' . $type, $version );
 			$email['to'] = array();
 		}

@@ -61,9 +61,9 @@ class CoreUpdate extends Section {
 	protected function get_single_message( $version, $time ) {
 		if ( 'core_update_success' === $this->event ) {
 			return $this->get_core_update_success_message( $version, $time );
-		} else {
-			return $this->get_core_update_fail_message( $version, $time );
 		}
+
+		return $this->get_core_update_fail_message( $version, $time );
 	}
 
 	/**

@@ -1,4 +1,6 @@
 <?php
+use Required\Digest\Cron;
+
 /**
  * Plugin Name: Digest Notifications
  * Plugin URI:  https://required.com/services/wordpress-plugins/digest-notifications/
@@ -35,7 +37,7 @@
 defined( 'ABSPATH' ) or die;
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	include( __DIR__ . '/vendor/autoload.php' );
+	include __DIR__ . '/vendor/autoload.php';
 }
 
 if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
@@ -54,8 +56,8 @@ if ( $requirements_check->passes() ) {
 	define( 'Required\\Digest\\PLUGIN_FILE', __FILE__ );
 	define( 'Required\\Digest\\PLUGIN_DIR', __DIR__ );
 
-	require_once( dirname( __FILE__ ) . '/includes/pluggable.php' );
-	require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+	require_once __DIR__ . '/includes/pluggable.php';
+	require_once __DIR__ . '/includes/functions.php';
 
 	/**
 	 * Get the main plugin instance.
@@ -78,7 +80,7 @@ if ( $requirements_check->passes() ) {
 	add_action( 'plugins_loaded', array( digest(), 'add_hooks' ) );
 
 	// Add cron callback.
-	add_action( 'digest_event', array( 'Required\\Digest\\Cron', 'init' ) );
+	add_action( 'digest_event', array( Cron::class, 'init' ) );
 
 	register_activation_hook( __FILE__, array( digest(), 'activate_plugin' ) );
 	register_deactivation_hook( __FILE__, array( digest(), 'deactivate_plugin' ) );

@@ -7,6 +7,8 @@
 
 namespace Required\Digest;
 
+use WP_User;
+
 /**
  * Digest class.
  *
@@ -78,10 +80,10 @@ class Digest {
 			/**
 			 * Filter the message section
 			 *
-			 * @param string $message The message.
-			 * @param array  $entries The event items.
-			 * @param object $user    The current user.
-			 * @param string $event   The current event.
+			 * @param string  $message The message.
+			 * @param array   $entries The event items.
+			 * @param WP_User $user    The current user.
+			 * @param string  $event   The current event.
 			 */
 			$message .= apply_filters( 'digest_message_section_' . $event, '', $this->events[ $event ], $this->user, $event );
 		}
