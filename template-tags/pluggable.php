@@ -13,7 +13,7 @@ use Required\Digest\Queue;
 
 global $wp_version;
 
-$enabled = array();
+$enabled = [];
 
 if ( ! function_exists( 'wp_new_user_notification' ) ) {
 	$enabled[] = 'new_user_notification';
@@ -66,7 +66,7 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) {
 			$wp_hasher = new PasswordHash( 8, true );
 		}
 		$hashed = time() . ':' . $wp_hasher->HashPassword( $key );
-		$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user->user_login ) );
+		$wpdb->update( $wpdb->users, [ 'user_activation_key' => $hashed ], [ 'user_login' => $user->user_login ] );
 
 		$message = sprintf( __( 'Username: %s' ), $user->user_login ) . "\r\n\r\n";
 		$message .= __( 'To set your password, visit the following address:' ) . "\r\n\r\n";

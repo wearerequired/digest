@@ -19,14 +19,14 @@ class Registry extends WP_UnitTestCase {
 	public function test_register_event() {
 		$this->registry->register_event( 'foo' );
 
-		$this->assertSame( array( 'foo' ), $this->registry->get_registered_events() );
+		$this->assertSame( [ 'foo' ], $this->registry->get_registered_events() );
 	}
 
 	public function test_register_event_twice() {
 		$this->registry->register_event( 'foo' );
 		$this->registry->register_event( 'foo' );
 
-		$this->assertSame( array( 'foo' ), $this->registry->get_registered_events() );
+		$this->assertSame( [ 'foo' ], $this->registry->get_registered_events() );
 	}
 
 	public function test_register_event_adds_filter_with_callback() {
@@ -51,26 +51,26 @@ class Registry extends WP_UnitTestCase {
 	public function test_register_default_events(  ) {
 		$this->registry->register_default_events();
 
-		$this->assertEqualSets( array(
+		$this->assertEqualSets( [
 			'comment_moderation',
 			'comment_notification',
 			'core_update_failure',
 			'core_update_success',
 			'new_user_notification',
 			'password_change_notification'
-		), $this->registry->get_registered_events() );
+		], $this->registry->get_registered_events() );
 	}
 
 	public function test_register_default_events_without_pluggable(  ) {
-		update_option( 'digest_hooks', array(), false );
+		update_option( 'digest_hooks', [], false );
 
 		$this->registry->register_default_events();
 
-		$this->assertEqualSets( array(
+		$this->assertEqualSets( [
 			'comment_moderation',
 			'comment_notification',
 			'core_update_failure',
 			'core_update_success',
-		), $this->registry->get_registered_events() );
+		], $this->registry->get_registered_events() );
 	}
 }

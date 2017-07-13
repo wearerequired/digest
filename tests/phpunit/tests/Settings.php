@@ -21,17 +21,17 @@ class Settings extends WP_UnitTestCase {
 		self::$frequency_setting->register();
 
 		$this->assertNotFalse(
-			has_action( 'admin_init', array(
+			has_action( 'admin_init', [
 				self::$frequency_setting,
 				'add_settings_fields',
-			) )
+			] )
 		);
 
 		$this->assertNotFalse(
-			has_action( 'admin_enqueue_scripts', array(
+			has_action( 'admin_enqueue_scripts', [
 				self::$frequency_setting,
 				'admin_enqueue_scripts',
-			) )
+			] )
 		);
 	}
 
@@ -60,75 +60,75 @@ class Settings extends WP_UnitTestCase {
 
 	public function test_plugin_action_links() {
 		$this->assertEqualSets(
-			array(
+			[
 				'settings' => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( admin_url( 'options-general.php#digest' ) ),
 					__( 'Settings', 'digest' )
 				),
-			),
-			self::$frequency_setting->plugin_action_links( array() )
+			],
+			self::$frequency_setting->plugin_action_links( [] )
 		);
 	}
 
 	public function data_sanitize_frequency_option() {
-		return array(
+		return [
 			// Period.
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => 1 ),
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => 1 ),
-			),
-			array(
-				array( 'period' => 'daily', 'hour' => 1, 'day' => 1 ),
-				array( 'period' => 'daily', 'hour' => 1, 'day' => 1 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => 1 ),
-				array( 'period' => 'foo', 'hour' => 1, 'day' => 1 ),
-			),
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => 1 ],
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => 1 ],
+			],
+			[
+				[ 'period' => 'daily', 'hour' => 1, 'day' => 1 ],
+				[ 'period' => 'daily', 'hour' => 1, 'day' => 1 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => 1 ],
+				[ 'period' => 'foo', 'hour' => 1, 'day' => 1 ],
+			],
 			// Hour.
-			array(
-				array( 'period' => 'weekly', 'hour' => 18, 'day' => 1 ),
-				array( 'period' => 'weekly', 'hour' => -1, 'day' => 1 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 0, 'day' => 1 ),
-				array( 'period' => 'weekly', 'hour' => 0, 'day' => 1 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 18, 'day' => 1 ),
-				array( 'period' => 'weekly', 'hour' => 24, 'day' => 1 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 23, 'day' => 1 ),
-				array( 'period' => 'weekly', 'hour' => 23, 'day' => 1 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 18, 'day' => 1 ),
-				array( 'period' => 'weekly', 'hour' => 'foo', 'day' => 1 ),
-			),
+			[
+				[ 'period' => 'weekly', 'hour' => 18, 'day' => 1 ],
+				[ 'period' => 'weekly', 'hour' => -1, 'day' => 1 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 0, 'day' => 1 ],
+				[ 'period' => 'weekly', 'hour' => 0, 'day' => 1 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 18, 'day' => 1 ],
+				[ 'period' => 'weekly', 'hour' => 24, 'day' => 1 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 23, 'day' => 1 ],
+				[ 'period' => 'weekly', 'hour' => 23, 'day' => 1 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 18, 'day' => 1 ],
+				[ 'period' => 'weekly', 'hour' => 'foo', 'day' => 1 ],
+			],
 			// Day.
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ),
-				array( 'period' => 'foo', 'hour' => 1, 'day' => -1 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => 0 ),
-				array( 'period' => 'foo', 'hour' => 1, 'day' => 0 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ),
-				array( 'period' => 'foo', 'hour' => 1, 'day' => 7 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => 6 ),
-				array( 'period' => 'foo', 'hour' => 1, 'day' => 6 ),
-			),
-			array(
-				array( 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ),
-				array( 'period' => 'foo', 'hour' => 1, 'day' => 'foo' ),
-			),
-		);
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ],
+				[ 'period' => 'foo', 'hour' => 1, 'day' => -1 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => 0 ],
+				[ 'period' => 'foo', 'hour' => 1, 'day' => 0 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ],
+				[ 'period' => 'foo', 'hour' => 1, 'day' => 7 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => 6 ],
+				[ 'period' => 'foo', 'hour' => 1, 'day' => 6 ],
+			],
+			[
+				[ 'period' => 'weekly', 'hour' => 1, 'day' => get_option( 'start_of_week' ) ],
+				[ 'period' => 'foo', 'hour' => 1, 'day' => 'foo' ],
+			],
+		];
 	}
 
 	/**

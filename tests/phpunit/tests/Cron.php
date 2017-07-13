@@ -31,17 +31,17 @@ class Cron extends WP_UnitTestCase {
 	}
 
 	public function test_run_cron() {
-		update_option( 'digest_frequency', array(
+		update_option( 'digest_frequency', [
 			'period' => 'daily',
 			'hour'   => date( 'G' ),
 			'day'    => date( 'w' ),
-		) );
+		] );
 
 		Queue::add( 'foo@example.com', 'foo', 'bar' );
 
-		add_filter( 'digest_cron_email_subject', array( $this, 'filter_digest_cron_email_subject' ) );
+		add_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
 		Digest_Cron::init();
-		remove_filter( 'digest_cron_email_subject', array( $this, 'filter_digest_cron_email_subject' ) );
+		remove_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
 
 		$this->assertSame(
 			sprintf( __( 'Today on %s', 'digest' ), get_bloginfo( 'name' ) ),
@@ -50,17 +50,17 @@ class Cron extends WP_UnitTestCase {
 	}
 
 	public function test_run_cron_weekly() {
-		update_option( 'digest_frequency', array(
+		update_option( 'digest_frequency', [
 			'period' => 'weekly',
 			'hour'   => date( 'G' ),
 			'day'    => date( 'w' ),
-		) );
+		] );
 
 		Queue::add( 'foo@example.com', 'foo', 'bar' );
 
-		add_filter( 'digest_cron_email_subject', array( $this, 'filter_digest_cron_email_subject' ) );
+		add_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
 		Digest_Cron::init();
-		remove_filter( 'digest_cron_email_subject', array( $this, 'filter_digest_cron_email_subject' ) );
+		remove_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
 
 		$this->assertSame(
 			sprintf( __( 'Past Week on %s', 'digest' ), get_bloginfo( 'name' ) ),
@@ -69,49 +69,49 @@ class Cron extends WP_UnitTestCase {
 	}
 
 	public function test_run_cron_empty_queue() {
-		update_option( 'digest_frequency', array(
+		update_option( 'digest_frequency', [
 			'period' => 'daily',
 			'hour'   => date( 'G' ),
 			'day'    => date( 'w' ),
-		) );
+		] );
 
 		$action = new MockAction();
 
-		add_filter( 'digest_cron_email_subject', array( $action, 'filter' ) );
+		add_filter( 'digest_cron_email_subject', [ $action, 'filter' ] );
 		Digest_Cron::init();
-		remove_filter( 'digest_cron_email_subject', array( $action, 'filter' ) );
+		remove_filter( 'digest_cron_email_subject', [ $action, 'filter' ] );
 
 		$this->assertSame( 0, $action->get_call_count() );
 	}
 
 	public function test_run_cron_wrong_hour() {
-		update_option( 'digest_frequency', array(
+		update_option( 'digest_frequency', [
 			'period' => 'daily',
 			'hour'   => date( 'H' ) + 1,
 			'day'    => date( 'w' ),
-		) );
+		] );
 
 		$action = new MockAction();
 
-		add_filter( 'digest_cron_email_subject', array( $action, 'filter' ) );
+		add_filter( 'digest_cron_email_subject', [ $action, 'filter' ] );
 		Digest_Cron::init();
-		remove_filter( 'digest_cron_email_subject', array( $action, 'filter' ) );
+		remove_filter( 'digest_cron_email_subject', [ $action, 'filter' ] );
 
 		$this->assertSame( 0, $action->get_call_count() );
 	}
 
 	public function test_run_cron_wrong_day() {
-		update_option( 'digest_frequency', array(
+		update_option( 'digest_frequency', [
 			'period' => 'weekly',
 			'hour'   => date( 'H' ),
 			'day'    => date( 'w' ) + 1,
-		) );
+		] );
 
 		$action = new MockAction();
 
-		add_filter( 'digest_cron_email_subject', array( $action, 'filter' ) );
+		add_filter( 'digest_cron_email_subject', [ $action, 'filter' ] );
 		Digest_Cron::init();
-		remove_filter( 'digest_cron_email_subject', array( $action, 'filter' ) );
+		remove_filter( 'digest_cron_email_subject', [ $action, 'filter' ] );
 
 		$this->assertSame( 0, $action->get_call_count() );
 	}

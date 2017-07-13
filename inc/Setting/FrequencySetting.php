@@ -25,17 +25,17 @@ class FrequencySetting implements SettingInterface {
 		register_setting(
 			'general',
 			'digest_frequency',
-			array( $this, 'sanitize_frequency_option' )
+			[ $this, 'sanitize_frequency_option' ]
 		);
 
-		add_action( 'admin_init', array( $this, 'add_settings_fields' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_init', [ $this, 'add_settings_fields' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
 		// Add an action link pointing to the options page.
-		add_action( 'plugin_action_links_' . plugin_basename( \Required\Digest\PLUGIN_FILE ), array(
+		add_action( 'plugin_action_links_' . plugin_basename( \Required\Digest\PLUGIN_FILE ), [
 			$this,
 			'plugin_action_links',
-		) );
+		] );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class FrequencySetting implements SettingInterface {
 		add_settings_field(
 			'digest_frequency',
 			sprintf( '<label for="digest_frequency_period" id="digest">%s</label>', __( 'Frequency', 'digest' ) ),
-			array( $this, 'settings_field_frequency' ),
+			[ $this, 'settings_field_frequency' ],
 			'general',
 			'digest_notifications'
 		);
@@ -70,11 +70,11 @@ class FrequencySetting implements SettingInterface {
 	 * @access public
 	 */
 	public function settings_field_frequency() {
-		$options     = get_option( 'digest_frequency', array(
+		$options     = get_option( 'digest_frequency', [
 			'period' => 'weekly',
 			'hour'   => 18,
 			'day'    => absint( get_option( 'start_of_week' ) ),
-		) );
+		] );
 		$time_format = get_option( 'time_format' );
 		?>
 		<p>
@@ -128,7 +128,7 @@ class FrequencySetting implements SettingInterface {
 	 */
 	public function sanitize_frequency_option( $value ) {
 		$value = (array) $value;
-		$new_value = array();
+		$new_value = [];
 
 		$new_value['period'] = isset( $value['period'] ) ? $value['period'] : 'weekly';
 		$new_value['hour']   = isset( $value['hour'] ) ? $value['hour'] : 18;
@@ -141,25 +141,25 @@ class FrequencySetting implements SettingInterface {
 		$new_value['hour'] = filter_var(
 			$new_value['hour'],
 			FILTER_VALIDATE_INT,
-			array(
-				'options' => array(
+			[
+				'options' => [
 					'default'   => 18,
 					'min_range' => 0,
 					'max_range' => 23,
-				),
-			)
+				],
+			]
 		);
 
 		$new_value['day'] = filter_var(
 			$new_value['day'],
 			FILTER_VALIDATE_INT,
-			array(
-				'options' => array(
+			[
+				'options' => [
 					'default'   => get_option( 'start_of_week', 0 ),
 					'min_range' => 0,
 					'max_range' => 6,
-				),
-			)
+				],
+			]
 		);
 
 		return $new_value;
@@ -177,8 +177,8 @@ class FrequencySetting implements SettingInterface {
 		if ( 'options-general.php' === $hook_suffix ) {
 			$suffix = SCRIPT_DEBUG ? '' : '.min';
 
-			wp_enqueue_script( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', array(), Plugin::VERSION, true );
-			wp_enqueue_style( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', array(), Plugin::VERSION );
+			wp_enqueue_script( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', [], Plugin::VERSION, true );
+			wp_enqueue_style( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', [], Plugin::VERSION );
 		}
 	}
 
@@ -194,13 +194,13 @@ class FrequencySetting implements SettingInterface {
 	 */
 	public function plugin_action_links( array $links ) {
 		return array_merge(
-			array(
+			[
 				'settings' => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( admin_url( 'options-general.php#digest' ) ),
 					__( 'Settings', 'digest' )
 				),
-			),
+			],
 			$links
 		);
 	}

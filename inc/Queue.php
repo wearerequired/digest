@@ -44,7 +44,7 @@ class Queue {
 	 * @return array The digest queue.
 	 */
 	public static function get() {
-		return apply_filters( 'digest_queue', get_option( self::$option, array() ) );
+		return apply_filters( 'digest_queue', get_option( self::$option, [] ) );
 	}
 
 	/**
@@ -70,9 +70,9 @@ class Queue {
 	public static function add( $recipient, $event, $data ) {
 		$queue = self::get();
 
-		$queue[ $recipient ] = isset( $queue[ $recipient ] ) ? $queue[ $recipient ] : array();
+		$queue[ $recipient ] = isset( $queue[ $recipient ] ) ? $queue[ $recipient ] : [];
 
-		$queue[ $recipient ][] = array( current_time( 'timestamp' ), $event, $data );
+		$queue[ $recipient ][] = [ current_time( 'timestamp' ), $event, $data ];
 
 		update_option( self::$option, $queue );
 	}

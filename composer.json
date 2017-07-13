@@ -24,7 +24,7 @@
   "require-dev":  {},
   "autoload":     {
     "psr-4": {
-      "Required\\Digest\\": "classes"
+      "Required\\Digest\\": "inc"
     }
   }
 }

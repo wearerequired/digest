@@ -83,9 +83,9 @@ class CommentModeration extends Section {
 
 		$message = $this->get_single_comment_content( $comment, $time );
 
-		$actions = array(
+		$actions = [
 			'view' => __( 'Permalink', 'digest' ),
-		);
+		];
 
 		if ( $this->user_can_edit_comment( $comment->comment_ID ) ) {
 			$actions['approve'] = __( 'Approve', 'digest' );
@@ -167,7 +167,7 @@ class CommentModeration extends Section {
 		$comment_text = get_comment_text( $comment );
 
 		/** This filter is documented in wp-includes/comment-template.php */
-		return apply_filters( 'comment_text', $comment_text, $comment, array() );
+		return apply_filters( 'comment_text', $comment_text, $comment, [] );
 	}
 
 	/**
@@ -182,7 +182,7 @@ class CommentModeration extends Section {
 	 * @return string The comment action links.
 	 */
 	protected function get_comment_action_links( array $actions, WP_Comment $comment ) {
-		$links = array();
+		$links = [];
 
 		foreach ( $actions as $action => $label ) {
 			$url = admin_url( sprintf( 'comment.php?action=%s&c=%d', $action, $comment->comment_ID ) );

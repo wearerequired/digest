@@ -54,7 +54,7 @@ class Digest {
 	 * @return array The processed event messages.
 	 */
 	protected function process_event_items( $items ) {
-		$events = array();
+		$events = [];
 
 		foreach ( $items as $item ) {
 			$events[ $item[1] ][ $item[2] ] = $item[0];

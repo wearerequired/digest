@@ -78,7 +78,7 @@ class CoreUpdate extends Section {
 		$message = sprintf(
 			'<p>' . __( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.', 'digest' ) . '</p>',
 			esc_url( home_url() ),
-			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			esc_html( str_replace( [ 'http://', 'https://' ], '', home_url() ) ),
 			esc_html( $version ),
 			human_time_diff( $time, current_time( 'timestamp' ) )
 		);
@@ -114,7 +114,7 @@ class CoreUpdate extends Section {
 		$message = sprintf(
 			'<p>' . __( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ) . '</p>',
 			esc_url( home_url() ),
-			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			esc_html( str_replace( [ 'http://', 'https://' ], '', home_url() ) ),
 			esc_html( $version ),
 			human_time_diff( $time, current_time( 'timestamp' ) )
 		);

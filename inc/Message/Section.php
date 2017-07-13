@@ -25,7 +25,7 @@ abstract class Section implements MessageInterface {
 	 *
 	 * @var array
 	 */
-	protected $entries = array();
+	protected $entries = [];
 
 	/**
 	 * The current user object.

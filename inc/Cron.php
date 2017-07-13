@@ -32,11 +32,11 @@ class Cron {
 	 * @access public
 	 */
 	public static function init() {
-		self::$options = get_option( 'digest_frequency', array(
+		self::$options = get_option( 'digest_frequency', [
 			'period' => 'weekly',
 			'hour'   => 18,
 			'day'    => absint( get_option( 'start_of_week' ) ),
-		) );
+		] );
 
 		self::ready() && self::run();
 	}
@@ -93,7 +93,7 @@ class Cron {
 		 */
 		$subject = apply_filters( 'digest_cron_email_subject', sprintf( $subject, get_bloginfo( 'name' ) ) );
 
-		digest()->send_email( $subject );
+		send_email( $subject );
 
 		// Clear queue.
 		Queue::clear();

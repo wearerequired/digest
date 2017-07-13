@@ -27,7 +27,7 @@ class Registry implements RegistryInterface {
 	 *
 	 * @var array
 	 */
-	protected $registered_events = array();
+	protected $registered_events = [];
 
 	/**
 	 * Registers an event for the digest.

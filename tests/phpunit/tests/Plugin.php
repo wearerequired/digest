@@ -31,9 +31,9 @@ class Plugin extends WP_UnitTestCase {
 	public function test_send_email_empty_queue() {
 		$action = new MockAction();
 
-		add_filter( 'digest_cron_email_message', array( $action, 'filter' ) );
+		add_filter( 'digest_cron_email_message', [ $action, 'filter' ] );
 		digest()->send_email( 'Foo' );
-		remove_filter( 'digest_cron_email_message', array( $action, 'filter' ) );
+		remove_filter( 'digest_cron_email_message', [ $action, 'filter' ] );
 
 		$this->assertSame( 0, $action->get_call_count() );
 	}
@@ -64,9 +64,9 @@ class Plugin extends WP_UnitTestCase {
 	public function test_load_textdomain() {
 		$action = new MockAction();
 
-		add_action( 'load_textdomain', array( $action, 'action' ) );
+		add_action( 'load_textdomain', [ $action, 'action' ] );
 		digest()->load_textdomain();
-		remove_action( 'load_textdomain', array( $action, 'action' ) );
+		remove_action( 'load_textdomain', [ $action, 'action' ] );
 
 		$this->assertGreaterThan( 0, $action->get_call_count() );
 	}
@@ -85,36 +85,36 @@ class Plugin extends WP_UnitTestCase {
 		$plugin->add_hooks();
 
 		$this->assertNotFalse(
-			has_action( 'init', array(
+			has_action( 'init', [
 				$plugin,
 				'load_textdomain',
-			) )
+			] )
 		);
 
 		$this->assertNotFalse(
-			has_action( 'comment_notification_recipients', array(
+			has_action( 'comment_notification_recipients', [
 				$plugin,
 				'comment_notification_recipients',
-			) )
+			] )
 		);
 		$this->assertNotFalse(
-			has_action( 'comment_moderation_recipients', array(
+			has_action( 'comment_moderation_recipients', [
 				$plugin,
 				'comment_moderation_recipients',
-			) )
+			] )
 		);
 		$this->assertNotFalse(
-			has_action( 'auto_core_update_email', array(
+			has_action( 'auto_core_update_email', [
 				$plugin,
 				'auto_core_update_email',
-			) )
+			] )
 		);
 
 		$this->assertNotFalse(
-			has_action( 'init', array(
+			has_action( 'init', [
 				$registry,
 				'register_default_events',
-			) )
+			] )
 		);
 	}
 }

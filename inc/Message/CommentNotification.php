@@ -74,9 +74,9 @@ class CommentNotification extends CommentModeration {
 
 		$message = $this->get_single_comment_content( $comment, $time );
 
-		$actions = array(
+		$actions = [
 			'view' => __( 'Permalink', 'digest' ),
-		);
+		];
 
 		if ( $this->user_can_edit_comment( $comment->comment_ID ) ) {
 			if ( defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS ) {
