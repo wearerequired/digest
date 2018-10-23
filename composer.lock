@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce5ffc5d15c766ee97c8969e5ef9ee83",
+    "content-hash": "d9dd0faa1cab9ba6ff015d99a2da41da",
     "packages": [
         {
             "name": "wearerequired/wp-requirements-check",
-            "version": "dev-master",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wearerequired/wp-requirements-check.git",
-                "reference": "0d9f602ed83def11f97c07ee76ad204cc1ba247f"
+                "reference": "1ff6197d2427f46778fcdfd7211cf6c500e45b02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wearerequired/wp-requirements-check/zipball/0d9f602ed83def11f97c07ee76ad204cc1ba247f",
-                "reference": "0d9f602ed83def11f97c07ee76ad204cc1ba247f",
+                "url": "https://api.github.com/repos/wearerequired/wp-requirements-check/zipball/1ff6197d2427f46778fcdfd7211cf6c500e45b02",
+                "reference": "1ff6197d2427f46778fcdfd7211cf6c500e45b02",
                 "shasum": ""
             },
             "type": "library",
@@ -26,31 +26,40 @@
                     "WP_Requirements_Check.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
             "authors": [
                 {
+                    "name": "Pascal Birchler",
+                    "email": "pascal@required.ch",
+                    "role": "Developer"
+                },
+                {
                     "name": "required",
                     "email": "support@required.ch",
-                    "homepage": "http://required.ch",
+                    "homepage": "https://required.com",
+                    "role": "Company"
+                },
+                {
+                    "name": "Ulrich Pogson",
+                    "email": "ulrich@required.ch",
                     "role": "Developer"
                 }
             ],
             "description": "Simple requirements checking class",
-            "support": {
-                "source": "https://github.com/wearerequired/wp-requirements-check/tree/master",
-                "issues": "https://github.com/wearerequired/wp-requirements-check/issues"
-            },
-            "time": "2016-06-06 18:20:15"
+            "keywords": [
+                "requirements",
+                "wordpress"
+            ],
+            "time": "2017-10-23T09:14:03+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wearerequired/wp-requirements-check": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
