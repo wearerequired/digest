@@ -2,27 +2,21 @@
   "name":         "wearerequired/digest",
   "description":  "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
   "type":         "wordpress-plugin",
-  "license":      "GPL-2.0+",
+  "license":      "GPL-2.0-or-later",
   "authors":      [
     {
       "name":     "required",
-      "email":    "support@required.ch",
+      "email":    "info@required.ch",
       "homepage": "https://required.com",
-      "role":     "Developer"
+      "role":     "Company"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url":  "https://github.com/wearerequired/wp-requirements-check"
-    }
-  ],
-  "require":      {
-    "php":                                 ">=5.3",
-    "wearerequired/wp-requirements-check": "dev-master"
+  "require": {
+    "php": ">=5.4",
+    "wearerequired/wp-requirements-check": "^1.0"
   },
-  "require-dev":  {},
-  "autoload":     {
+  "require-dev": {},
+  "autoload": {
     "psr-4": {
       "Required\\Digest\\": "inc"
     }

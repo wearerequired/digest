@@ -34,21 +34,31 @@
 
 defined( 'ABSPATH' ) or die;
 
+// phpcs:disable Generic.Arrays.DisallowLongArraySyntax -- File needs to be parsable by PHP 5.2.4.
+
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	include __DIR__ . '/vendor/autoload.php';
 }
 
 if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
-	trigger_error( sprintf( '%s does not exist. Check Composer\'s autoloader.',  'Required\\Digest\\Plugin' ) );
+	trigger_error(
+		sprintf(
+			'%s does not exist. Check Composer\'s autoloader.',
+			'Required\\Digest\\Plugin'
+		)
+	);
 	return;
 }
 
-$requirements_check = new WP_Requirements_Check( [
-	'title' => __( 'Digest Notifications', 'digest' ),
-	'php'   => '5.3',
-	'wp'    => '4.4',
-	'file'  => __FILE__,
-] );
+// phpcs:ignore WordPress.NamingConventions -- Variable gets unset.
+$requirements_check = new WP_Requirements_Check(
+	array(
+		'title' => __( 'Digest Notifications', 'digest' ),
+		'php'   => '5.4',
+		'wp'    => '4.4',
+		'file'  => __FILE__,
+	)
+);
 
 if ( $requirements_check->passes() ) {
 	require_once __DIR__ . '/includes/pluggable.php';
