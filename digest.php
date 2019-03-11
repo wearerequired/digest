@@ -61,8 +61,8 @@ $requirements_check = new WP_Requirements_Check(
 );
 
 if ( $requirements_check->passes() ) {
-	require_once __DIR__ . '/includes/pluggable.php';
-	require_once __DIR__ . '/includes/functions.php';
+	require_once __DIR__ . '/template-tags/pluggable.php';
+	require_once __DIR__ . '/template-tags/functions.php';
 	require_once __DIR__ . '/inc/namespace.php';
 
 	add_action( 'plugins_loaded', 'Required\\Digest\\bootstrap' );
