@@ -8,6 +8,9 @@
 namespace Required\Digest\Setting;
 
 use Required\Digest\Plugin;
+use const Required\Digest\PLUGIN_FILE as PLUGIN_FILE;
+use const Required\Digest\PLUGIN_DIR as PLUGIN_DIR;
+use const Required\Digest\VERSION as VERSION;
 
 /**
  * Setting for the digest frequency.
@@ -32,7 +35,7 @@ class FrequencySetting implements SettingInterface {
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
 		// Add an action link pointing to the options page.
-		add_action( 'plugin_action_links_' . plugin_basename( \Required\Digest\PLUGIN_FILE ), [
+		add_action( 'plugin_action_links_' . plugin_basename( PLUGIN_FILE ), [
 			$this,
 			'plugin_action_links',
 		] );
@@ -177,8 +180,8 @@ class FrequencySetting implements SettingInterface {
 		if ( 'options-general.php' === $hook_suffix ) {
 			$suffix = SCRIPT_DEBUG ? '' : '.min';
 
-			wp_enqueue_script( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', [], Plugin::VERSION, true );
-			wp_enqueue_style( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', [], Plugin::VERSION );
+			wp_enqueue_script( 'digest', plugin_dir_url( PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', [], VERSION, true );
+			wp_enqueue_style( 'digest', plugin_dir_url( PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', [], VERSION );
 		}
 	}
 
