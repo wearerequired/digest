@@ -14,7 +14,7 @@ use WP_User;
  *
  * Responsible for creating a new digest message to be sent per email.
  */
-class Digest {
+class Plugin {
 	/**
 	 * The queue items.
 	 *
