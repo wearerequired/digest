@@ -8,6 +8,11 @@ use Required\Digest\Queue;
 use WP_UnitTestCase;
 use MockAction;
 
+use function Required\Digest\activate_plugin;
+use function Required\Digest\deactivate_plugin;
+use function Required\Digest\load_textdomain;
+use function Required\Digest\send_email;
+
 class Plugin extends WP_UnitTestCase {
 	public function test_plugin_is_activated() {
 		$this->assertTrue( class_exists( 'Required\\Digest\\Plugin' ) );
@@ -16,14 +21,14 @@ class Plugin extends WP_UnitTestCase {
 	public function test_cron_event_scheduled() {
 		$this->assertFalse( wp_next_scheduled( 'digest_event' ) );
 
-		digest()->activate_plugin();
+		activate_plugin();
 
 		$this->assertInternalType( 'int', wp_next_scheduled( 'digest_event' ) );
 	}
 
 	public function test_cron_event_unscheduled() {
-		digest()->activate_plugin();
-		digest()->deactivate_plugin();
+		activate_plugin();
+		deactivate_plugin();
 
 		$this->assertFalse( wp_next_scheduled( 'digest_event' ) );
 	}
@@ -32,7 +37,7 @@ class Plugin extends WP_UnitTestCase {
 		$action = new MockAction();
 
 		add_filter( 'digest_cron_email_message', [ $action, 'filter' ] );
-		digest()->send_email( 'Foo' );
+		send_email( 'Foo' );
 		remove_filter( 'digest_cron_email_message', [ $action, 'filter' ] );
 
 		$this->assertSame( 0, $action->get_call_count() );
@@ -41,7 +46,7 @@ class Plugin extends WP_UnitTestCase {
 	public function test_send_email_non_empty_queue() {
 		Queue::add( 'foo@example.com', 'foo', 'bar' );
 
-		digest()->send_email( 'Foo' );
+		send_email( 'Foo' );
 
 		/** @var MockPHPMailer $mailer */
 		$mailer = tests_retrieve_phpmailer_instance();
@@ -52,7 +57,7 @@ class Plugin extends WP_UnitTestCase {
 	public function test_send_email_non_empty_queue_registered_events() {
 		Queue::add( 'foo@example.com', 'core_update_success', '100.1.0' );
 
-		digest()->send_email( 'Foo' );
+		send_email( 'Foo' );
 
 		/** @var MockPHPMailer $mailer */
 		$mailer = tests_retrieve_phpmailer_instance();
@@ -65,7 +70,7 @@ class Plugin extends WP_UnitTestCase {
 		$action = new MockAction();
 
 		add_action( 'load_textdomain', [ $action, 'action' ] );
-		digest()->load_textdomain();
+		load_textdomain();
 		remove_action( 'load_textdomain', [ $action, 'action' ] );
 
 		$this->assertGreaterThan( 0, $action->get_call_count() );

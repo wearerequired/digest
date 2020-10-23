@@ -5,6 +5,10 @@ namespace Required\Digest\Tests;
 use \WP_UnitTestCase;
 use \Required\Digest\Queue as Digest_Queue;
 
+use function Required\Digest\auto_core_update_email;
+use function Required\Digest\comment_notification_recipients;
+use function Required\Digest\comment_moderation_recipients;
+
 class Queue extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
@@ -113,7 +117,7 @@ class Queue extends WP_UnitTestCase {
 			'comment_post_ID' => $post_id,
 		] );
 
-		$actual = digest()->comment_notification_recipients( [
+		$actual = comment_notification_recipients( [
 			'foo@example.com',
 			'bar@example.com',
 		], $comment_id );
@@ -127,7 +131,7 @@ class Queue extends WP_UnitTestCase {
 			'comment_post_ID' => $post_id,
 		] );
 
-		digest()->comment_notification_recipients( [
+		comment_notification_recipients( [
 			'foo@example.com',
 			'bar@example.com',
 		], $comment_id );
@@ -164,7 +168,7 @@ class Queue extends WP_UnitTestCase {
 			'user_id'         => $user_id,
 		] );
 
-		digest()->comment_notification_recipients( [
+		comment_notification_recipients( [
 			'foo@example.com',
 			'bar@example.com',
 		], $comment_id );
@@ -195,7 +199,7 @@ class Queue extends WP_UnitTestCase {
 
 		wp_set_current_user( $user_id );
 
-		digest()->comment_notification_recipients( [
+		comment_notification_recipients( [
 			'foo@example.com',
 			'bar@example.com',
 		], $comment_id );
@@ -226,7 +230,7 @@ class Queue extends WP_UnitTestCase {
 			'comment_post_ID' => $post_id,
 		] );
 
-		digest()->comment_notification_recipients( [
+		comment_notification_recipients( [
 			'foo@example.com',
 			'bar@example.com',
 		], $comment_id );
@@ -245,7 +249,7 @@ class Queue extends WP_UnitTestCase {
 	}
 
 	public function test_comment_moderation_recipients() {
-		digest()->comment_moderation_recipients( [
+		comment_moderation_recipients( [
 			'foo@example.com',
 			'bar@example.com',
 		], 123 );
@@ -273,7 +277,7 @@ class Queue extends WP_UnitTestCase {
 	public function test_auto_core_update_email_returns_empty_array() {
 		set_site_transient( 'update_core', new \stdClass() );
 
-		$actual = digest()->auto_core_update_email( [], 'success', (object) [ 'current' => '100.1.0' ] );
+		$actual = auto_core_update_email( [], 'success', (object) [ 'current' => '100.1.0' ] );
 
 		$this->assertSame( [ 'to' => [] ], $actual );
 	}
@@ -281,7 +285,7 @@ class Queue extends WP_UnitTestCase {
 	public function test_auto_core_update_email() {
 		set_site_transient( 'update_core', new \stdClass() );
 
-		digest()->auto_core_update_email( [], 'success', (object) [ 'current' => '100.1.0' ] );
+		auto_core_update_email( [], 'success', (object) [ 'current' => '100.1.0' ] );
 
 		$expected = [
 			get_bloginfo( 'admin_email' ) => [
@@ -299,7 +303,7 @@ class Queue extends WP_UnitTestCase {
 	public function test_auto_core_update_email_invalid_type() {
 		set_site_transient( 'update_core', new \stdClass() );
 
-		digest()->auto_core_update_email( [], 'foo', (object) [ 'current' => '100.1.0' ] );
+		auto_core_update_email( [], 'foo', (object) [ 'current' => '100.1.0' ] );
 
 		$this->assertEmpty( Digest_Queue::get() );
 	}
@@ -309,7 +313,7 @@ class Queue extends WP_UnitTestCase {
 			'updates' => [],
 		] );
 
-		digest()->auto_core_update_email( [], 'success', (object) [ 'current' => '100.1.0' ] );
+		auto_core_update_email( [], 'success', (object) [ 'current' => '100.1.0' ] );
 
 		$expected = [
 			get_bloginfo( 'admin_email' ) => [
