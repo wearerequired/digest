@@ -3,7 +3,7 @@
 namespace Required\Digest\Tests;
 
 use \WP_UnitTestCase;
-use Required\Digest\Digest as Digest_Message;
+use Required\Digest\Plugin as Digest_Message;
 
 class Digest extends WP_UnitTestCase {
 	/**
