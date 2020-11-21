@@ -2,54 +2,59 @@
 
 namespace Required\Digest\Tests;
 
-use Required\Digest\Event\RegistryInterface;
 use \WP_UnitTestCase;
 use \Required\Digest\Event\Registry as EventRegistry;
 
+use function Required\Digest\register_default_events;
+
 class Registry extends WP_UnitTestCase {
-	/**
-	 * @var RegistryInterface
-	 */
-	protected $registry;
 
 	public function setUp() {
-		$this->registry = new EventRegistry();
+		parent::setUp();
+
+		EventRegistry::clear();
+	}
+
+	public function tearDown() {
+		EventRegistry::clear();
+
+		parent::tearDown();
 	}
 
 	public function test_register_event() {
-		$this->registry->register_event( 'foo' );
+		EventRegistry::register_event( 'foo' );
 
-		$this->assertSame( [ 'foo' ], $this->registry->get_registered_events() );
+		$this->assertSame( [ 'foo' ], EventRegistry::get_registered_events() );
 	}
 
 	public function test_register_event_twice() {
-		$this->registry->register_event( 'foo' );
-		$this->registry->register_event( 'foo' );
+		EventRegistry::register_event( 'foo' );
+		EventRegistry::register_event( 'foo' );
 
-		$this->assertSame( [ 'foo' ], $this->registry->get_registered_events() );
+		$this->assertSame( [ 'foo' ], EventRegistry::get_registered_events() );
 	}
 
 	public function test_register_event_adds_filter_with_callback() {
-		$this->registry->register_event( 'foo', 'bar' );
+		EventRegistry::register_event( 'foo', 'bar' );
 
 		$this->assertNotFalse( has_filter( 'digest_message_section_foo', 'bar' ) );
 	}
 
 	public function test_is_registered_event() {
-		$before = $this->registry->is_registered_event( 'foo' );
-		$this->registry->register_event( 'foo' );
-		$after = $this->registry->is_registered_event( 'foo' );
+		$before = EventRegistry::is_registered_event( 'foo' );
+		EventRegistry::register_event( 'foo' );
+		$after = EventRegistry::is_registered_event( 'foo' );
 
 		$this->assertFalse( $before );
 		$this->assertTrue( $after );
 	}
 
 	public function get_registered_events_empty() {
-		$this->assertEmpty( $this->registry->get_registered_events() );
+		$this->assertEmpty( EventRegistry::get_registered_events() );
 	}
 
 	public function test_register_default_events(  ) {
-		$this->registry->register_default_events();
+		register_default_events();
 
 		$this->assertEqualSets( [
 			'comment_moderation',
@@ -58,19 +63,19 @@ class Registry extends WP_UnitTestCase {
 			'core_update_success',
 			'new_user_notification',
 			'password_change_notification'
-		], $this->registry->get_registered_events() );
+		], EventRegistry::get_registered_events() );
 	}
 
 	public function test_register_default_events_without_pluggable(  ) {
 		update_option( 'digest_hooks', [], false );
 
-		$this->registry->register_default_events();
+		register_default_events();
 
 		$this->assertEqualSets( [
 			'comment_moderation',
 			'comment_notification',
 			'core_update_failure',
 			'core_update_success',
-		], $this->registry->get_registered_events() );
+		], EventRegistry::get_registered_events() );
 	}
 }

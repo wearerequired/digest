@@ -7,18 +7,12 @@
 
 namespace Required\Digest\Event;
 
-use Required\Digest\Message\CommentModeration;
-use Required\Digest\Message\CommentNotification;
-use Required\Digest\Message\CoreUpdate;
-use Required\Digest\Message\PasswordChangeNotification;
-use Required\Digest\Message\UserNotification;
-
 /**
  * Event registry.
  *
  * @since 2.0.0
  */
-class Registry implements RegistryInterface {
+class Registry {
 	/**
 	 * The registered events.
 	 *
@@ -27,7 +21,7 @@ class Registry implements RegistryInterface {
 	 *
 	 * @var array
 	 */
-	protected $registered_events = [];
+	protected static $registered_events = [];
 
 	/**
 	 * Registers an event for the digest.
@@ -40,12 +34,12 @@ class Registry implements RegistryInterface {
 	 *
 	 * @return void
 	 */
-	public function register_event( $event, $callback = null ) {
-		if ( $this->is_registered_event( $event ) ) {
+	public static function register_event( $event, $callback = null ) {
+		if ( self::is_registered_event( $event ) ) {
 			return;
 		}
 
-		$this->registered_events[] = $event;
+		self::$registered_events[] = $event;
 
 		if ( null !== $callback ) {
 			add_filter( 'digest_message_section_' . $event, $callback, 10, 9999 );
@@ -62,8 +56,8 @@ class Registry implements RegistryInterface {
 	 *
 	 * @return bool True if the event has been registered, false otherwise.
 	 */
-	public function is_registered_event( $event ) {
-		return in_array( $event, $this->registered_events, true );
+	public static function is_registered_event( $event ) {
+		return in_array( $event, self::$registered_events, true );
 	}
 
 	/**
@@ -74,73 +68,17 @@ class Registry implements RegistryInterface {
 	 *
 	 * @return array The registered events.
 	 */
-	public function get_registered_events() {
-		return $this->registered_events;
+	public static function get_registered_events() {
+		return self::$registered_events;
 	}
 
 	/**
-	 * Registers all the default events.
+	 * Clears all registered events.
 	 *
-	 * @since  2.0.0
+	 * @since 2.0.0
 	 * @access public
-	 *
-	 * @return void
 	 */
-	public function register_default_events() {
-		// Register default events.
-		$this->register_event( 'core_update_success', function ( $content, $entries, $user, $event ) {
-			$message = new CoreUpdate( $entries, $user, $event );
-
-			if ( '' === $content ) {
-				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
-			}
-
-			return $content . $message->get_message();
-		} );
-
-		$this->register_event( 'core_update_failure', function ( $content, $entries, $user, $event ) {
-			$message = new CoreUpdate( $entries, $user, $event );
-
-			if ( '' === $content ) {
-				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
-			}
-
-			return $content . $message->get_message();
-		} );
-
-		$this->register_event( 'comment_moderation', function ( $content, $entries, $user ) {
-			$message = new CommentModeration( $entries, $user );
-
-			return $content . $message->get_message();
-		} );
-
-		$this->register_event( 'comment_notification', function ( $content, $entries, $user ) {
-			$message = new CommentNotification( $entries, $user );
-
-			return $content . $message->get_message();
-		} );
-
-		if ( in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
-			$this->register_event( 'new_user_notification', function ( $content, $entries, $user ) {
-				$message = new UserNotification( $entries, $user );
-
-				return $content . $message->get_message();
-			} );
-		}
-
-		if ( in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
-			$this->register_event( 'password_change_notification', function ( $content, $entries, $user ) {
-				$message = new PasswordChangeNotification( $entries, $user );
-
-				return $content . $message->get_message();
-			} );
-		}
-
-		/**
-		 * Fires after registering the default events.
-		 *
-		 * @since 2.0.0
-		 */
-		do_action( 'digest_register_events' );
+	public static function clear() {
+		self::$registered_events = [];
 	}
 }

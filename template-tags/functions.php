@@ -6,6 +6,7 @@
  */
 
 use Required\Digest\Queue;
+use Required\Digest\Event\Registry;
 
 /**
  * Registers an event for the digest.
@@ -18,7 +19,7 @@ use Required\Digest\Queue;
  * @return void
  */
 function digest_register_event( $event, $callback ) {
-	digest()->event_registry()->register_event( $event, $callback );
+	Registry::register_event( $event, $callback );
 }
 
 /**
@@ -31,7 +32,7 @@ function digest_register_event( $event, $callback ) {
  * @return bool True if the event has been registered, false otherwise.
  */
 function digest_is_registered_event( $event ) {
-	return digest()->event_registry()->is_registered_event( $event );
+	return Registry::is_registered_event( $event );
 }
 
 /**
@@ -42,7 +43,7 @@ function digest_is_registered_event( $event ) {
  * @return array The registered events.
  */
 function digest_get_registered_events() {
-	return digest()->event_registry()->get_registered_events();
+	return Registry::get_registered_events();
 }
 
 /**

@@ -76,50 +76,23 @@ class Plugin extends WP_UnitTestCase {
 		$this->assertGreaterThan( 0, $action->get_call_count() );
 	}
 
-	public function test_event_registry() {
-		$registry = new Registry();
-		$plugin   = new \Required\Digest\Plugin( $registry );
-
-		$this->assertSame( $registry, $plugin->event_registry() );
-	}
-
 	public function test_add_hooks() {
-		$registry = new Registry();
-		$plugin   = new \Required\Digest\Plugin( $registry );
-
-		$plugin->add_hooks();
-
 		$this->assertNotFalse(
-			has_action( 'init', [
-				$plugin,
-				'load_textdomain',
-			] )
+			has_action( 'init', 'Required\Digest\load_textdomain' )
 		);
 
 		$this->assertNotFalse(
-			has_action( 'comment_notification_recipients', [
-				$plugin,
-				'comment_notification_recipients',
-			] )
+			has_action( 'comment_notification_recipients', 'Required\Digest\comment_notification_recipients' )
 		);
 		$this->assertNotFalse(
-			has_action( 'comment_moderation_recipients', [
-				$plugin,
-				'comment_moderation_recipients',
-			] )
+			has_action( 'comment_moderation_recipients', 'Required\Digest\comment_moderation_recipients' )
 		);
 		$this->assertNotFalse(
-			has_action( 'auto_core_update_email', [
-				$plugin,
-				'auto_core_update_email',
-			] )
+			has_action( 'auto_core_update_email', 'Required\Digest\auto_core_update_email' )
 		);
 
 		$this->assertNotFalse(
-			has_action( 'init', [
-				$registry,
-				'register_default_events',
-			] )
+			has_action( 'init', 'Required\Digest\register_default_events' )
 		);
 	}
 }

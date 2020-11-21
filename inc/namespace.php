@@ -2,6 +2,11 @@
 
 namespace Required\Digest;
 
+use Required\Digest\Message\CommentModeration;
+use Required\Digest\Message\CommentNotification;
+use Required\Digest\Message\CoreUpdate;
+use Required\Digest\Message\PasswordChangeNotification;
+use Required\Digest\Message\UserNotification;
 use Required\Digest\Event\Registry;
 use Required\Digest\Setting\FrequencySetting;
 use stdClass;
@@ -24,8 +29,7 @@ function bootstrap() {
 	add_action( 'comment_moderation_recipients', __NAMESPACE__ . '\\comment_moderation_recipients', 10, 2 );
 	add_action( 'auto_core_update_email', __NAMESPACE__ . '\\auto_core_update_email', 10, 3 );
 
-	$event_registry = new Registry();
-	add_action( 'init', [ $event_registry, 'register_default_events' ] );
+	add_action( 'init', __NAMESPACE__ . '\\register_default_events' );
 
 	add_action( 'digest_event', [ Cron::class, 'init' ] );
 
@@ -160,6 +164,69 @@ function auto_core_update_email( array $email, $type, $core_update ) {
 }
 
 /**
+ * Registers all the default events.
+ *
+ * @return void
+ */
+function register_default_events() {
+	// Register default events.
+	Registry::register_event( 'core_update_success', function ( $content, $entries, $user, $event ) {
+		$message = new CoreUpdate( $entries, $user, $event );
+
+		if ( '' === $content ) {
+			$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+		}
+
+		return $content . $message->get_message();
+	} );
+
+	Registry::register_event( 'core_update_failure', function ( $content, $entries, $user, $event ) {
+		$message = new CoreUpdate( $entries, $user, $event );
+
+		if ( '' === $content ) {
+			$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+		}
+
+		return $content . $message->get_message();
+	} );
+
+	Registry::register_event( 'comment_moderation', function ( $content, $entries, $user ) {
+		$message = new CommentModeration( $entries, $user );
+
+		return $content . $message->get_message();
+	} );
+
+	Registry::register_event( 'comment_notification', function ( $content, $entries, $user ) {
+		$message = new CommentNotification( $entries, $user );
+
+		return $content . $message->get_message();
+	} );
+
+	if ( in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
+		Registry::register_event( 'new_user_notification', function ( $content, $entries, $user ) {
+			$message = new UserNotification( $entries, $user );
+
+			return $content . $message->get_message();
+		} );
+	}
+
+	if ( in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
+		Registry::register_event( 'password_change_notification', function ( $content, $entries, $user ) {
+			$message = new PasswordChangeNotification( $entries, $user );
+
+			return $content . $message->get_message();
+		} );
+	}
+
+	/**
+	 * Fires after registering the default events.
+	 *
+	 * @since 2.0.0
+	 */
+	do_action( 'digest_register_events' );
+}
+
+/**
  * Sends the scheduled email to all the recipients in the digest queue.
  *
  * @param string $subject Email subject.
@@ -173,7 +240,7 @@ function send_email( $subject ) {
 
 	// Loop through the queue.
 	foreach ( $queue as $recipient => $items ) {
-		$digest = new Digest( $recipient, $items );
+		$digest = new Plugin( $recipient, $items );
 
 		/**
 		 * Filter the digest message.
