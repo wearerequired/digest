@@ -3,6 +3,7 @@ Contributors:      wearerequired, swissspidy
 Tags:              admin, emails, comments, notification, updates  
 Requires at least: 4.4  
 Tested up to:      4.8  
+Requires PHP:      5.3  
 Stable tag:        1.2.1  
 Requires PHP:      5.4  
 License:           GPLv2 or later  
@@ -52,7 +53,7 @@ The plugin is quite extensible. There are many well documented hooks developers 
 
 If you would like to contribute to this plugin, report an issue or anything like that, please note that we develop this plugin [on GitHub](https://github.com/wearerequired/digest). Please submit pull requests to the develop branch.
 
-Developed by [required+](http://required.ch/).
+Developed by [required](https://required.com/).
 
 ## Changelog ##
 
