@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="digest">
+	<description>Coding Standard for the "Digest" plugin.</description>
+
+	<file>.</file>
+
+	<rule ref="Required"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="digest"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="Required\Digest"/>
+				<element value="Digest"/>
+			</property>
+		</properties>
+	</rule>
+
+	<exclude-pattern>/assets/*</exclude-pattern>
+</ruleset>
