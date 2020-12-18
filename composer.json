@@ -16,13 +16,18 @@
     "wearerequired/wp-requirements-check": "^1.0",
     "phpunit/phpunit": "^7"
   },
-  "require-dev": {},
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+    "wearerequired/coding-standards": "^1.6"
+  },
   "autoload": {
     "psr-4": {
       "Required\\Digest\\": "inc"
     }
   },
   "scripts": {
-    "test": "@php ./vendor/bin/phpunit"
+    "test": "@php ./vendor/bin/phpunit",
+    "format": "vendor/bin/phpcbf --report-summary --report-source .",
+    "lint": "vendor/bin/phpcs --report-summary --report-source ."
   }
 }
