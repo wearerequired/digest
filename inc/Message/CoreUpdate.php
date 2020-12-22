@@ -28,7 +28,7 @@ class CoreUpdate extends Section {
 	 * @since  2.0.0
 	 *
 	 * @param array    $entries The core update entries.
-	 * @param \WP_User $user The current user.
+	 * @param \WP_User|null $user The current user.
 	 * @param string   $event   The current event.
 	 */
 	public function __construct( $entries, ?WP_User $user = null, $event ) {

@@ -61,7 +61,7 @@ abstract class Section implements MessageInterface {
 	 * @since  2.0.0
 	 *
 	 * @param array    $entries The message entries.
-	 * @param \WP_User $user The current user.
+	 * @param \WP_User|null $user The current user.
 	 */
 	public function __construct( $entries, ?WP_User $user = null ) {
 		$this->user = $user;
