@@ -1,8 +1,6 @@
 <?php
 /**
  * PasswordChangeNotification class.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Message;
@@ -19,7 +17,6 @@ class PasswordChangeNotification extends Section {
 	 * Get password change notification section message.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @return string The section message.
 	 */
@@ -31,7 +28,7 @@ class PasswordChangeNotification extends Section {
 		}
 
 		$message = '<p><b>' . __( 'Password Changes', 'digest' ) . '</b></p>';
-		if ( 1 === count( $this->entries ) ) {
+		if ( 1 === \count( $this->entries ) ) {
 			$message .= '<p>' . __( 'The following user lost and changed his password:', 'digest' ) . '</p>';
 		} else {
 			$message .= '<p>' . __( 'The following users lost and changed their passwords:', 'digest' ) . '</p>';
@@ -45,11 +42,9 @@ class PasswordChangeNotification extends Section {
 	 * Returns the password change notification message.
 	 *
 	 * @since  2.0.0
-	 * @access protected
 	 *
 	 * @param int $user_id The user ID.
 	 * @param int $time    The timestamp when the user changed his password.
-	 *
 	 * @return string The password change notification message.
 	 */
 	protected function get_single_message( $user_id, $time ) {

@@ -1,15 +1,17 @@
 <?php
+/**
+ * Common Digest Functions.
+ */
 
 namespace Required\Digest;
 
+use Required\Digest\Event\Registry;
 use Required\Digest\Message\CommentModeration;
 use Required\Digest\Message\CommentNotification;
 use Required\Digest\Message\CoreUpdate;
 use Required\Digest\Message\PasswordChangeNotification;
 use Required\Digest\Message\UserNotification;
-use Required\Digest\Event\Registry;
 use Required\Digest\Setting\FrequencySetting;
-use stdClass;
 
 define( __NAMESPACE__ . '\PLUGIN_FILE', dirname( __DIR__ ) . '/digest.php' );
 define( __NAMESPACE__ . '\PLUGIN_DIR', dirname( __DIR__ ) );
@@ -37,6 +39,9 @@ function bootstrap() {
 	register_deactivation_hook( __FILE__, __NAMESPACE__ . '\\deactivate_plugin' );
 }
 
+/**
+ * Load plugin textdomain.
+ */
 function load_textdomain() {
 	load_plugin_textdomain( 'digest' );
 }
@@ -47,7 +52,7 @@ function load_textdomain() {
 function activate_plugin() {
 	// Get timestamp of the next full hour.
 	$current_time = current_time( 'timestamp' );
-	$timestamp    = $current_time + ( 3600 - ( ( date( 'i', $current_time ) * 60 ) + date( 's', $current_time ) ) );
+	$timestamp    = $current_time + ( 3600 - ( ( gmdate( 'i', $current_time ) * 60 ) + gmdate( 's', $current_time ) ) );
 
 	wp_clear_scheduled_hook( 'digest_event' );
 	wp_schedule_event( $timestamp, 'hourly', 'digest_event' );
@@ -65,7 +70,6 @@ function deactivate_plugin() {
  *
  * @param string[] $emails     An array of email addresses to receive a comment notification.
  * @param int      $comment_id The comment ID.
- *
  * @return array An empty array to prevent sending an email directly.
  */
 function comment_notification_recipients( $emails, $comment_id ) {
@@ -74,7 +78,7 @@ function comment_notification_recipients( $emails, $comment_id ) {
 	$author  = get_userdata( $post->post_author );
 
 	/** This filters is documented in wp-includes/pluggable.php */
-	$notify_author = apply_filters( 'comment_notification_notify_author', false, $comment_id );
+	$notify_author = apply_filters( 'comment_notification_notify_author', false, $comment_id ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 	$skipped = [];
 
@@ -96,7 +100,7 @@ function comment_notification_recipients( $emails, $comment_id ) {
 	}
 
 	foreach ( $emails as $recipient ) {
-		if ( ! in_array( $recipient, $skipped, true ) ) {
+		if ( ! \in_array( $recipient, $skipped, true ) ) {
 			Queue::add( $recipient, 'comment_notification', $comment_id );
 		}
 	}
@@ -109,7 +113,6 @@ function comment_notification_recipients( $emails, $comment_id ) {
  *
  * @param string[] $emails     An array of email addresses to receive a comment notification.
  * @param int      $comment_id The comment ID.
- *
  * @return array An empty array to prevent sending an email directly.
  */
 function comment_moderation_recipients( $emails, $comment_id ) {
@@ -128,8 +131,8 @@ function comment_moderation_recipients( $emails, $comment_id ) {
  *
  * @see WP_Automatic_Updater::send_email()
  *
- * @param array    $email       {
- *                              Array of email arguments that will be passed to wp_mail().
+ * @param array     $email       {
+ *                               Array of email arguments that will be passed to wp_mail().
  *
  * @type string    $to          The email recipient. An array of emails
  *                              can be returned, as handled by wp_mail().
@@ -137,11 +140,9 @@ function comment_moderation_recipients( $emails, $comment_id ) {
  * @type string    $body        The email message body.
  * @type string    $headers     Any email headers, defaults to no headers.
  * }
- *
- * @param string   $type        The type of email being sent. Can be one of
- *                              'success', 'fail', 'manual', 'critical'.
- * @param stdClass $core_update The update offer that was attempted.
- *
+ * @param string    $type        The type of email being sent. Can be one of
+ *                               'success', 'fail', 'manual', 'critical'.
+ * @param \stdClass $core_update The update offer that was attempted.
  * @return array The modified $email array without a recipient.
  */
 function auto_core_update_email( array $email, $type, $core_update ) {
@@ -155,7 +156,7 @@ function auto_core_update_email( array $email, $type, $core_update ) {
 	// If the auto update is not to the latest version, say that the current version of WP is available instead.
 	$version = 'success' === $type ? $core_update->current : $next_core_update->current;
 
-	if ( in_array( $type, [ 'success', 'fail', 'manual' ], true ) ) {
+	if ( \in_array( $type, [ 'success', 'fail', 'manual' ], true ) ) {
 		Queue::add( get_site_option( 'admin_email' ), 'core_update_' . $type, $version );
 		$email['to'] = [];
 	}
@@ -170,52 +171,70 @@ function auto_core_update_email( array $email, $type, $core_update ) {
  */
 function register_default_events() {
 	// Register default events.
-	Registry::register_event( 'core_update_success', function ( $content, $entries, $user, $event ) {
-		$message = new CoreUpdate( $entries, $user, $event );
+	Registry::register_event(
+		'core_update_success',
+		function ( $content, $entries, $user, $event ) {
+			$message = new CoreUpdate( $entries, $user, $event );
 
-		if ( '' === $content ) {
-			$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
-		}
-
-		return $content . $message->get_message();
-	} );
-
-	Registry::register_event( 'core_update_failure', function ( $content, $entries, $user, $event ) {
-		$message = new CoreUpdate( $entries, $user, $event );
-
-		if ( '' === $content ) {
-			$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
-		}
-
-		return $content . $message->get_message();
-	} );
-
-	Registry::register_event( 'comment_moderation', function ( $content, $entries, $user ) {
-		$message = new CommentModeration( $entries, $user );
-
-		return $content . $message->get_message();
-	} );
-
-	Registry::register_event( 'comment_notification', function ( $content, $entries, $user ) {
-		$message = new CommentNotification( $entries, $user );
-
-		return $content . $message->get_message();
-	} );
-
-	if ( in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
-		Registry::register_event( 'new_user_notification', function ( $content, $entries, $user ) {
-			$message = new UserNotification( $entries, $user );
+			if ( '' === $content ) {
+				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+			}
 
 			return $content . $message->get_message();
-		} );
+		}
+	);
+
+	Registry::register_event(
+		'core_update_failure',
+		function ( $content, $entries, $user, $event ) {
+			$message = new CoreUpdate( $entries, $user, $event );
+
+			if ( '' === $content ) {
+				$content = '<p><b>' . __( 'Core Updates', 'digest' ) . '</b></p>';
+			}
+
+			return $content . $message->get_message();
+		}
+	);
+
+	Registry::register_event(
+		'comment_moderation',
+		function ( $content, $entries, $user ) {
+			$message = new CommentModeration( $entries, $user );
+
+			return $content . $message->get_message();
+		}
+	);
+
+	Registry::register_event(
+		'comment_notification',
+		function ( $content, $entries, $user ) {
+			$message = new CommentNotification( $entries, $user );
+
+			return $content . $message->get_message();
+		}
+	);
+
+	if ( \in_array( 'new_user_notification', get_option( 'digest_hooks' ), true ) ) {
+		Registry::register_event(
+			'new_user_notification',
+			function ( $content, $entries, $user ) {
+				$message = new UserNotification( $entries, $user );
+
+				return $content . $message->get_message();
+			}
+		);
 	}
 
-	if ( in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
-		Registry::register_event( 'password_change_notification', function ( $content, $entries, $user ) {
-			$message = new PasswordChangeNotification( $entries, $user );
+	if ( \in_array( 'password_change_notification', get_option( 'digest_hooks' ), true ) ) {
+		Registry::register_event(
+			'password_change_notification',
+			function ( $content, $entries, $user ) {
+				$message = new PasswordChangeNotification( $entries, $user );
 
-			return $content . $message->get_message();
-		} );
+				return $content . $message->get_message();
+			}
+		);
 	}
 
 	/**

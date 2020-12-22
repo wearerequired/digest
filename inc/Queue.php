@@ -1,8 +1,6 @@
 <?php
 /**
  * Queue class.
- *
- * @package Digest
  */
 
 namespace Required\Digest;
@@ -27,7 +25,6 @@ class Queue {
 	 * Digest queue option name.
 	 *
 	 * @since 1.0.0
-	 * @access protected
 	 *
 	 * @var string
 	 */
@@ -39,7 +36,6 @@ class Queue {
 	 * It can be modified using the `digest_queue` filter.
 	 *
 	 * @since  1.0.0
-	 * @access public
 	 *
 	 * @return array The digest queue.
 	 */
@@ -51,7 +47,6 @@ class Queue {
 	 * Clears the digest queue.
 	 *
 	 * @since 1.0.0
-	 * @access public
 	 */
 	public static function clear() {
 		delete_option( self::$option );
@@ -61,7 +56,6 @@ class Queue {
 	 * Adds an event to the queue for a specific recipient.
 	 *
 	 * @since 1.0.0
-	 * @access public
 	 *
 	 * @param string $recipient The recipient's email address.
 	 * @param string $event     The type of the event.
@@ -70,7 +64,7 @@ class Queue {
 	public static function add( $recipient, $event, $data ) {
 		$queue = self::get();
 
-		$queue[ $recipient ] = isset( $queue[ $recipient ] ) ? $queue[ $recipient ] : [];
+		$queue[ $recipient ] = $queue[ $recipient ] ?? [];
 
 		$queue[ $recipient ][] = [ current_time( 'timestamp' ), $event, $data ];
 

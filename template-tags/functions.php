@@ -1,12 +1,10 @@
 <?php
 /**
  * Template Tags
- *
- * @package Digest
  */
 
-use Required\Digest\Queue;
 use Required\Digest\Event\Registry;
+use Required\Digest\Queue;
 
 /**
  * Registers an event for the digest.
@@ -15,7 +13,6 @@ use Required\Digest\Event\Registry;
  *
  * @param string   $event    Event name.
  * @param callable $callback Optional. Callback to be used when sending the digest.
- *
  * @return void
  */
 function digest_register_event( $event, $callback ) {
@@ -28,7 +25,6 @@ function digest_register_event( $event, $callback ) {
  * @since 2.0.0
  *
  * @param string $event Event name.
- *
  * @return bool True if the event has been registered, false otherwise.
  */
 function digest_is_registered_event( $event ) {

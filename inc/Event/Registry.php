@@ -1,8 +1,6 @@
 <?php
 /**
  * Registry class.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Event;
@@ -17,7 +15,6 @@ class Registry {
 	 * The registered events.
 	 *
 	 * @since  2.0.0
-	 * @access protected
 	 *
 	 * @var array
 	 */
@@ -27,11 +24,9 @@ class Registry {
 	 * Registers an event for the digest.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param string   $event    Event name.
 	 * @param callable $callback Optional. Callback to be used when sending the digest.
-	 *
 	 * @return void
 	 */
 	public static function register_event( $event, $callback = null ) {
@@ -50,21 +45,18 @@ class Registry {
 	 * Determines if an event has been registered.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param string $event Event name.
-	 *
 	 * @return bool True if the event has been registered, false otherwise.
 	 */
 	public static function is_registered_event( $event ) {
-		return in_array( $event, self::$registered_events, true );
+		return \in_array( $event, self::$registered_events, true );
 	}
 
 	/**
 	 * Returns all registered events.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @return array The registered events.
 	 */
@@ -76,7 +68,6 @@ class Registry {
 	 * Clears all registered events.
 	 *
 	 * @since 2.0.0
-	 * @access public
 	 */
 	public static function clear() {
 		self::$registered_events = [];

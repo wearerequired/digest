@@ -1,8 +1,6 @@
 <?php
 /**
  * Digest message interface.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Message;
@@ -17,7 +15,6 @@ interface MessageInterface {
 	 * Returns the message.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @return string The section message.
 	 */

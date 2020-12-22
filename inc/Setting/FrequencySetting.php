@@ -1,16 +1,13 @@
 <?php
 /**
  * Frequency setting class.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Setting;
 
-use Required\Digest\Plugin;
-use const Required\Digest\PLUGIN_FILE as PLUGIN_FILE;
-use const Required\Digest\PLUGIN_DIR as PLUGIN_DIR;
-use const Required\Digest\VERSION as VERSION;
+use const Required\Digest\PLUGIN_DIR;
+use const Required\Digest\PLUGIN_FILE;
+use const Required\Digest\VERSION;
 
 /**
  * Setting for the digest frequency.
@@ -22,7 +19,6 @@ class FrequencySetting implements SettingInterface {
 	 * Registers the setting.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 */
 	public function register() {
 		register_setting(
@@ -35,17 +31,19 @@ class FrequencySetting implements SettingInterface {
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
 		// Add an action link pointing to the options page.
-		add_action( 'plugin_action_links_' . plugin_basename( PLUGIN_FILE ), [
-			$this,
-			'plugin_action_links',
-		] );
+		add_action(
+			'plugin_action_links_' . plugin_basename( PLUGIN_FILE ),
+			[
+				$this,
+				'plugin_action_links',
+			]
+		);
 	}
 
 	/**
 	 * Adds a new settings section and settings fields to Settings -> General.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 */
 	public function add_settings_fields() {
 		add_settings_section(
@@ -70,14 +68,16 @@ class FrequencySetting implements SettingInterface {
 	 * Settings field callback that prints the actual input fields.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 */
 	public function settings_field_frequency() {
-		$options     = get_option( 'digest_frequency', [
-			'period' => 'weekly',
-			'hour'   => 18,
-			'day'    => absint( get_option( 'start_of_week' ) ),
-		] );
+		$options     = get_option(
+			'digest_frequency',
+			[
+				'period' => 'weekly',
+				'hour'   => 18,
+				'day'    => absint( get_option( 'start_of_week' ) ),
+			]
+		);
 		$time_format = get_option( 'time_format' );
 		?>
 		<p>
@@ -95,7 +95,7 @@ class FrequencySetting implements SettingInterface {
 				<select name="digest_frequency[hour]" id="digest_frequency_hour">
 					<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
 						<option value="<?php echo esc_attr( $hour ); ?>" <?php selected( $hour, $options['hour'] ); ?>>
-							<?php echo esc_html( date( $time_format, mktime( $hour, 0, 0, 1, 1, 2011 ) ) ); ?>
+							<?php echo esc_html( gmdate( $time_format, mktime( $hour, 0, 0, 1, 1, 2011 ) ) ); ?>
 						</option>
 					<?php endfor; ?>
 				</select>
@@ -123,19 +123,17 @@ class FrequencySetting implements SettingInterface {
 	 * Sanitize the digest frequency option.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param mixed $value The unsanitized value.
-	 *
 	 * @return array The sanitized frequency option.
 	 */
 	public function sanitize_frequency_option( $value ) {
-		$value = (array) $value;
+		$value     = (array) $value;
 		$new_value = [];
 
-		$new_value['period'] = isset( $value['period'] ) ? $value['period'] : 'weekly';
-		$new_value['hour']   = isset( $value['hour'] ) ? $value['hour'] : 18;
-		$new_value['day']    = isset( $value['day'] ) ? $value['day'] : get_option( 'start_of_week', 0 );
+		$new_value['period'] = $value['period'] ?? 'weekly';
+		$new_value['hour']   = $value['hour'] ?? 18;
+		$new_value['day']    = $value['day'] ?? get_option( 'start_of_week', 0 );
 
 		if ( 'daily' !== $new_value['period'] ) {
 			$new_value['period'] = 'weekly';
@@ -172,7 +170,6 @@ class FrequencySetting implements SettingInterface {
 	 * Enqueue scripts and styles.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param string $hook_suffix The current admin page.
 	 */
@@ -189,10 +186,8 @@ class FrequencySetting implements SettingInterface {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param array $links Plugin action links.
-	 *
 	 * @return array The modified plugin action links
 	 */
 	public function plugin_action_links( array $links ) {

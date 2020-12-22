@@ -10,8 +10,6 @@
  * License:     GPLv2+
  * Text Domain: digest
  * Domain Path: /languages
- *
- * @package Digest
  */
 
 /**
@@ -32,7 +30,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-defined( 'ABSPATH' ) or die;
+defined( 'ABSPATH' ) || die;
 
 // phpcs:disable Generic.Arrays.DisallowLongArraySyntax -- File needs to be parsable by PHP 5.2.4.
 
@@ -41,6 +39,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
+	// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 	trigger_error(
 		sprintf(
 			'%s does not exist. Check Composer\'s autoloader.',
