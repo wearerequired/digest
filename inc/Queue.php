@@ -66,7 +66,7 @@ class Queue {
 
 		$queue[ $recipient ] = $queue[ $recipient ] ?? [];
 
-		$queue[ $recipient ][] = [ current_time( 'timestamp' ), $event, $data ];
+		$queue[ $recipient ][] = [ time(), $event, $data ];
 
 		update_option( self::$option, $queue );
 	}

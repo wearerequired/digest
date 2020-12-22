@@ -27,9 +27,9 @@ class CoreUpdate extends Section {
 	 *
 	 * @since  2.0.0
 	 *
-	 * @param array    $entries The core update entries.
+	 * @param array         $entries The core update entries.
 	 * @param \WP_User|null $user The current user.
-	 * @param string   $event   The current event.
+	 * @param string        $event   The current event.
 	 */
 	public function __construct( $entries, ?WP_User $user = null, $event ) {
 		$this->event = $event;
@@ -78,7 +78,7 @@ class CoreUpdate extends Section {
 				esc_html( str_replace( [ 'http://', 'https://' ], '', home_url() ) )
 			),
 			esc_html( $version ),
-			human_time_diff( $time, current_time( 'timestamp' ) )
+			human_time_diff( $time, time() )
 		);
 
 		// Can only reference the About screen if their update was successful.

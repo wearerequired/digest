@@ -122,10 +122,10 @@ class CommentModeration extends Section {
 			case 'pingback':
 				if ( 'pingback' === $comment->comment_type ) {
 					// translators: 1: Post name, 2: Humman time diff.
-					$message .= sprintf( __( 'Pingback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
+					$message .= sprintf( __( 'Pingback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, time() ) ) . '<br />';
 				} else {
 					// translators: 1: Post name, 2: Humman time diff.
-					$message .= sprintf( __( 'Trackback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
+					$message .= sprintf( __( 'Trackback on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, time() ) ) . '<br />';
 				}
 				// translators: %s: Website link.
 				$message .= sprintf( __( 'Website: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' ) . '<br />';
@@ -140,7 +140,7 @@ class CommentModeration extends Section {
 					$author = sprintf( __( 'Author: %s', 'digest' ), '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>' );
 				}
 				// translators: 1: Post name, 2: Humman time diff.
-				$message  = sprintf( __( 'Comment on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, current_time( 'timestamp' ) ) ) . '<br />';
+				$message  = sprintf( __( 'Comment on %1$s %2$s ago:', 'digest' ), $post_link, human_time_diff( $time, time() ) ) . '<br />';
 				$message .= $author . '<br />';
 				if ( $comment->comment_author_email ) {
 					// translators: %s: Comment author email address.

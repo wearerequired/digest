@@ -59,7 +59,7 @@ class PasswordChangeNotification extends Section {
 			'<li>' . __( '%1$s (ID: %2$d) %3$s ago', 'digest' ) . '</li>',
 			esc_html( $user->display_name ),
 			absint( $user->ID ),
-			human_time_diff( $time, current_time( 'timestamp' ) )
+			human_time_diff( $time, time() )
 		);
 	}
 }

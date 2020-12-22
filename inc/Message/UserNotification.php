@@ -45,7 +45,7 @@ class UserNotification extends Section {
 			'<li>' . __( '%1$s (ID: %2$d) %3$s ago', 'digest' ) . '</li>',
 			$user->display_name,
 			$user->ID,
-			human_time_diff( $time, current_time( 'timestamp' ) )
+			human_time_diff( $time, time() )
 		);
 	}
 }

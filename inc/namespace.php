@@ -51,7 +51,7 @@ function load_textdomain() {
  */
 function activate_plugin() {
 	// Get timestamp of the next full hour.
-	$current_time = current_time( 'timestamp' );
+	$current_time = time();
 	$timestamp    = $current_time + ( 3600 - ( ( gmdate( 'i', $current_time ) * 60 ) + gmdate( 's', $current_time ) ) );
 
 	wp_clear_scheduled_hook( 'digest_event' );
