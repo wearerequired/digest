@@ -5,8 +5,6 @@
 
 namespace Required\Digest\Message;
 
-use WP_User;
-
 /**
  * Class for a single section of the digest email.
  *
@@ -63,7 +61,7 @@ abstract class Section implements MessageInterface {
 	 * @param array         $entries The message entries.
 	 * @param \WP_User|null $user The current user.
 	 */
-	public function __construct( $entries, ?WP_User $user = null ) {
+	public function __construct( $entries, $user = null ) {
 		$this->user = $user;
 
 		foreach ( $entries as $entry => $time ) {

@@ -64,7 +64,7 @@ class Queue {
 	public static function add( $recipient, $event, $data ) {
 		$queue = self::get();
 
-		$queue[ $recipient ] = $queue[ $recipient ] ?? [];
+		$queue[ $recipient ] = isset( $queue[ $recipient ] ) ? $queue[ $recipient ] : [];
 
 		$queue[ $recipient ][] = [ time(), $event, $data ];
 

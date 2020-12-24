@@ -30,6 +30,9 @@ jobs:
       matrix:
         php: ['7.2', '7.3', '7.4']
         wordpress: ['latest', 'trunk']
+        include:
+          - php: '5.6'
+            wordpress: '4.7'
 
     steps:
       - name: Checkout
@@ -40,6 +43,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
+          extensions: mysqli
           tools: composer, cs2pr
 
       - name: Install WordPress test setup
@@ -61,8 +65,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Remove coding standards
+        run: composer remove --dev wearerequired/coding-standards
+
       - name: Install dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"

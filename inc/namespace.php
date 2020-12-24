@@ -21,8 +21,6 @@ define( __NAMESPACE__ . '\VERSION', '2.0.0-alpha' );
  * Initializes the plugin.
  */
 function bootstrap() {
-	add_action( 'init', __NAMESPACE__ . '\\load_textdomain' );
-
 	$frequency_setting = new FrequencySetting();
 	add_action( 'init', [ $frequency_setting, 'register' ] );
 
@@ -37,13 +35,6 @@ function bootstrap() {
 
 	register_activation_hook( __FILE__, __NAMESPACE__ . '\\activate_plugin' );
 	register_deactivation_hook( __FILE__, __NAMESPACE__ . '\\deactivate_plugin' );
-}
-
-/**
- * Load plugin textdomain.
- */
-function load_textdomain() {
-	load_plugin_textdomain( 'digest' );
 }
 
 /**

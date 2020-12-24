@@ -9,7 +9,8 @@
  * Author URI:  https://required.com
  * License:     GPLv2+
  * Text Domain: digest
- * Domain Path: /languages
+ * Requires at least: 4.7
+ * Requires PHP: 5.6
  */
 
 /**
@@ -53,8 +54,8 @@ if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
 $requirements_check = new WP_Requirements_Check(
 	array(
 		'title' => __( 'Digest Notifications', 'digest' ),
-		'php'   => '5.4',
-		'wp'    => '4.4',
+		'php'   => '5.6',
+		'wp'    => '4.7',
 		'file'  => __FILE__,
 	)
 );

@@ -5,8 +5,6 @@
 
 namespace Required\Digest\Message;
 
-use WP_User;
-
 /**
  * Core_Update_Message class.
  *
@@ -31,7 +29,7 @@ class CoreUpdate extends Section {
 	 * @param \WP_User|null $user The current user.
 	 * @param string        $event   The current event.
 	 */
-	public function __construct( $entries, ?WP_User $user = null, $event ) {
+	public function __construct( $entries, $user = null, $event ) {
 		$this->event = $event;
 
 		parent::__construct( $entries, $user );

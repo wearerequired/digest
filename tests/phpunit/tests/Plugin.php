@@ -10,7 +10,6 @@ use MockAction;
 
 use function Required\Digest\activate_plugin;
 use function Required\Digest\deactivate_plugin;
-use function Required\Digest\load_textdomain;
 use function Required\Digest\send_email;
 
 class Plugin extends WP_UnitTestCase {
@@ -66,21 +65,7 @@ class Plugin extends WP_UnitTestCase {
 		$this->assertContains( 'Hi there', $mailer->get_sent()->body );
 	}
 
-	public function test_load_textdomain() {
-		$action = new MockAction();
-
-		add_action( 'load_textdomain', [ $action, 'action' ] );
-		load_textdomain();
-		remove_action( 'load_textdomain', [ $action, 'action' ] );
-
-		$this->assertGreaterThan( 0, $action->get_call_count() );
-	}
-
 	public function test_add_hooks() {
-		$this->assertNotFalse(
-			has_action( 'init', 'Required\Digest\load_textdomain' )
-		);
-
 		$this->assertNotFalse(
 			has_action( 'comment_notification_recipients', 'Required\Digest\comment_notification_recipients' )
 		);

@@ -4,7 +4,10 @@
 
 	<file>.</file>
 
-	<rule ref="Required"/>
+	<rule ref="Required">
+		<!-- Not compatable with PHP 5.6 -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+	</rule>
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>

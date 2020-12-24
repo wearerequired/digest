@@ -131,9 +131,9 @@ class FrequencySetting implements SettingInterface {
 		$value     = (array) $value;
 		$new_value = [];
 
-		$new_value['period'] = $value['period'] ?? 'weekly';
-		$new_value['hour']   = $value['hour'] ?? 18;
-		$new_value['day']    = $value['day'] ?? get_option( 'start_of_week', 0 );
+		$new_value['period'] = isset( $value['period'] ) ? $value['period'] : 'weekly';
+		$new_value['hour']   = isset( $value['hour'] ) ? $value['hour'] : 18;
+		$new_value['day']    = isset( $value['day'] ) ? $value['day'] : get_option( 'start_of_week', 0 );
 
 		if ( 'daily' !== $new_value['period'] ) {
 			$new_value['period'] = 'weekly';
