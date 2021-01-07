@@ -7,22 +7,22 @@ use WP_UnitTestCase;
 
 class CoreUpdate extends WP_UnitTestCase {
 	public function test_no_entries() {
-		$message = new CoreUpdateMessage( array(), null, 'core_update_success' );
+		$message = new CoreUpdateMessage( [], null, 'core_update_success' );
 
 		$this->assertSame( '', $message->get_message() );
 	}
 
 	public function test_no_entries_failure() {
-		$message = new CoreUpdateMessage( array(), null, 'core_update_failure' );
+		$message = new CoreUpdateMessage( [], null, 'core_update_failure' );
 
 		$this->assertSame( '', $message->get_message() );
 	}
 
 	public function test_single_entry_success() {
 		$message = new CoreUpdateMessage(
-			array(
+			[
 				'100.1.0' => time(),
-			),
+			],
 			null,
 			'core_update_success'
 		);
@@ -32,9 +32,9 @@ class CoreUpdate extends WP_UnitTestCase {
 
 	public function test_single_entry_failure() {
 		$message = new CoreUpdateMessage(
-			array(
+			[
 				'100.1.0' => time(),
-			),
+			],
 			null,
 			'core_update_failure'
 		);

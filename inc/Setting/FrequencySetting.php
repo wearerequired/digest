@@ -1,13 +1,13 @@
 <?php
 /**
  * Frequency setting class.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Setting;
 
-use Required\Digest\Plugin;
+use const Required\Digest\PLUGIN_DIR;
+use const Required\Digest\PLUGIN_FILE;
+use const Required\Digest\VERSION;
 
 /**
  * Setting for the digest frequency.
@@ -19,30 +19,31 @@ class FrequencySetting implements SettingInterface {
 	 * Registers the setting.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 */
 	public function register() {
 		register_setting(
 			'general',
 			'digest_frequency',
-			array( $this, 'sanitize_frequency_option' )
+			[ $this, 'sanitize_frequency_option' ]
 		);
 
-		add_action( 'admin_init', array( $this, 'add_settings_fields' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_init', [ $this, 'add_settings_fields' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 
 		// Add an action link pointing to the options page.
-		add_action( 'plugin_action_links_' . plugin_basename( \Required\Digest\PLUGIN_FILE ), array(
-			$this,
-			'plugin_action_links',
-		) );
+		add_action(
+			'plugin_action_links_' . plugin_basename( PLUGIN_FILE ),
+			[
+				$this,
+				'plugin_action_links',
+			]
+		);
 	}
 
 	/**
 	 * Adds a new settings section and settings fields to Settings -> General.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 */
 	public function add_settings_fields() {
 		add_settings_section(
@@ -57,7 +58,7 @@ class FrequencySetting implements SettingInterface {
 		add_settings_field(
 			'digest_frequency',
 			sprintf( '<label for="digest_frequency_period" id="digest">%s</label>', __( 'Frequency', 'digest' ) ),
-			array( $this, 'settings_field_frequency' ),
+			[ $this, 'settings_field_frequency' ],
 			'general',
 			'digest_notifications'
 		);
@@ -67,14 +68,16 @@ class FrequencySetting implements SettingInterface {
 	 * Settings field callback that prints the actual input fields.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 */
 	public function settings_field_frequency() {
-		$options     = get_option( 'digest_frequency', array(
-			'period' => 'weekly',
-			'hour'   => 18,
-			'day'    => absint( get_option( 'start_of_week' ) ),
-		) );
+		$options     = get_option(
+			'digest_frequency',
+			[
+				'period' => 'weekly',
+				'hour'   => 18,
+				'day'    => absint( get_option( 'start_of_week' ) ),
+			]
+		);
 		$time_format = get_option( 'time_format' );
 		?>
 		<p>
@@ -92,7 +95,7 @@ class FrequencySetting implements SettingInterface {
 				<select name="digest_frequency[hour]" id="digest_frequency_hour">
 					<?php for ( $hour = 0; $hour <= 23; $hour ++ ) : ?>
 						<option value="<?php echo esc_attr( $hour ); ?>" <?php selected( $hour, $options['hour'] ); ?>>
-							<?php echo esc_html( date( $time_format, mktime( $hour, 0, 0, 1, 1, 2011 ) ) ); ?>
+							<?php echo esc_html( gmdate( $time_format, mktime( $hour, 0, 0, 1, 1, 2011 ) ) ); ?>
 						</option>
 					<?php endfor; ?>
 				</select>
@@ -120,15 +123,13 @@ class FrequencySetting implements SettingInterface {
 	 * Sanitize the digest frequency option.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param mixed $value The unsanitized value.
-	 *
 	 * @return array The sanitized frequency option.
 	 */
 	public function sanitize_frequency_option( $value ) {
-		$value = (array) $value;
-		$new_value = array();
+		$value     = (array) $value;
+		$new_value = [];
 
 		$new_value['period'] = isset( $value['period'] ) ? $value['period'] : 'weekly';
 		$new_value['hour']   = isset( $value['hour'] ) ? $value['hour'] : 18;
@@ -141,25 +142,25 @@ class FrequencySetting implements SettingInterface {
 		$new_value['hour'] = filter_var(
 			$new_value['hour'],
 			FILTER_VALIDATE_INT,
-			array(
-				'options' => array(
+			[
+				'options' => [
 					'default'   => 18,
 					'min_range' => 0,
 					'max_range' => 23,
-				),
-			)
+				],
+			]
 		);
 
 		$new_value['day'] = filter_var(
 			$new_value['day'],
 			FILTER_VALIDATE_INT,
-			array(
-				'options' => array(
+			[
+				'options' => [
 					'default'   => get_option( 'start_of_week', 0 ),
 					'min_range' => 0,
 					'max_range' => 6,
-				),
-			)
+				],
+			]
 		);
 
 		return $new_value;
@@ -169,7 +170,6 @@ class FrequencySetting implements SettingInterface {
 	 * Enqueue scripts and styles.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param string $hook_suffix The current admin page.
 	 */
@@ -177,8 +177,8 @@ class FrequencySetting implements SettingInterface {
 		if ( 'options-general.php' === $hook_suffix ) {
 			$suffix = SCRIPT_DEBUG ? '' : '.min';
 
-			wp_enqueue_script( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', array(), Plugin::VERSION, true );
-			wp_enqueue_style( 'digest', plugin_dir_url( \Required\Digest\PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', array(), Plugin::VERSION );
+			wp_enqueue_script( 'digest', plugin_dir_url( PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', [], VERSION, true );
+			wp_enqueue_style( 'digest', plugin_dir_url( PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', [], VERSION );
 		}
 	}
 
@@ -186,21 +186,19 @@ class FrequencySetting implements SettingInterface {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since  2.0.0
-	 * @access public
 	 *
 	 * @param array $links Plugin action links.
-	 *
 	 * @return array The modified plugin action links
 	 */
 	public function plugin_action_links( array $links ) {
 		return array_merge(
-			array(
+			[
 				'settings' => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( admin_url( 'options-general.php#digest' ) ),
 					__( 'Settings', 'digest' )
 				),
-			),
+			],
 			$links
 		);
 	}

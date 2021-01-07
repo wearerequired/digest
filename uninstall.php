@@ -1,13 +1,11 @@
 <?php
 /**
  * Delete all traces on uninstall.
- *
- * @package Digest
  */
 
-defined( 'WPINC' ) or die;
+defined( 'WPINC' ) || die;
 
-defined( 'WP_UNINSTALL_PLUGIN' ) or die;
+defined( 'WP_UNINSTALL_PLUGIN' ) || die;
 
 delete_option( 'digest_frequency' );
 delete_option( 'digest_hooks' );

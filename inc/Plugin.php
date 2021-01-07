@@ -1,20 +1,16 @@
 <?php
 /**
  * This file holds the WP_Digest_Message class.
- *
- * @package Digest
  */
 
 namespace Required\Digest;
-
-use WP_User;
 
 /**
  * Digest class.
  *
  * Responsible for creating a new digest message to be sent per email.
  */
-class Digest {
+class Plugin {
 	/**
 	 * The queue items.
 	 *
@@ -25,7 +21,7 @@ class Digest {
 	/**
 	 * The current user object.
 	 *
-	 * @var WP_User|null User object if user exists, null otherwise.
+	 * @var \WP_User|null User object if user exists, null otherwise.
 	 */
 	protected $user;
 
@@ -50,11 +46,10 @@ class Digest {
 	 * Process all queue items and generate the according messages.
 	 *
 	 * @param array $items The queue items.
-	 *
 	 * @return array The processed event messages.
 	 */
 	protected function process_event_items( $items ) {
-		$events = array();
+		$events = [];
 
 		foreach ( $items as $item ) {
 			$events[ $item[1] ][ $item[2] ] = $item[0];
@@ -82,7 +77,7 @@ class Digest {
 			 *
 			 * @param string  $message The message.
 			 * @param array   $entries The event items.
-			 * @param WP_User $user    The current user.
+			 * @param \WP_User $user The current user.
 			 * @param string  $event   The current event.
 			 */
 			$message .= apply_filters( 'digest_message_section_' . $event, '', $this->events[ $event ], $this->user, $event );
@@ -92,6 +87,7 @@ class Digest {
 			return '';
 		}
 
+		// translators:  %s: Display Name.
 		$salutation  = $this->user ? sprintf( __( 'Hi %s', 'digest' ), $this->user->display_name ) : __( 'Hi there', 'digest' );
 		$valediction = '<p>' . __( "That's it, have a nice day!", 'digest' ) . '</p>';
 		$salutation  = '<p>' . $salutation . '</p><p>' . __( "See what's happening on your site:", 'digest' ) . '</p>';

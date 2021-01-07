@@ -7,27 +7,27 @@ use \Required\Digest\Message\PasswordChangeNotification as PasswordMessage;
 
 class PasswordChangeNotification extends WP_UnitTestCase {
 	public function test_no_entries() {
-		$message = new PasswordMessage( array() );
+		$message = new PasswordMessage( [] );
 
 		$this->assertSame( '', $message->get_message() );
 	}
 
 	public function test_invalid_entry() {
-		$message = new PasswordMessage( array(
+		$message = new PasswordMessage( [
 			'123' => time(),
-		) );
+		] );
 
 		$this->assertSame( '', $message->get_message() );
 	}
 
 	public function test_single_entry() {
-		$user_1 = self::factory()->user->create( array(
+		$user_1 = self::factory()->user->create( [
 			'display_name' => 'John Doe',
-		) );
+		] );
 
-		$message = new PasswordMessage( array(
+		$message = new PasswordMessage( [
 			$user_1 => time(),
-		) );
+		] );
 
 		$this->assertContains( 'The following user lost and changed his password', $message->get_message() );
 		$this->assertContains( 'John Doe', $message->get_message() );
@@ -35,18 +35,18 @@ class PasswordChangeNotification extends WP_UnitTestCase {
 	}
 
 	public function test_entries() {
-		$user_1 = self::factory()->user->create( array(
+		$user_1 = self::factory()->user->create( [
 			'display_name' => 'John Doe',
-		) );
+		] );
 
-		$user_2 = self::factory()->user->create( array(
+		$user_2 = self::factory()->user->create( [
 			'display_name' => 'Jane Doe',
-		) );
+		] );
 
-		$message = new PasswordMessage( array(
+		$message = new PasswordMessage( [
 			$user_1 => time(),
 			$user_2 => time(),
-		) );
+		] );
 
 		$this->assertContains( 'The following users lost and changed their passwords', $message->get_message() );
 		$this->assertContains( 'John Doe', $message->get_message() );

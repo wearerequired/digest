@@ -1,13 +1,9 @@
 <?php
 /**
  * This file holds the Core_Update_Message class.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Message;
-
-use WP_User;
 
 /**
  * Core_Update_Message class.
@@ -19,7 +15,6 @@ class CoreUpdate extends Section {
 	 * The event type.
 	 *
 	 * @since  2.0.0
-	 * @access protected
 	 *
 	 * @var string
 	 */
@@ -29,13 +24,12 @@ class CoreUpdate extends Section {
 	 * Constructor.
 	 *
 	 * @since  2.0.0
-	 * @access protected
 	 *
-	 * @param array   $entries The core update entries.
-	 * @param WP_User $user    The current user.
-	 * @param string  $event   The current event.
+	 * @param array         $entries The core update entries.
+	 * @param \WP_User|null $user The current user.
+	 * @param string        $event   The current event.
 	 */
-	public function __construct( $entries, WP_User $user = null, $event ) {
+	public function __construct( $entries, $user = null, $event ) {
 		$this->event = $event;
 
 		parent::__construct( $entries, $user );
@@ -55,7 +49,6 @@ class CoreUpdate extends Section {
 	 *
 	 * @param string $version The version WordPress was updated to.
 	 * @param int    $time    The timestamp when the update happened.
-	 *
 	 * @return string The core update message.
 	 */
 	protected function get_single_message( $version, $time ) {
@@ -63,7 +56,7 @@ class CoreUpdate extends Section {
 			return $this->get_core_update_success_message( $version, $time );
 		}
 
-		return $this->get_core_update_fail_message( $version, $time );
+		return $this->get_core_update_fail_message( $version );
 	}
 
 	/**
@@ -71,22 +64,26 @@ class CoreUpdate extends Section {
 	 *
 	 * @param string $version The version WordPress was updated to.
 	 * @param int    $time    The timestamp when the update happened.
-	 *
 	 * @return string The core update message.
 	 */
 	protected function get_core_update_success_message( $version, $time ) {
 		$message = sprintf(
-			'<p>' . __( 'Your site at <a href="%1$s">%2$s</a> has been updated automatically to WordPress %3$s %4$s ago.', 'digest' ) . '</p>',
-			esc_url( home_url() ),
-			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
+			// translators: 1: Site name, 2: WP Version, 3: Humman time diff.
+			'<p>' . __( 'Your site at %1$s has been updated automatically to WordPress %2$s %3$s ago.', 'digest' ) . '</p>',
+			sprintf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( home_url() ),
+				esc_html( str_replace( [ 'http://', 'https://' ], '', home_url() ) )
+			),
 			esc_html( $version ),
-			human_time_diff( $time, current_time( 'timestamp' ) )
+			human_time_diff( $time, time() )
 		);
 
 		// Can only reference the About screen if their update was successful.
 		list( $about_version ) = explode( '-', $version, 2 );
 
 		$message .= sprintf(
+			// translators: 1: WP Version, 2: Link to about page.
 			'<p>' . __( 'For more on version %1$s, see the <a href="%2$s">About WordPress</a> screen.', 'digest' ) . '</p>',
 			esc_html( $about_version ),
 			esc_url( admin_url( 'about.php' ) )
@@ -99,11 +96,9 @@ class CoreUpdate extends Section {
 	 * Get the message for a failed core update.
 	 *
 	 * @param string $version The version WordPress was updated to.
-	 * @param int    $time    The timestamp when the update attempt happened.
-	 *
 	 * @return string The core update message.
 	 */
-	protected function get_core_update_fail_message( $version, $time ) {
+	protected function get_core_update_fail_message( $version ) {
 		global $wp_version;
 
 		// Check if WordPress hasn't already been updated.
@@ -112,11 +107,14 @@ class CoreUpdate extends Section {
 		}
 
 		$message = sprintf(
-			'<p>' . __( 'Please update your site at <a href="%1$s">%2$s</a> to WordPress %3$s. Updating is easy and only takes a few moments.', 'digest' ) . '</p>',
-			esc_url( home_url() ),
-			esc_html( str_replace( array( 'http://', 'https://' ), '', home_url() ) ),
-			esc_html( $version ),
-			human_time_diff( $time, current_time( 'timestamp' ) )
+			// translators: 1: Site name, 2: WP Version.
+			'<p>' . __( 'Please update your site at %1$s to WordPress %2$s. Updating is easy and only takes a few moments.', 'digest' ) . '</p>',
+			sprintf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( home_url() ),
+				esc_html( str_replace( [ 'http://', 'https://' ], '', home_url() ) )
+			),
+			esc_html( $version )
 		);
 
 		$message .= '<p>' . sprintf( '<a href="%s">%s</a>', network_admin_url( 'update-core.php' ), __( 'Update now', 'digest' ) ) . '</p>';

@@ -1,6 +1,4 @@
 <?php
-use Required\Digest\Cron;
-
 /**
  * Plugin Name: Digest Notifications
  * Plugin URI:  https://required.com/services/wordpress-plugins/digest-notifications/
@@ -11,9 +9,8 @@ use Required\Digest\Cron;
  * Author URI:  https://required.com
  * License:     GPLv2+
  * Text Domain: digest
- * Domain Path: /languages
- *
- * @package Digest
+ * Requires at least: 4.7
+ * Requires PHP: 5.6
  */
 
 /**
@@ -34,56 +31,41 @@ use Required\Digest\Cron;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-defined( 'ABSPATH' ) or die;
+defined( 'ABSPATH' ) || die;
+
+// phpcs:disable Generic.Arrays.DisallowLongArraySyntax -- File needs to be parsable by PHP 5.2.4.
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	include __DIR__ . '/vendor/autoload.php';
 }
 
 if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
-	trigger_error( sprintf( '%s does not exist. Check Composer\'s autoloader.',  'Required\\Digest\\Plugin' ) );
+	// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+	trigger_error(
+		sprintf(
+			'%s does not exist. Check Composer\'s autoloader.',
+			'Required\\Digest\\Plugin'
+		)
+	);
 	return;
 }
 
-$requirements_check = new WP_Requirements_Check( array(
-	'title' => __( 'Digest Notifications', 'digest' ),
-	'php'   => '5.3',
-	'wp'    => '4.4',
-	'file'  => __FILE__,
-) );
+// phpcs:ignore WordPress.NamingConventions -- Variable gets unset.
+$requirements_check = new WP_Requirements_Check(
+	array(
+		'title' => __( 'Digest Notifications', 'digest' ),
+		'php'   => '5.6',
+		'wp'    => '4.7',
+		'file'  => __FILE__,
+	)
+);
 
 if ( $requirements_check->passes() ) {
-	define( 'Required\\Digest\\PLUGIN_FILE', __FILE__ );
-	define( 'Required\\Digest\\PLUGIN_DIR', __DIR__ );
+	require_once __DIR__ . '/template-tags/pluggable.php';
+	require_once __DIR__ . '/template-tags/functions.php';
+	require_once __DIR__ . '/inc/namespace.php';
 
-	require_once __DIR__ . '/includes/pluggable.php';
-	require_once __DIR__ . '/includes/functions.php';
-
-	/**
-	 * Get the main plugin instance.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return \Required\Digest\Plugin
-	 */
-	function digest() {
-		static $plugin = null;
-
-		if ( null === $plugin ) {
-			$plugin = new \Required\Digest\Plugin( new \Required\Digest\Event\Registry() );
-		}
-
-		return $plugin;
-	}
-
-	// Initialize the plugin.
-	add_action( 'plugins_loaded', array( digest(), 'add_hooks' ) );
-
-	// Add cron callback.
-	add_action( 'digest_event', array( Cron::class, 'init' ) );
-
-	register_activation_hook( __FILE__, array( digest(), 'activate_plugin' ) );
-	register_deactivation_hook( __FILE__, array( digest(), 'deactivate_plugin' ) );
+	add_action( 'plugins_loaded', 'Required\\Digest\\bootstrap' );
 }
 
 unset( $requirements_check );

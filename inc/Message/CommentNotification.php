@@ -1,13 +1,9 @@
 <?php
 /**
  * This file holds the Comment_Notification_Message class.
- *
- * @package Digest
  */
 
 namespace Required\Digest\Message;
-
-use WP_Comment;
 
 /**
  * Comment_Notification_Message class.
@@ -21,22 +17,24 @@ class CommentNotification extends CommentModeration {
 	 * @return string The section message.
 	 */
 	public function get_message() {
-		$processed_count = count( $this->entries ) - count( array_filter( $this->entries ) );
+		$processed_count = \count( $this->entries ) - \count( array_filter( $this->entries ) );
 
-		$message = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
+		$message  = '<p><b>' . __( 'New Comments', 'digest' ) . '</b></p>';
 		$message .= '<p>';
 		$message .= sprintf(
+			// translators: %s: Number of comments.
 			_n(
 				'There was %s new comment.',
 				'There were %s new comments.',
-				count( $this->entries ),
+				\count( $this->entries ),
 				'digest'
 			),
-			number_format_i18n( count( $this->entries ) )
+			number_format_i18n( \count( $this->entries ) )
 		);
 		if ( 0 < $processed_count ) {
 			$message .= ' ';
 			$message .= sprintf(
+				// translators: %s: Number of comments.
 				_n(
 					'%s comment was already moderated.',
 					'%s comments were already moderated.',
@@ -49,6 +47,7 @@ class CommentNotification extends CommentModeration {
 		$message .= '</p>';
 		$message .= implode( '', $this->entries );
 		$message .= sprintf(
+			// translators: %s: URL for moderation page.
 			'<p>' . __( 'Please visit the <a href="%s">moderation panel</a>.', 'digest' ) . '</p>',
 			admin_url( 'edit-comments.php?comment_status=moderated' )
 		);
@@ -61,7 +60,6 @@ class CommentNotification extends CommentModeration {
 	 *
 	 * @param int $comment The comment ID.
 	 * @param int $time    The timestamp when the comment was written.
-	 *
 	 * @return string The comment moderation message.
 	 */
 	protected function get_single_message( $comment, $time ) {
@@ -74,12 +72,12 @@ class CommentNotification extends CommentModeration {
 
 		$message = $this->get_single_comment_content( $comment, $time );
 
-		$actions = array(
+		$actions = [
 			'view' => __( 'Permalink', 'digest' ),
-		);
+		];
 
 		if ( $this->user_can_edit_comment( $comment->comment_ID ) ) {
-			if ( defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS ) {
+			if ( \defined( 'EMPTY_TRASH_DAYS' ) && EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = _x( 'Trash', 'verb', 'digest' );
 			} else {
 				$actions['delete'] = __( 'Delete', 'digest' );
