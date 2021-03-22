@@ -25,6 +25,7 @@ jobs:
           --health-timeout 5s
           --health-retries 3
 
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
@@ -35,6 +36,9 @@ jobs:
             wordpress: 'latest'
           - php: '5.6'
             wordpress: '4.7'
+          - php: '8.0'
+            wordpress: 'latest'
+            experimental: true
 
     steps:
       - name: Checkout
