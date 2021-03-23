@@ -6,7 +6,7 @@
  * Licensed under the GPLv2+ license.
  */
 
-#digest_frequency_day_wrapper {
+#digest-frequency-day-wrapper {
 	opacity: 1;
 	transition: opacity .3s ease-in-out;
 

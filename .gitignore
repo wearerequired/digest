@@ -4,18 +4,6 @@
 # npm
 /node_modules
 
-# Release task
-/release
-
-# Build files
-/js/*.js
-/js/*.map
-/css/*.css
-/css/*.map
-
-# Sass
-.sass-cache
-
 # Vendor (e.g. Composer)
 vendor/*
 !vendor/.gitkeep

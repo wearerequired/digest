@@ -15,6 +15,7 @@ use const Required\Digest\VERSION;
  * @since 2.0.0
  */
 class FrequencySetting implements SettingInterface {
+
 	/**
 	 * Registers the setting.
 	 *
@@ -101,7 +102,7 @@ class FrequencySetting implements SettingInterface {
 				</select>
 				<?php esc_html_e( "o'clock", 'digest' ); ?>
 			</span>
-			<span id="digest_frequency_day_wrapper" <?php echo 'weekly' !== $options['period'] ? 'class="digest-hidden"' : ''; ?>>
+			<span id="digest-frequency-day-wrapper" <?php echo 'weekly' !== $options['period'] ? 'class="digest-hidden"' : ''; ?>>
 				<?php
 				esc_html_e( 'on', 'digest' );
 
@@ -175,10 +176,8 @@ class FrequencySetting implements SettingInterface {
 	 */
 	public function admin_enqueue_scripts( $hook_suffix ) {
 		if ( 'options-general.php' === $hook_suffix ) {
-			$suffix = SCRIPT_DEBUG ? '' : '.min';
-
-			wp_enqueue_script( 'digest', plugin_dir_url( PLUGIN_DIR ) . 'js/digest' . $suffix . '.js', [], VERSION, true );
-			wp_enqueue_style( 'digest', plugin_dir_url( PLUGIN_DIR ) . 'css/digest' . $suffix . '.css', [], VERSION );
+			wp_enqueue_script( 'digest', plugin_dir_url( PLUGIN_FILE ) . '/js/digest.js', [], VERSION, true );
+			wp_enqueue_style( 'digest', plugin_dir_url( PLUGIN_FILE ) . '/css/digest.css', [], VERSION );
 		}
 	}
 

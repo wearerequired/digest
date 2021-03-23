@@ -1,12 +1,11 @@
 .git
 .github
 .wordpress-org
-.babelrc
 .distignore
 .editorconfig
 .eslintignore
-.eslintrc
 .gitignore
+.stylelintignore
 composer.json
 composer.lock
 package.json
