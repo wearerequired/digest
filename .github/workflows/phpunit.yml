@@ -35,8 +35,10 @@ jobs:
         include:
           - php: '7.4'
             wordpress: 'latest'
+            experimental: false
           - php: '5.6'
             wordpress: '4.7'
+            experimental: false
           - php: '8.0'
             wordpress: 'latest'
             experimental: true
