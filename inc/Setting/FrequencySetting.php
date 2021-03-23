@@ -5,7 +5,6 @@
 
 namespace Required\Digest\Setting;
 
-use const Required\Digest\PLUGIN_DIR;
 use const Required\Digest\PLUGIN_FILE;
 use const Required\Digest\VERSION;
 
