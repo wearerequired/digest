@@ -2,9 +2,10 @@
   "name": "digest",
   "title": "Digest Notifications",
   "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
-  "version": "2.0.0-alpha",
+  "version": "0.0.0",
+  "private": true,
   "homepage": "https://github.com/wearerequired/digest",
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "author": {
     "name": "required",
     "email": "support@required.ch",
@@ -13,19 +14,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wearerequired/digest"
-  },
-  "keywords": [],
-  "dependencies": {
-    "@wearerequired/browserslist-config": "^0.1.0",
-    "@wearerequired/eslint-config": "^2.0.0",
-    "@wearerequired/postcss-config": "^0.1.2",
-    "@wearerequired/stylelint-config": "^2.0.0",
-    "@wordpress/eslint-plugin": "^8.0.2",
-    "@wordpress/scripts": "^14.0.1",
-    "@wordpress/stylelint-config": "^19.0.1",
-    "postcss": "^8.2.8",
-    "postcss-cli": "^8.3.1",
-    "terser-webpack-plugin": "^3.1.0"
   },
   "scripts": {
     "build:css": "NODE_ENV=production postcss css/src/*.css -d css",
@@ -66,5 +54,24 @@
     "presets": [
       "@wordpress/babel-preset-default"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "7.14.3",
+    "@wearerequired/browserslist-config": "0.2.0",
+    "@wearerequired/eslint-config": "2.1.0",
+    "@wearerequired/postcss-config": "0.1.2",
+    "@wearerequired/stylelint-config": "2.1.0",
+    "@wordpress/babel-preset-default": "6.1.0",
+    "@wordpress/eslint-plugin": "9.0.5",
+    "@wordpress/stylelint-config": "19.0.4",
+    "babel-loader": "8.2.2",
+    "concurrently": "6.2.0",
+    "eslint": "7.27.0",
+    "postcss": "8.3.0",
+    "postcss-cli": "8.3.1",
+    "stylelint": "13.13.1",
+    "terser-webpack-plugin": "5.1.2",
+    "webpack": "5.37.1",
+    "webpack-cli": "4.7.0"
   }
 }

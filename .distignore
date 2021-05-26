@@ -5,6 +5,7 @@
 .editorconfig
 .eslintignore
 .gitignore
+.npmrc
 .stylelintignore
 composer.json
 composer.lock

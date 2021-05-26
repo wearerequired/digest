@@ -1,8 +1,6 @@
-# General
-.DS_Store
-
 # npm
 /node_modules
+/package-lock.json
 
 # Vendor (e.g. Composer)
 vendor/*
