@@ -77,7 +77,12 @@ jobs:
       - name: Remove coding standards
         run: composer remove --dev wearerequired/coding-standards --ignore-platform-reqs
 
-      - name: Install dependencies
+      - name: Install dependencies (PHP < 8.0)
+        if: ${{ matrix.php < '8.0' }}
+        run: composer install --no-interaction --no-scripts
+
+      - name: Install dependencies (PHP => 8.0)
+        if: ${{ matrix.php >= '8.0' }}
         run: composer install --no-interaction --no-scripts --ignore-platform-reqs
 
       - name: Setup problem matchers for PHPUnit
