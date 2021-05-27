@@ -79,7 +79,9 @@ jobs:
 
       - name: Install dependencies (PHP < 8.0)
         if: ${{ matrix.php < '8.0' }}
-        run: composer install --no-interaction --no-scripts
+        run: |
+          composer update
+          composer install --no-interaction --no-scripts
 
       - name: Install dependencies (PHP => 8.0)
         if: ${{ matrix.php >= '8.0' }}
