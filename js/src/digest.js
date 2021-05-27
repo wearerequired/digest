@@ -5,8 +5,8 @@
  * Licensed under the GPLv2+ license.
  */
 ( function () {
-	const frequencyPeriod = document.getElementById( 'digest_frequency_period' ),
-		frequencyDayWrapper = document.getElementById( 'digest-frequency-day-wrapper' );
+	const frequencyPeriod = document.getElementById( 'digest_frequency_period' );
+	const frequencyDayWrapper = document.getElementById( 'digest-frequency-day-wrapper' );
 
 	function hideAndSeek() {
 		if ( 'weekly' === ( this.value || frequencyPeriod.value ) ) {
