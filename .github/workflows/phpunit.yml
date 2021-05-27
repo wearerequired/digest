@@ -75,10 +75,10 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Remove coding standards
-        run: composer remove --dev wearerequired/coding-standards
+        run: composer remove --dev wearerequired/coding-standards --ignore-platform-reqs
 
       - name: Install dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
+        run: composer install --no-interaction --no-scripts --ignore-platform-reqs
 
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
