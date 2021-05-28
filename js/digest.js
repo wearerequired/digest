@@ -1,0 +1,1 @@
+!function(){var e=document.getElementById("digest_frequency_period"),n=document.getElementById("digest-frequency-day-wrapper");function t(){"weekly"===(this.value||e.value)?n.className="":n.className="digest-hidden"}e.onchange=t,t()}();

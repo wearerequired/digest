@@ -1,20 +1,6 @@
-# General
-.DS_Store
-
 # npm
 /node_modules
-
-# Release task
-/release
-
-# Build files
-/js/*.js
-/js/*.map
-/css/*.css
-/css/*.map
-
-# Sass
-.sass-cache
+/package-lock.json
 
 # Vendor (e.g. Composer)
 vendor/*

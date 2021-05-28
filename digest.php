@@ -35,8 +35,8 @@ defined( 'ABSPATH' ) || die;
 
 // phpcs:disable Generic.Arrays.DisallowLongArraySyntax -- File needs to be parsable by PHP 5.2.4.
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	include __DIR__ . '/vendor/autoload.php';
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+	include dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
 if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
@@ -61,9 +61,9 @@ $requirements_check = new WP_Requirements_Check(
 );
 
 if ( $requirements_check->passes() ) {
-	require_once __DIR__ . '/template-tags/pluggable.php';
-	require_once __DIR__ . '/template-tags/functions.php';
-	require_once __DIR__ . '/inc/namespace.php';
+	require_once dirname( __FILE__ ) . '/template-tags/pluggable.php';
+	require_once dirname( __FILE__ ) . '/template-tags/functions.php';
+	require_once dirname( __FILE__ ) . '/inc/namespace.php';
 
 	add_action( 'plugins_loaded', 'Required\\Digest\\bootstrap' );
 }

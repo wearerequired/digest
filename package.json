@@ -1,36 +1,77 @@
 {
-  "name":            "digest",
-  "title":           "Digest Notifications",
-  "description":     "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
-  "version":         "2.0.0-alpha",
-  "homepage":        "https://github.com/wearerequired/digest",
-  "license":         "GPL-2.0+",
-  "author":          {
-    "name":  "required",
+  "name": "digest",
+  "title": "Digest Notifications",
+  "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/wearerequired/digest",
+  "license": "GPL-2.0-or-later",
+  "author": {
+    "name": "required",
     "email": "support@required.ch",
-    "url":   "https://required.com"
+    "url": "https://required.com"
   },
-  "repository":      {
+  "repository": {
     "type": "git",
-    "url":  "https://github.com/wearerequired/digest"
+    "url": "https://github.com/wearerequired/digest"
+  },
+  "scripts": {
+    "build:css": "NODE_ENV=production postcss css/src/*.css -d css",
+    "build:js": "NODE_ENV=production webpack",
+    "build": "concurrently \"npm:build:*\"",
+    "watch:css": "NODE_ENV=development postcss --watch css/src/*.css -d css",
+    "watch:js": "webpack --watch",
+    "watch": "concurrently \"npm:watch:*\"",
+    "lint-js": "eslint .",
+    "lint-js:fix": "npm run lint-js -- --fix",
+    "lint-css": "stylelint .",
+    "lint-css:fix": "npm run lint-css -- --fix"
+  },
+  "stylelint": {
+    "extends": [
+      "@wearerequired/stylelint-config"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "@wearerequired/eslint-config"
+    ],
+    "rules": {
+      "@wordpress/i18n-text-domain": [
+        "error",
+        {
+          "allowedTextDomain": [
+            "digest"
+          ]
+        }
+      ]
+    }
+  },
+  "browserslist": [
+    "extends @wearerequired/browserslist-config"
+  ],
+  "babel": {
+    "presets": [
+      "@wordpress/babel-preset-default"
+    ]
   },
   "devDependencies": {
-    "autoprefixer":           "~6.7.0",
-    "cssnano":                "~3.10.0",
-    "grunt":                  "~1.0.0",
-    "grunt-checktextdomain":  "~1.0.0",
-    "grunt-contrib-clean":    "~1.0.0",
-    "grunt-contrib-sass":     "~1.0.0",
-    "grunt-contrib-compress": "~1.4.0",
-    "grunt-contrib-concat":   "~1.0.0",
-    "grunt-contrib-copy":     "~1.0.0",
-    "grunt-contrib-jshint":   "~1.1.0",
-    "grunt-contrib-uglify":   "~2.1.0",
-    "grunt-contrib-watch":    "~1.0.0",
-    "grunt-postcss":          "~0.8.0",
-    "grunt-text-replace":     "~0.4.0",
-    "load-grunt-config":      "~0.19.0",
-    "time-grunt":             "~1.4.0"
-  },
-  "keywords":        []
+    "@babel/core": "7.14.3",
+    "@wearerequired/browserslist-config": "0.2.0",
+    "@wearerequired/eslint-config": "2.1.0",
+    "@wearerequired/postcss-config": "0.1.2",
+    "@wearerequired/stylelint-config": "2.1.0",
+    "@wordpress/babel-preset-default": "6.1.0",
+    "@wordpress/eslint-plugin": "9.0.5",
+    "@wordpress/stylelint-config": "19.0.4",
+    "babel-loader": "8.2.2",
+    "concurrently": "6.2.0",
+    "eslint": "7.27.0",
+    "postcss": "8.3.0",
+    "postcss-cli": "8.3.1",
+    "stylelint": "13.13.1",
+    "terser-webpack-plugin": "5.1.2",
+    "webpack": "5.37.1",
+    "webpack-cli": "4.7.0"
+  }
 }

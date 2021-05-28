@@ -1,23 +1,22 @@
 /**
  * Digest Notifications
  *
- * Copyright (c) 2015-2017 required
+ * Copyright (c) 2015-2021 required
  * Licensed under the GPLv2+ license.
  */
-
-(function() {
-	var frequency_period      = document.getElementById( 'digest_frequency_period' ),
-	    frequency_day_wrapper = document.getElementById( 'digest_frequency_day_wrapper' );
+( function () {
+	const frequencyPeriod = document.getElementById( 'digest_frequency_period' );
+	const frequencyDayWrapper = document.getElementById( 'digest-frequency-day-wrapper' );
 
 	function hideAndSeek() {
-		if ( 'weekly' === ( this.value || frequency_period.value ) ) {
-			frequency_day_wrapper.className = '';
+		if ( 'weekly' === ( this.value || frequencyPeriod.value ) ) {
+			frequencyDayWrapper.className = '';
 		} else {
-			frequency_day_wrapper.className = 'digest-hidden';
+			frequencyDayWrapper.className = 'digest-hidden';
 		}
 	}
 
-	frequency_period.onchange = hideAndSeek;
+	frequencyPeriod.onchange = hideAndSeek;
 
 	hideAndSeek();
-})();
+} )();
