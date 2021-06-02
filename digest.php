@@ -4,7 +4,7 @@
  * Plugin URI:  https://required.com/services/wordpress-plugins/digest-notifications/
  * Description: Get a daily or weekly digest of what's happening on your site
  *              instead of receiving a single email each time.
- * Version:     2.0.0-alpha
+ * Version:     2.0.0
  * Author:      required
  * Author URI:  https://required.com
  * License:     GPLv2+
