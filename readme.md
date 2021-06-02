@@ -58,8 +58,8 @@ Developed by [required](https://required.com/).
 
 ### 2.0.0 - 2021-06-02 ###
 * Changed: Plugin rewrite
-* Changed: Tested with WP 5.7
-* Changed: Bump minimum requirements to WP 4.7 and PHP 5.6
+* Changed: Tested with WordPress 5.7
+* Changed: Bump minimum requirements to WordPress 4.7 and PHP 5.6
 
 ### 1.2.1 - 2015-10-06 ###
 * Fixed: A small issue with password notifications emails in WordPress 4.3.1. The behaviour changed slightly in that release.
