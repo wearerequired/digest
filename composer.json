@@ -1,14 +1,14 @@
 {
-  "name":         "wearerequired/digest",
-  "description":  "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
-  "type":         "wordpress-plugin",
-  "license":      "GPL-2.0-or-later",
-  "authors":      [
+  "name": "wearerequired/digest",
+  "type": "wordpress-plugin",
+  "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
+  "license": "GPL-2.0-or-later",
+  "authors": [
     {
-      "name":     "required",
-      "email":    "info@required.ch",
+      "name": "required",
+      "email": "info@required.ch",
       "homepage": "https://required.com",
-      "role":     "Company"
+      "role": "Company"
     }
   ],
   "require": {
@@ -17,7 +17,7 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
-    "phpunit/phpunit": "^5 | ^7",
+    "phpunit/phpunit": "^5 || ^7",
     "wearerequired/coding-standards": "^1.6"
   },
   "autoload": {
@@ -26,8 +26,8 @@
     }
   },
   "scripts": {
-    "test": "@php ./vendor/bin/phpunit",
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
-    "lint": "vendor/bin/phpcs --report-summary --report-source ."
+    "lint": "vendor/bin/phpcs --report-summary --report-source .",
+    "test": "@php ./vendor/bin/phpunit"
   }
 }

@@ -34,7 +34,7 @@ jobs:
 
       - name: Install PHP dependencies
         run: |
-          composer i --prefer-dist --no-suggest --no-progress
+          composer i --prefer-dist --no-progress
           echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
       - name: Run linters
