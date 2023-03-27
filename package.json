@@ -44,34 +44,39 @@
             "digest"
           ]
         }
-      ]
+      ],
+      "@wordpress/no-global-event-listener": "off"
     }
   },
   "browserslist": [
-    "extends @wearerequired/browserslist-config"
+    "extends @wearerequired/browserslist-config/modern"
   ],
   "babel": {
     "presets": [
-      "@wordpress/babel-preset-default"
+      [
+        "@babel/preset-env",
+        {
+          "modules": false,
+          "useBuiltIns": "usage",
+          "corejs": 3
+        }
+      ]
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.14.3",
-    "@wearerequired/browserslist-config": "0.2.0",
-    "@wearerequired/eslint-config": "2.1.0",
-    "@wearerequired/postcss-config": "0.1.2",
-    "@wearerequired/stylelint-config": "2.1.0",
-    "@wordpress/babel-preset-default": "6.1.0",
-    "@wordpress/eslint-plugin": "9.0.5",
-    "@wordpress/stylelint-config": "19.0.4",
-    "babel-loader": "8.2.2",
-    "concurrently": "6.2.0",
-    "eslint": "7.27.0",
-    "postcss": "8.3.0",
-    "postcss-cli": "8.3.1",
-    "stylelint": "13.13.1",
-    "terser-webpack-plugin": "5.1.2",
-    "webpack": "5.37.1",
-    "webpack-cli": "4.7.0"
+    "@babel/cli": "7.21.0",
+    "@babel/core": "7.21.3",
+    "@babel/preset-env": "7.20.2",
+    "@wearerequired/browserslist-config": "0.3.0",
+    "@wearerequired/eslint-config": "5.0.0",
+    "@wearerequired/postcss-config": "1.1.0",
+    "@wearerequired/stylelint-config": "5.0.0",
+    "babel-loader": "9.1.2",
+    "concurrently": "7.6.0",
+    "eslint": "8.36.0",
+    "postcss-cli": "10.1.0",
+    "prettier": "npm:wp-prettier@2.8.5",
+    "terser-webpack-plugin": "5.3.7",
+    "webpack-cli": "5.0.1"
   }
 }
