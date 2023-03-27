@@ -7,7 +7,13 @@
 	<rule ref="Required">
 		<!-- Not compatible with PHP 5.6 -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+		<exclude name="SlevomatCodingStandard.TypeHints"/>
 	</rule>
+
+	<!-- The minimum supported WordPress version for all sniffs which use it. -->
+	<config name="minimum_supported_wp_version" value="4.7"/>
+	<!-- The minimum PHP requirement. -->
+	<config name="testVersion" value="5.6-"/>
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
