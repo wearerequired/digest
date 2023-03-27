@@ -15,7 +15,7 @@ use Required\Digest\Setting\FrequencySetting;
 
 define( __NAMESPACE__ . '\PLUGIN_FILE', dirname( __DIR__ ) . '/digest.php' );
 define( __NAMESPACE__ . '\PLUGIN_DIR', dirname( __DIR__ ) );
-define( __NAMESPACE__ . '\VERSION', '2.0.0-alpha' );
+define( __NAMESPACE__ . '\VERSION', '3.0.0' );
 
 /**
  * Initializes the plugin.

@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name: Digest Notifications
- * Plugin URI:  https://required.com/services/wordpress-plugins/digest-notifications/
- * Description: Get a daily or weekly digest of what's happening on your site
- *              instead of receiving a single email each time.
- * Version:     2.0.0
- * Author:      required
- * Author URI:  https://required.com
- * License:     GPLv2+
- * Text Domain: digest
+ * Plugin Name:       Digest Notifications
+ * Plugin URI:        https://required.com/services/wordpress-plugins/digest-notifications/
+ * Description:       Get a daily or weekly digest of what's happening on your site
+ *                    instead of receiving a single email each time.
+ * Version:           3.0.0
  * Requires at least: 6.0
- * Requires PHP: 7.4
+ * Requires PHP:      7.4
+ * Author:            required
+ * Author URI:        https://required.com
+ * License:           GPLv2+
+ * Text Domain:       digest
  */
 
 /**
