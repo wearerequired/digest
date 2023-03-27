@@ -9,8 +9,8 @@ class CommentNotification extends WP_UnitTestCase {
 	public function test_no_entries() {
 		$message = new CommentNotificationMessage( [] );
 
-		$this->assertContains( 'There were 0 new comments', $message->get_message() );
-		$this->assertNotContains( 'already moderated.', $message->get_message() );
+		$this->assertStringContainsString( 'There were 0 new comments', $message->get_message() );
+		$this->assertStringNotContainsString( 'already moderated.', $message->get_message() );
 	}
 
 	public function test_invalid_entry() {
@@ -18,8 +18,8 @@ class CommentNotification extends WP_UnitTestCase {
 			'123' => time(),
 		] );
 
-		$this->assertContains( 'There was 1 new comment', $message->get_message() );
-		$this->assertContains( '1 comment was already moderated.', $message->get_message() );
+		$this->assertStringContainsString( 'There was 1 new comment', $message->get_message() );
+		$this->assertStringContainsString( '1 comment was already moderated.', $message->get_message() );
 	}
 
 	public function test_already_processed_entry() {
@@ -29,7 +29,7 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'There was 1 new comment', $message->get_message() );
+		$this->assertStringContainsString( 'There was 1 new comment', $message->get_message() );
 	}
 
 	public function test_comment_action_links() {
@@ -46,9 +46,9 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		], $user );
 
-		$this->assertNotContains( 'Approve', $message->get_message() );
-		$this->assertContains( 'Trash', $message->get_message() );
-		$this->assertContains( 'Spam', $message->get_message() );
+		$this->assertStringNotContainsString( 'Approve', $message->get_message() );
+		$this->assertStringContainsString( 'Trash', $message->get_message() );
+		$this->assertStringContainsString( 'Spam', $message->get_message() );
 	}
 
 	public function test_comment_action_links_no_capabilities() {
@@ -65,8 +65,8 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		], $user );
 
-		$this->assertNotContains( 'Trash', $message->get_message() );
-		$this->assertNotContains( 'Spam', $message->get_message() );
+		$this->assertStringNotContainsString( 'Trash', $message->get_message() );
+		$this->assertStringNotContainsString( 'Spam', $message->get_message() );
 	}
 
 	public function test_pingback() {
@@ -79,7 +79,7 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'Pingback on ', $message->get_message() );
+		$this->assertStringContainsString( 'Pingback on ', $message->get_message() );
 	}
 
 	public function test_trackback() {
@@ -92,7 +92,7 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'Trackback on ', $message->get_message() );
+		$this->assertStringContainsString( 'Trackback on ', $message->get_message() );
 	}
 
 	public function test_comment_author_url() {
@@ -105,7 +105,7 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'http://example.com', $message->get_message() );
+		$this->assertStringContainsString( 'http://example.com', $message->get_message() );
 	}
 
 	public function test_comment_author_email() {
@@ -118,6 +118,6 @@ class CommentNotification extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'foo@example.com', $message->get_message() );
+		$this->assertStringContainsString( 'foo@example.com', $message->get_message() );
 	}
 }

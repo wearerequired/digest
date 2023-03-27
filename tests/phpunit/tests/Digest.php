@@ -41,8 +41,8 @@ class Digest extends WP_UnitTestCase {
 			[ current_time( 'timestamp' ), 'comment_notification', $comment_id ],
 		] );
 
-		$this->assertContains( 'Hi John Doe', $digest->get_message() );
-		$this->assertContains( 'That\'s it, have a nice day!', $digest->get_message() );
+		$this->assertStringContainsString( 'Hi John Doe', $digest->get_message() );
+		$this->assertStringContainsString( 'That\'s it, have a nice day!', $digest->get_message() );
 	}
 
 	public function test_digest_with_registered_events_no_user() {
@@ -53,7 +53,7 @@ class Digest extends WP_UnitTestCase {
 			[ current_time( 'timestamp' ), 'comment_notification', $comment_id ],
 		] );
 
-		$this->assertContains( 'Hi there', $digest->get_message() );
-		$this->assertContains( 'That\'s it, have a nice day!', $digest->get_message() );
+		$this->assertStringContainsString( 'Hi there', $digest->get_message() );
+		$this->assertStringContainsString( 'That\'s it, have a nice day!', $digest->get_message() );
 	}
 }

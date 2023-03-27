@@ -34,9 +34,9 @@ class UserNotification extends WP_UnitTestCase {
 			$user_2 => time(),
 		] );
 
-		$this->assertContains( 'John Doe', $message->get_message() );
-		$this->assertContains( 'Jane Doe', $message->get_message() );
-		$this->assertContains( "ID: $user_1", $message->get_message() );
-		$this->assertContains( "ID: $user_2", $message->get_message() );
+		$this->assertStringContainsString( 'John Doe', $message->get_message() );
+		$this->assertStringContainsString( 'Jane Doe', $message->get_message() );
+		$this->assertStringContainsString( "ID: $user_1", $message->get_message() );
+		$this->assertStringContainsString( "ID: $user_2", $message->get_message() );
 	}
 }

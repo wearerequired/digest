@@ -62,7 +62,7 @@ class Plugin extends WP_UnitTestCase {
 		$mailer = tests_retrieve_phpmailer_instance();
 
 		$this->assertSame( 'Foo', $mailer->get_sent()->subject );
-		$this->assertContains( 'Hi there', $mailer->get_sent()->body );
+		$this->assertStringContainsString( 'Hi there', $mailer->get_sent()->body );
 	}
 
 	public function test_add_hooks() {

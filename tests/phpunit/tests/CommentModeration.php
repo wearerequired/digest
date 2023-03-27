@@ -9,8 +9,8 @@ class CommentModeration extends WP_UnitTestCase {
 	public function test_no_entries() {
 		$message = new CommentModerationMessage( [] );
 
-		$this->assertContains( 'There are 0 new comments waiting for approval', $message->get_message() );
-		$this->assertNotContains( 'already moderated.', $message->get_message() );
+		$this->assertStringContainsString( 'There are 0 new comments waiting for approval', $message->get_message() );
+		$this->assertStringNotContainsString( 'already moderated.', $message->get_message() );
 	}
 
 	public function test_invalid_entry() {
@@ -18,7 +18,7 @@ class CommentModeration extends WP_UnitTestCase {
 			'123' => time(),
 		] );
 
-		$this->assertContains( 'There is 1 new comment waiting for approval', $message->get_message() );
+		$this->assertStringContainsString( 'There is 1 new comment waiting for approval', $message->get_message() );
 	}
 
 	public function test_already_processed_entry() {
@@ -28,8 +28,8 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'There is 1 new comment waiting for approval', $message->get_message() );
-		$this->assertContains( '1 comment was already moderated.', $message->get_message() );
+		$this->assertStringContainsString( 'There is 1 new comment waiting for approval', $message->get_message() );
+		$this->assertStringContainsString( '1 comment was already moderated.', $message->get_message() );
 	}
 
 	public function test_comment_action_links() {
@@ -46,9 +46,9 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		], $user );
 
-		$this->assertContains( 'Approve', $message->get_message() );
-		$this->assertContains( 'Trash', $message->get_message() );
-		$this->assertContains( 'Spam', $message->get_message() );
+		$this->assertStringContainsString( 'Approve', $message->get_message() );
+		$this->assertStringContainsString( 'Trash', $message->get_message() );
+		$this->assertStringContainsString( 'Spam', $message->get_message() );
 	}
 
 	public function test_comment_action_links_no_capabilities() {
@@ -65,9 +65,9 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		], $user );
 
-		$this->assertNotContains( 'Approve', $message->get_message() );
-		$this->assertNotContains( 'Trash', $message->get_message() );
-		$this->assertNotContains( 'Spam', $message->get_message() );
+		$this->assertStringNotContainsString( 'Approve', $message->get_message() );
+		$this->assertStringNotContainsString( 'Trash', $message->get_message() );
+		$this->assertStringNotContainsString( 'Spam', $message->get_message() );
 	}
 
 	public function test_pingback() {
@@ -80,7 +80,7 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'Pingback on ', $message->get_message() );
+		$this->assertStringContainsString( 'Pingback on ', $message->get_message() );
 	}
 
 	public function test_trackback() {
@@ -93,7 +93,7 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'Trackback on ', $message->get_message() );
+		$this->assertStringContainsString( 'Trackback on ', $message->get_message() );
 	}
 
 	public function test_comment_author_url() {
@@ -106,7 +106,7 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'http://example.com', $message->get_message() );
+		$this->assertStringContainsString( 'http://example.com', $message->get_message() );
 	}
 
 	public function test_comment_author_email() {
@@ -119,6 +119,6 @@ class CommentModeration extends WP_UnitTestCase {
 			$comment_id => time(),
 		] );
 
-		$this->assertContains( 'foo@example.com', $message->get_message() );
+		$this->assertStringContainsString( 'foo@example.com', $message->get_message() );
 	}
 }

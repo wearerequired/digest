@@ -27,7 +27,7 @@ class CoreUpdate extends WP_UnitTestCase {
 			'core_update_success'
 		);
 
-		$this->assertContains( 'has been updated automatically to WordPress 100.1.0', $message->get_message() );
+		$this->assertStringContainsString( 'has been updated automatically to WordPress 100.1.0', $message->get_message() );
 	}
 
 	public function test_single_entry_failure() {
@@ -39,7 +39,7 @@ class CoreUpdate extends WP_UnitTestCase {
 			'core_update_failure'
 		);
 
-		$this->assertContains( 'Please update your site', $message->get_message() );
-		$this->assertContains( 'WordPress 100.1.0', $message->get_message() );
+		$this->assertStringContainsString( 'Please update your site', $message->get_message() );
+		$this->assertStringContainsString( 'WordPress 100.1.0', $message->get_message() );
 	}
 }
