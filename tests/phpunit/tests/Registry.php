@@ -9,16 +9,16 @@ use function Required\Digest\register_default_events;
 
 class Registry extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		EventRegistry::clear();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		EventRegistry::clear();
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function test_register_event() {

@@ -11,9 +11,7 @@ class Digest extends WP_UnitTestCase {
 	 */
 	protected static $user_id;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
+	public static function wpSetUpBeforeClass() {
 		self::$user_id = self::factory()->user->create( [
 			'display_name' => 'John Doe',
 			'user_email'   => 'foo@example.com',

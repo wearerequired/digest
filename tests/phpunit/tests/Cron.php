@@ -10,16 +10,16 @@ use Required\Digest\Cron as Digest_Cron;
 class Cron extends WP_UnitTestCase {
 	protected $email_subject = '';
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		delete_option( 'digest_frequency', false );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_option( 'digest_frequency', false );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function filter_digest_cron_email_subject( $subject ) {

@@ -10,16 +10,16 @@ use function Required\Digest\comment_notification_recipients;
 use function Required\Digest\comment_moderation_recipients;
 
 class Queue extends WP_UnitTestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		Digest_Queue::clear();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		Digest_Queue::clear();
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function assertEqualSetsWithDelta($expected, $actual) {

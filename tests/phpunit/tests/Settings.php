@@ -11,9 +11,7 @@ class Settings extends WP_UnitTestCase {
 	 */
 	protected static $frequency_setting;
 
-	public static function setUpBeforeClass(  ) {
-		parent::setUpBeforeClass();
-
+	public static function wpSetUpBeforeClass() {
 		self::$frequency_setting = new FrequencySetting();
 	}
 
