@@ -22,7 +22,7 @@ class Plugin extends WP_UnitTestCase {
 
 		activate_plugin();
 
-		$this->assertInternalType( 'int', wp_next_scheduled( 'digest_event' ) );
+		$this->assertIsInt( wp_next_scheduled( 'digest_event' ) );
 	}
 
 	public function test_cron_event_unscheduled() {
