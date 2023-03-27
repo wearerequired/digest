@@ -1,9 +1,9 @@
 # Digest Notifications #
 Contributors:      wearerequired, swissspidy, grapplerulrich, ocean90  
 Tags:              admin, emails, comments, notification, updates  
-Requires at least: 4.7  
+Requires at least: 6.0  
 Tested up to:      6.2  
-Requires PHP:      5.6  
+Requires PHP:      7.4  
 Stable tag:        2.0.0  
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
@@ -56,37 +56,13 @@ Developed by [required](https://required.com/).
 
 ## Changelog ##
 
+### 3.0.0 - 2023-03-27 ###
+* Added: Support for sending digest on first day of a month
+* Changed: Bump minimum requirements to WordPress 6.0 and PHP 7.4
+
 ### 2.0.0 - 2021-06-02 ###
 * Changed: Plugin rewrite
 * Changed: Tested with WordPress 5.7
 * Changed: Bump minimum requirements to WordPress 4.7 and PHP 5.6
 
-### 1.2.1 - 2015-10-06 ###
-* Fixed: A small issue with password notifications emails in WordPress 4.3.1. The behaviour changed slightly in that release.
-
-### 1.2.0 - 2015-09-02 ###
-* Fixed: Supports the new password notification emails introduced in WordPress 4.3
-* Enhancement: Began writing user tests to ensure compatibility.
-
-### 1.1.0 - 2015-06-30 ###
-* Enhancement: Don’t include already processed items in the email.
-
-### 1.0.0 - 2015-06-25 ###
-* First release
-
-## Upgrade Notice ##
-
-### 2.0.0 ###
-Plugin rewrite
-
-### 1.2.1 ###
-Includes a small bug fix for improved compatibility with WordPress 4.3.1.
-
-### 1.2.0 ###
-Now 100% compatible with WordPress 4.3. Update while it’s hot!
-
-### 1.1.0 ###
-Already moderated comments won’t be listed in the emails now.
-
-### 1.0.0 ###
-First release
+For previous updates see [CHANGELOG.md](https://github.com/wearerequired/digest/blob/master/CHANGELOG.md).
