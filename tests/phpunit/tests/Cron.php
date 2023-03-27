@@ -77,7 +77,7 @@ class Cron extends WP_UnitTestCase {
 
 		Queue::add( 'foo@example.com', 'foo', 'bar' );
 
-		add_filter( 'wp_date', [ $this, 'filter_wp_date_to_first_day_of_month' ] );
+		add_filter( 'wp_date', [ $this, 'filter_wp_date_to_first_day_of_month' ], 10, 2 );
 		add_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
 		Digest_Cron::init();
 		remove_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
@@ -89,7 +89,11 @@ class Cron extends WP_UnitTestCase {
 		);
 	}
 
-	public function filter_wp_date_to_first_day_of_month() {
+	public function filter_wp_date_to_first_day_of_month( $date, $format ) {
+		if ( 'Y-m-d' !== $format || 'Y-m-01' === $format ) {
+			return $date;
+		}
+
 		return gmdate( 'Y-m-01' );
 	}
 
