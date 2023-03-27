@@ -49,14 +49,22 @@ class Cron {
 	 */
 	protected static function ready() {
 		// Return early if the hour is wrong.
-		if ( absint( self::$options['hour'] ) !== absint( date_i18n( 'G' ) ) ) {
+		if ( absint( self::$options['hour'] ) !== absint( wp_date( 'G' ) ) ) {
 			return false;
 		}
 
 		// Return early if the day is wrong.
 		if (
 			'weekly' === self::$options['period'] &&
-			absint( self::$options['day'] ) !== absint( date_i18n( 'w' ) )
+			absint( self::$options['day'] ) !== absint( wp_date( 'w' ) )
+		) {
+			return false;
+		}
+
+		// Return early if it's not the first day of the month.
+		if (
+			'monthly' === self::$options['period'] &&
+			wp_date( 'Y-m-d' ) !== wp_date( 'Y-m-01' )
 		) {
 			return false;
 		}
@@ -84,6 +92,9 @@ class Cron {
 		if ( 'daily' === self::$options['period'] ) {
 			// translators: %s: Site name.
 			$subject = __( 'Today on %s', 'digest' );
+		} elseif ( 'monthly' === self::$options['period'] ) {
+			// translators: %s: Site name.
+			$subject = __( 'Past Month on %s', 'digest' );
 		}
 
 		/**

@@ -68,6 +68,31 @@ class Cron extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_run_cron_monthly() {
+		update_option( 'digest_frequency', [
+			'period' => 'monthly',
+			'hour'   => date( 'G' ),
+			'day'    => date( 'w' ),
+		] );
+
+		Queue::add( 'foo@example.com', 'foo', 'bar' );
+
+		add_filter( 'wp_date', [ $this, 'filter_wp_date_to_first_day_of_month' ] );
+		add_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
+		Digest_Cron::init();
+		remove_filter( 'digest_cron_email_subject', [ $this, 'filter_digest_cron_email_subject' ] );
+		remove_filter( 'wp_date', [ $this, 'filter_wp_date_to_first_day_of_month' ] );
+
+		$this->assertSame(
+			sprintf( __( 'Past Month on %s', 'digest' ), get_bloginfo( 'name' ) ),
+			$this->email_subject
+		);
+	}
+
+	public function filter_wp_date_to_first_day_of_month() {
+		return gmdate( 'Y-m-01' );
+	}
+
 	public function test_run_cron_empty_queue() {
 		update_option( 'digest_frequency', [
 			'period' => 'daily',

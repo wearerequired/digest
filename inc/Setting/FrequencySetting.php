@@ -89,6 +89,9 @@ class FrequencySetting implements SettingInterface {
 				<option value="weekly" <?php selected( 'weekly', $options['period'] ); ?>>
 					<?php echo esc_attr_x( 'every week', 'frequency', 'digest' ); ?>
 				</option>
+				<option value="monthly" <?php selected( 'monthly', $options['period'] ); ?>>
+					<?php echo esc_attr_x( 'every month', 'frequency', 'digest' ); ?>
+				</option>
 			</select>
 			<span id="digest_frequency_hour_wrapper">
 				<?php esc_html_e( 'at', 'digest' ); ?>
@@ -135,7 +138,7 @@ class FrequencySetting implements SettingInterface {
 		$new_value['hour']   = isset( $value['hour'] ) ? $value['hour'] : 18;
 		$new_value['day']    = isset( $value['day'] ) ? $value['day'] : get_option( 'start_of_week', 0 );
 
-		if ( 'daily' !== $new_value['period'] ) {
+		if ( ! \in_array( $new_value['period'], [ 'daily', 'weekly', 'monthly' ], true ) ) {
 			$new_value['period'] = 'weekly';
 		}
 
