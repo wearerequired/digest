@@ -1,6 +1,6 @@
 {
   "name": "wearerequired/digest",
-  "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
+  "description": "Get a daily/weekly/monthly digest of what's happening on your site instead of receiving a single email each time.",
   "license": "GPL-2.0-or-later",
   "type": "wordpress-plugin",
   "authors": [

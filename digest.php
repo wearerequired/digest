@@ -2,8 +2,7 @@
 /**
  * Plugin Name:       Digest Notifications
  * Plugin URI:        https://required.com/services/wordpress-plugins/digest-notifications/
- * Description:       Get a daily or weekly digest of what's happening on your site
- *                    instead of receiving a single email each time.
+ * Description:       Get a daily, weekly, or monthly digest of what's happening on your site instead of receiving a single email each time.
  * Version:           3.0.0
  * Requires at least: 6.0
  * Requires PHP:      7.4

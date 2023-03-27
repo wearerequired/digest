@@ -50,7 +50,7 @@ class FrequencySetting implements SettingInterface {
 			'digest_notifications',
 			__( 'Email Notifications', 'digest' ),
 			function () {
-				esc_html_e( "You get a daily or weekly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
+				esc_html_e( "You get a daily, weekly, or monthly digest of what's happening on your site. Here you can configure its frequency.", 'digest' );
 			},
 			'general'
 		);

@@ -81,6 +81,10 @@ class Settings extends WP_UnitTestCase {
 				[ 'period' => 'daily', 'hour' => 1, 'day' => 1 ],
 			],
 			[
+				[ 'period' => 'monthly', 'hour' => 1, 'day' => 1 ],
+				[ 'period' => 'monthly', 'hour' => 1, 'day' => 1 ],
+			],
+			[
 				[ 'period' => 'weekly', 'hour' => 1, 'day' => 1 ],
 				[ 'period' => 'foo', 'hour' => 1, 'day' => 1 ],
 			],

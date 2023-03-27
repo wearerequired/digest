@@ -8,13 +8,13 @@ Stable tag:        2.0.0
 License:           GPLv2 or later  
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html  
 
-Get a daily or weekly digest of what's happening on your site instead of receiving a single email each time.
+Get a daily, weekly, or monthly digest of what's happening on your site instead of receiving a single email each time.
 
 ## Description ##
 
 When you have lots of new user sign-ups or comments every day, it’s very distracting to receive a single email for each new event.
 
-With this plugin you get a daily or weekly digest of your website’s activity. The digest includes the following events:
+With this plugin you get a daily, weekly, or monthly digest of your website’s activity. The digest includes the following events:
 
 * New Core Updates
 * New comments that need to be moderated (depending on your settings under 'Settings' -> 'Discussion')
