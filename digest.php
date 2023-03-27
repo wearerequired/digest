@@ -9,12 +9,12 @@
  * Author URI:  https://required.com
  * License:     GPLv2+
  * Text Domain: digest
- * Requires at least: 4.7
- * Requires PHP: 5.6
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
  */
 
 /**
- * Copyright (c) 2015-2107 required (email : support@required.ch)
+ * Copyright (c) 2015-2023 required (email : support@required.ch)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -54,8 +54,8 @@ if ( ! class_exists( 'Required\\Digest\\Plugin' ) ) {
 $requirements_check = new WP_Requirements_Check(
 	array(
 		'title' => __( 'Digest Notifications', 'digest' ),
-		'php'   => '5.6',
-		'wp'    => '4.7',
+		'php'   => '7.4',
+		'wp'    => '6.0',
 		'file'  => __FILE__,
 	)
 );

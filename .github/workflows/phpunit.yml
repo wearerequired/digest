@@ -29,18 +29,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.2', '7.3', '7.4']
-        wordpress: ['trunk']
+        php: ['8.0','7.4']
+        wordpress: ['latest']
         experimental: [false]
         include:
-          - php: '7.4'
-            wordpress: 'latest'
-            experimental: false
-          - php: '5.6'
-            wordpress: '4.7'
-            experimental: false
-          - php: '8.0'
-            wordpress: 'latest'
+          - php: '8.1'
+            wordpress: 'trunk'
             experimental: true
 
     steps:
@@ -61,20 +55,8 @@ jobs:
           MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
         run: bash bin/install-wp-tests.sh wordpress_test root password "127.0.0.1:$MYSQL_PORT" "$WP_VERSION"
 
-      # wearerequired/coding-standards is not compatible with PHP 8 and is not needed for PHPUnit
-      - name: Remove coding standards
-        run: composer remove --dev wearerequired/coding-standards --ignore-platform-reqs
-
-      - name: Install dependencies (PHP < 8.0)
-        if: ${{ matrix.php < '8.0' }}
-        run: |
-          composer update
-          composer install --no-interaction --no-scripts
-
-      - name: Install dependencies (PHP => 8.0)
-        if: ${{ matrix.php >= '8.0' }}
-        # Use --ignore-platform-reqs as PHPUnit 7 PHP requirment is PHP 7.1 but it works on PHP 8
-        run: composer install --no-interaction --no-scripts --ignore-platform-reqs
+      - name: Install PHP dependencies
+        uses: ramsey/composer-install@v2
 
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"

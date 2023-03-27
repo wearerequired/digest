@@ -1,8 +1,8 @@
 {
   "name": "wearerequired/digest",
-  "type": "wordpress-plugin",
   "description": "Get a daily/weekly digest of what's happening on your site instead of receiving a single email each time.",
   "license": "GPL-2.0-or-later",
+  "type": "wordpress-plugin",
   "authors": [
     {
       "name": "required",
@@ -12,7 +12,7 @@
     }
   ],
   "require": {
-    "php": ">=5.6",
+    "php": ">=7.4",
     "wearerequired/wp-requirements-check": "^1.0"
   },
   "require-dev": {
@@ -25,14 +25,16 @@
       "Required\\Digest\\": "inc"
     }
   },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "platform-check": false,
+    "sort-packages": true
+  },
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
     "test": "@php ./vendor/bin/phpunit"
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
   }
 }
